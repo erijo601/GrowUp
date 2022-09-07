@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\Microsoft.TypeScript.MSBuild.4.6.2\build\Microsoft.TypeScript.MSBuild.props" Condition="Exists('packages\Microsoft.TypeScript.MSBuild.4.6.2\build\Microsoft.TypeScript.MSBuild.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{0E849AB1-D633-4CE1-AE0D-1566AABDED4B}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <OutputPath>bin</OutputPath>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
+    <Use64BitIISExpress />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="img\LevelMoustache\box.png" />
+    <Content Include="img\LevelMoustache\face-bg.png" />
+    <Content Include="img\Loading\cloud-alt.png" />
+    <Content Include="img\Loading\cloud.png" />
+    <Content Include="img\Loading\fz0.png" />
+    <Content Include="img\Loading\fz1.png" />
+    <Content Include="img\Loading\fz2.png" />
+    <Content Include="img\Loading\fz3.png" />
+    <Content Include="img\Loading\fz4.png" />
+    <Content Include="img\Loading\fz5.png" />
+    <Content Include="img\Loading\fz6.png" />
+    <Content Include="img\Loading\fz7.png" />
+    <Content Include="img\Loading\letter-a-alt.png" />
+    <Content Include="img\Loading\letter-a.png" />
+    <Content Include="img\Loading\letter-d-alt.png" />
+    <Content Include="img\Loading\letter-d.png" />
+    <Content Include="img\Loading\letter-e-alt.png" />
+    <Content Include="img\Loading\letter-e.png" />
+    <Content Include="img\Loading\letter-g-alt.png" />
+    <Content Include="img\Loading\letter-g.png" />
+    <Content Include="img\Loading\letter-i-alt.png" />
+    <Content Include="img\Loading\letter-i.png" />
+    <Content Include="img\Loading\letter-l-alt.png" />
+    <Content Include="img\Loading\letter-l.png" />
+    <Content Include="img\Loading\letter-n-alt.png" />
+    <Content Include="img\Loading\letter-n.png" />
+    <Content Include="img\Loading\letter-o-alt.png" />
+    <Content Include="img\Loading\letter-o.png" />
+    <Content Include="img\Loading\letter-p-alt.png" />
+    <Content Include="img\Loading\letter-p.png" />
+    <Content Include="img\Loading\letter-r-alt.png" />
+    <Content Include="img\Loading\letter-r.png" />
+    <Content Include="img\Loading\letter-s-alt.png" />
+    <Content Include="img\Loading\letter-s.png" />
+    <Content Include="img\Loading\letter-t-alt.png" />
+    <Content Include="img\Loading\letter-t.png" />
+    <Content Include="img\Loading\pipe0.png" />
+    <Content Include="img\Loading\pipe1.png" />
+    <Content Include="img\Loading\pipe2.png" />
+    <Content Include="img\Loading\pipe3.png" />
+    <Content Include="img\Loading\pipe4.png" />
+    <Content Include="img\Title\1player-disabled.png" />
+    <Content Include="img\Title\1player0.png" />
+    <Content Include="img\Title\1player1.png" />
+    <Content Include="img\Title\2players-disabled.png" />
+    <Content Include="img\Title\2players0.png" />
+    <Content Include="img\Title\2players1.png" />
+    <Content Include="img\Title\gamemode-background.png" />
+    <Content Include="img\Title\logo-background.png" />
+    <Content Include="img\Title\logo-pipe.png" />
+    <Content Include="img\Title\logo-subtitle.png" />
+    <Content Include="img\Title\logo-title.png" />
+    <Content Include="Scripts\Howler\howler.min.js" />
+    <Content Include="Scripts\Pixi.js\pixi.min.js" />
+    <Content Include="sound\title-loop.mp3" />
+    <Content Include="sound\title-intro.mp3" />
+    <Content Include="sound\title-swoosh.mp3" />
+    <Content Include="style.css" />
+    <Content Include="index.html" />
+    <Content Include="web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\Pixi.js\pixi.min.js.map" />
+    <None Include="packages.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\Filters\RGBSplitFilter.ts" />
+    <TypeScriptCompile Include="Scripts\GameStates\gameState.ts" />
+    <TypeScriptCompile Include="Scripts\GameStates\levelMoustache\grid.ts" />
+    <TypeScriptCompile Include="Scripts\GameStates\levelMoustache\point.ts" />
+    <TypeScriptCompile Include="Scripts\GameStates\levelMoustache\shapes.ts" />
+    <TypeScriptCompile Include="Scripts\GameStates\loadingState.ts" />
+    <TypeScriptCompile Include="Scripts\GameStates\loading\smokeLetter.ts" />
+    <TypeScriptCompile Include="Scripts\GameStates\titleState.ts" />
+    <TypeScriptCompile Include="Scripts\GameStates\levelMoustache.ts" />
+    <TypeScriptCompile Include="Scripts\GameStates\introState.ts" />
+    <TypeScriptCompile Include="Scripts\Sound\sound.ts" />
+    <TypeScriptCompile Include="Scripts\Util\easingCurves.ts" />
+    <TypeScriptCompile Include="Scripts\Util\mathHelper.ts" />
+    <TypeScriptCompile Include="Scripts\Util\keyboardState.ts" />
+    <TypeScriptCompile Include="Scripts\Util\mouseState.ts" />
+    <TypeScriptCompile Include="Scripts\Util\fpsCounter.ts" />
+    <TypeScriptCompile Include="Scripts\Game\game.ts" />
+    <TypeScriptCompile Include="Scripts\typings\pixi.js.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="img\Intro\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>TheGameThatDoesWhatComesToMind</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets')" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>59265</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:59265/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+  </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Microsoft.TypeScript.MSBuild.4.6.2\build\Microsoft.TypeScript.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.TypeScript.MSBuild.4.6.2\build\Microsoft.TypeScript.MSBuild.props'))" />
+    <Error Condition="!Exists('packages\Microsoft.TypeScript.MSBuild.4.6.2\build\Microsoft.TypeScript.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.TypeScript.MSBuild.4.6.2\build\Microsoft.TypeScript.MSBuild.targets'))" />
+  </Target>
+  <Import Project="packages\Microsoft.TypeScript.MSBuild.4.6.2\build\Microsoft.TypeScript.MSBuild.targets" Condition="Exists('packages\Microsoft.TypeScript.MSBuild.4.6.2\build\Microsoft.TypeScript.MSBuild.targets')" />
+</Project>
