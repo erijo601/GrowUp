@@ -23,6 +23,34 @@ var SoundPlayer = /** @class */ (function () {
             volume: 0.8,
             loop: false
         });
+        this.musicScoreScreen = new Howl({
+            src: ['sound/music-score.mp3'],
+            preload: true,
+            volume: 1.0,
+            loop: true
+        });
+        this.musicScoreScreen.on("fade", function () {
+            if (that.musicScoreScreen.volume() == 0) {
+                that.musicScoreScreen.stop();
+            }
+        });
+        this.musicMoustache = new Howl({
+            src: ['sound/music-moustache.mp3'],
+            preload: true,
+            volume: 1.0,
+            loop: false
+        });
+        this.scoreWheel = new Howl({
+            src: ['sound/score-wheel.mp3'],
+            preload: true,
+            volume: 1.0,
+            loop: true,
+        });
+        this.scoreWheel.on("fade", function () {
+            if (that.scoreWheel.volume() == 0) {
+                that.scoreWheel.stop();
+            }
+        });
     };
     return SoundPlayer;
 }());

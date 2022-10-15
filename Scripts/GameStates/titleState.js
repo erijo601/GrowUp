@@ -16,7 +16,8 @@ var __extends = (this && this.__extends) || (function () {
 var TitleState = /** @class */ (function (_super) {
     __extends(TitleState, _super);
     function TitleState(xOffset, upKey, downKey, leftKey, rightKey) {
-        var _this = _super.call(this, xOffset, upKey, downKey, leftKey, rightKey) || this;
+        var _this = _super.call(this, 1, xOffset, upKey, downKey, leftKey, rightKey) || this;
+        _this.stateName = "TitleState";
         _this.logoBackground = new PIXI.Sprite(PIXI.Loader.shared.resources["logo-background"].texture);
         _this.logoBackground.x = 580;
         _this.logoBackground.y = 0;
@@ -25,8 +26,9 @@ var TitleState = /** @class */ (function (_super) {
         _this.logoPipe.x = 1920 / 2;
         _this.logoPipe.y = 1080 / 2;
         _this.logoSubtitle = new PIXI.Sprite(PIXI.Loader.shared.resources["logo-subtitle"].texture);
-        _this.logoSubtitle.x = 683;
-        _this.logoSubtitle.y = 188;
+        _this.logoSubtitle.pivot.set(541 / 2, 45 / 2);
+        _this.logoSubtitle.x = 683 + 541 / 2;
+        _this.logoSubtitle.y = 188 + 45 / 2;
         _this.logoTitle = new PIXI.Sprite(PIXI.Loader.shared.resources["logo-title"].texture);
         _this.logoTitle.pivot.set(940 / 2, 393 / 2);
         _this.logoTitle.x = 1920 / 2;
@@ -101,24 +103,33 @@ var TitleState = /** @class */ (function (_super) {
         Game.app.stage.removeChild(this.logoSubtitle);
         Game.app.stage.removeChild(this.logoTitle);
         if (Game.twoPlayerGame) {
-            Game.currentStatePlayer1 = new LevelMoustache(0, 'w', 's', 'a', 'd');
-            Game.currentStatePlayer2 = new LevelMoustache(960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+            Game.scoreStatePlayer1 = new ScoreState(1, 0, 'w', 's', 'a', 'd');
+            Game.scoreStatePlayer2 = new ScoreState(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+            Game.currentStatePlayer1 = new LevelMoustache(1, 0, 'w', 's', 'a', 'd');
+            Game.currentStatePlayer2 = new LevelMoustache(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+            //  Test
+            //Game.currentStatePlayer1 = Game.scoreStatePlayer1;
+            //Game.currentStatePlayer2 = Game.scoreStatePlayer2;
+            //Game.scoreStatePlayer1.beforeOnEnter(Level.Moustache, 50);
+            //Game.scoreStatePlayer2.beforeOnEnter(Level.Moustache, 91);
+            //  Slut test
             Game.currentStatePlayer1.onEnter();
             Game.currentStatePlayer2.onEnter();
         }
         else {
-            Game.currentStatePlayer1 = new LevelMoustache(480, 'w', 's', 'a', 'd');
+            Game.scoreStatePlayer1 = new ScoreState(1, 480, 'w', 's', 'a', 'd');
+            Game.currentStatePlayer1 = new LevelMoustache(1, 480, 'w', 's', 'a', 'd');
+            //  Test
+            Game.currentStatePlayer1 = Game.scoreStatePlayer1;
+            Game.scoreStatePlayer1.beforeOnEnter(Level.Moustache, 51);
+            //  Slut test
             Game.currentStatePlayer1.onEnter();
-        }
-        Game.soundPlayer.titleIntro.stop();
-        if (Game.soundPlayer.titleLoop.playing) {
-            Game.soundPlayer.titleLoop.fade(1, 0, 1000);
         }
     };
     TitleState.prototype.update = function (elapsedTime) {
-        if (this.totalTimeElasped < 1900) {
+        if (this.totalTimeElasped < 2000) {
             this.totalTimeElasped += elapsedTime;
-            var part = this.totalTimeElasped / 1900;
+            var part = this.totalTimeElasped / 2000;
             this.logoPipe.scale.x = 0.5 + part / 2;
             this.logoPipe.scale.y = 0.5 + part / 2;
             this.logoPipe.angle = 2 * Math.sin(part * 3 * 2 * Math.PI);
@@ -150,9 +161,34 @@ var TitleState = /** @class */ (function (_super) {
             return;
         }
         else if (this.totalTimeElasped < 3000) {
+            if (!Game.background.visible) {
+                Game.background.fadeIn(500);
+            }
             this.totalTimeElasped += elapsedTime;
-            var part = (this.totalTimeElasped - 2507) / (3000 - 2507);
-            this.logoSubtitle.alpha = part;
+            this.gamemodeBackground.alpha = 1;
+            this.gamemodeBackground.alpha = 1;
+            this.onePlayer0.alpha = 1;
+            this.onePlayer1.alpha = 1;
+            this.onePlayerDisabled.alpha = 1;
+            this.twoPlayers0.alpha = 1;
+            this.twoPlayers1.alpha = 1;
+            this.twoPlayersDisabled.alpha = 1;
+            this.logoPipe.scale.x = 0.75;
+            this.logoPipe.scale.y = 0.75;
+            this.logoPipe.angle = 0;
+            this.logoPipe.y = 150;
+            this.logoTitle.scale.x = 0.75;
+            this.logoTitle.scale.y = 0.75;
+            this.logoTitle.angle = 0;
+            this.logoTitle.y = 150;
+            this.logoBackground.alpha = 1;
+        }
+        else if (this.totalTimeElasped < 3300) {
+            this.totalTimeElasped += elapsedTime;
+            var part = (this.totalTimeElasped - 3000) / (3300 - 3000);
+            this.logoSubtitle.alpha = part < 0.5 ? part * 0.5 : 1;
+            this.logoSubtitle.scale.x = 0.5 + 0.5 * EasingCurves.easeOutBack(part);
+            this.logoSubtitle.scale.y = 0.5 + 0.5 * EasingCurves.easeOutBack(part);
             this.gamemodeBackground.alpha = 1;
             this.gamemodeBackground.alpha = 1;
             this.onePlayer0.alpha = 1;
@@ -224,8 +260,23 @@ var TitleState = /** @class */ (function (_super) {
             this.twoPlayersDisabled.visible = false;
             Game.soundPlayer.titleSwoosh.play();
         }
+        //if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
+        //    this.onExit();
+        //}
         if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
-            this.onExit();
+            if (!Game.sceneTransition.isGrowing) {
+                Game.sceneTransition.startGrowing();
+                Game.soundPlayer.titleIntro.stop();
+                if (Game.soundPlayer.titleLoop.playing) {
+                    Game.soundPlayer.titleLoop.fade(1, 0, 2500);
+                }
+            }
+        }
+        if (Game.sceneTransition.isGrowing) {
+            Game.sceneTransition.update(elapsedTime);
+            if (Game.sceneTransition.isDone()) {
+                this.onExit();
+            }
         }
     };
     return TitleState;

@@ -20,8 +20,9 @@ var SmokeLetter = /** @class */ (function () {
         this.destX = destX;
         this.destY = destY;
         var dist = Math.sqrt((SmokeLetter.startX - this.destX) * (SmokeLetter.startX - this.destX) + (SmokeLetter.startY - this.destY) * (SmokeLetter.startY - this.destY));
-        this.timeLeftMoving = dist / SmokeLetter.speed;
+        this.timeLeftMoving = 1000 * dist / SmokeLetter.speed;
         this.totalTimeMoving = this.timeLeftMoving;
+        this.fadeoutTimeLeft = 0;
         this.shouldRemove = false;
     }
     SmokeLetter.prototype.update = function (elapsedTime) {
@@ -51,7 +52,6 @@ var SmokeLetter = /** @class */ (function () {
             this.cloudAlt.scale.y = 0.5 + 0.5 * part;
             this.cloud.alpha = 1 - part;
             this.cloudAlt.alpha = 1 - part;
-            this.cloud.angle += elapsedTime;
         }
         if (this.fadeoutTimeLeft > 0) {
             this.fadeoutTimeLeft -= elapsedTime;
@@ -76,6 +76,7 @@ var SmokeLetter = /** @class */ (function () {
             this.spriteAlt.visible = this.sprite.visible;
             this.sprite.visible = false;
         }
+        this.showingAlt = !this.showingAlt;
     };
     SmokeLetter.prototype.removeFromStage = function () {
         Game.app.stage.removeChild(this.sprite);
@@ -83,9 +84,9 @@ var SmokeLetter = /** @class */ (function () {
         Game.app.stage.removeChild(this.cloud);
         Game.app.stage.removeChild(this.cloudAlt);
     };
-    SmokeLetter.speed = 445; //  Pixels per second
+    SmokeLetter.speed = 750; //  Pixels per second
     SmokeLetter.startX = 880;
-    SmokeLetter.startY = 788;
+    SmokeLetter.startY = 730;
     return SmokeLetter;
 }());
 //# sourceMappingURL=smokeLetter.js.map

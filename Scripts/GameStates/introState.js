@@ -16,7 +16,8 @@ var __extends = (this && this.__extends) || (function () {
 var IntroState = /** @class */ (function (_super) {
     __extends(IntroState, _super);
     function IntroState(xOffset, upKey, downKey, leftKey, rightKey) {
-        var _this = _super.call(this, xOffset, upKey, downKey, leftKey, rightKey) || this;
+        var _this = _super.call(this, 1, xOffset, upKey, downKey, leftKey, rightKey) || this;
+        _this.stateName = "IntroState";
         _this.background = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-bg"].texture);
         _this.background.scale.x = 2;
         _this.background.scale.y = 2;

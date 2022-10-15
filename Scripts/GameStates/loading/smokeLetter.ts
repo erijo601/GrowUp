@@ -1,8 +1,8 @@
 ﻿class SmokeLetter {
 
-    static speed: number = 445; //  Pixels per second
+    static speed: number = 750; //  Pixels per second
     static startX: number = 880;
-    static startY: number = 788;
+    static startY: number = 730;
 
     public startX: number;
     public startY: number;
@@ -17,6 +17,7 @@
     public cloudAlt: PIXI.Sprite;
 
     private showingAlt: boolean;
+
     private totalTimeMoving: number;
     private timeLeftMoving: number;
 
@@ -57,9 +58,10 @@
 
         let dist = Math.sqrt((SmokeLetter.startX - this.destX) * (SmokeLetter.startX - this.destX) + (SmokeLetter.startY - this.destY) * (SmokeLetter.startY - this.destY));
 
-        this.timeLeftMoving = dist / SmokeLetter.speed;
+        this.timeLeftMoving = 1000 * dist / SmokeLetter.speed;
         this.totalTimeMoving = this.timeLeftMoving;
 
+        this.fadeoutTimeLeft = 0;
         this.shouldRemove = false;
     }
 
@@ -99,8 +101,6 @@
 
             this.cloud.alpha = 1 - part;
             this.cloudAlt.alpha = 1 - part;
-
-            this.cloud.angle += elapsedTime;
         }
 
         if (this.fadeoutTimeLeft > 0) {
@@ -137,6 +137,8 @@
             this.spriteAlt.visible = this.sprite.visible;
             this.sprite.visible = false;
         }
+
+        this.showingAlt = !this.showingAlt;
     }
 
     public removeFromStage() {

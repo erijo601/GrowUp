@@ -25,18 +25,52 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="img\LevelMoustache\box.png" />
-    <Content Include="img\LevelMoustache\face-bg.png" />
+    <Content Include="img\Background\0.png" />
+    <Content Include="img\Background\1.png" />
+    <Content Include="img\Background\2.png" />
+    <Content Include="img\Background\3.png" />
+    <Content Include="img\Background\4.png" />
+    <Content Include="img\Background\5.png" />
+    <Content Include="img\Intro\moustache-subtitle.png" />
+    <Content Include="img\Intro\moustache-title.png" />
+    <Content Include="img\Intro\tie-left.png" />
+    <Content Include="img\Intro\tie-right.png" />
+    <Content Include="img\LevelMoustache\box-p1-0.png" />
+    <Content Include="img\LevelMoustache\box-p1-1.png" />
+    <Content Include="img\LevelMoustache\box-p1-2.png" />
+    <Content Include="img\LevelMoustache\box-p1-3.png" />
+    <Content Include="img\LevelMoustache\box-p1-left-0.png" />
+    <Content Include="img\LevelMoustache\box-p1-left-1.png" />
+    <Content Include="img\LevelMoustache\box-p1-right-0.png" />
+    <Content Include="img\LevelMoustache\box-p1-right-1.png" />
+    <Content Include="img\LevelMoustache\box-p2-0.png" />
+    <Content Include="img\LevelMoustache\box-p2-1.png" />
+    <Content Include="img\LevelMoustache\box-p2-2.png" />
+    <Content Include="img\LevelMoustache\box-p2-3.png" />
+    <Content Include="img\LevelMoustache\box-p2-left-0.png" />
+    <Content Include="img\LevelMoustache\box-p2-left-1.png" />
+    <Content Include="img\LevelMoustache\box-p2-right-0.png" />
+    <Content Include="img\LevelMoustache\box-p2-right-1.png" />
+    <Content Include="img\LevelMoustache\eye-left-0.png" />
+    <Content Include="img\LevelMoustache\eye-left-1.png" />
+    <Content Include="img\LevelMoustache\eye-left-2.png" />
+    <Content Include="img\LevelMoustache\eye-right-0.png" />
+    <Content Include="img\LevelMoustache\eye-right-1.png" />
+    <Content Include="img\LevelMoustache\eye-right-2.png" />
+    <Content Include="img\LevelMoustache\face-bg-1.png" />
+    <Content Include="img\LevelMoustache\face-bg-2.png" />
+    <Content Include="img\LevelMoustache\mouth-0.png" />
+    <Content Include="img\LevelMoustache\mouth-1.png" />
+    <Content Include="img\LevelMoustache\mouth-2.png" />
+    <Content Include="img\LevelMoustache\nose-0-front.png" />
+    <Content Include="img\LevelMoustache\nose-0.png" />
+    <Content Include="img\LevelMoustache\nose-1-front.png" />
+    <Content Include="img\LevelMoustache\nose-1.png" />
+    <Content Include="img\LevelMoustache\nose-2-front.png" />
+    <Content Include="img\LevelMoustache\nose-2.png" />
+    <Content Include="img\LevelMoustache\nose-front-base.png" />
     <Content Include="img\Loading\cloud-alt.png" />
     <Content Include="img\Loading\cloud.png" />
-    <Content Include="img\Loading\fz0.png" />
-    <Content Include="img\Loading\fz1.png" />
-    <Content Include="img\Loading\fz2.png" />
-    <Content Include="img\Loading\fz3.png" />
-    <Content Include="img\Loading\fz4.png" />
-    <Content Include="img\Loading\fz5.png" />
-    <Content Include="img\Loading\fz6.png" />
-    <Content Include="img\Loading\fz7.png" />
     <Content Include="img\Loading\letter-a-alt.png" />
     <Content Include="img\Loading\letter-a.png" />
     <Content Include="img\Loading\letter-d-alt.png" />
@@ -66,6 +100,33 @@
     <Content Include="img\Loading\pipe2.png" />
     <Content Include="img\Loading\pipe3.png" />
     <Content Include="img\Loading\pipe4.png" />
+    <Content Include="img\ScoreState\0.png" />
+    <Content Include="img\ScoreState\1.png" />
+    <Content Include="img\ScoreState\2.png" />
+    <Content Include="img\ScoreState\3.png" />
+    <Content Include="img\ScoreState\4.png" />
+    <Content Include="img\ScoreState\5.png" />
+    <Content Include="img\ScoreState\6.png" />
+    <Content Include="img\ScoreState\7.png" />
+    <Content Include="img\ScoreState\8.png" />
+    <Content Include="img\ScoreState\9.png" />
+    <Content Include="img\ScoreState\procent.png" />
+    <Content Include="img\ScoreState\score-bg.png" />
+    <Content Include="img\Score\0.png" />
+    <Content Include="img\Score\1.png" />
+    <Content Include="img\Score\2.png" />
+    <Content Include="img\Score\3.png" />
+    <Content Include="img\Score\4.png" />
+    <Content Include="img\Score\5.png" />
+    <Content Include="img\Score\6.png" />
+    <Content Include="img\Score\7.png" />
+    <Content Include="img\Score\8.png" />
+    <Content Include="img\Score\9.png" />
+    <Content Include="img\Score\background.png" />
+    <Content Include="img\Score\foreground.png" />
+    <Content Include="img\ScreenTransition\screen-transition-moustache.png" />
+    <Content Include="img\ScreenTransition\screen-transition-boxer.png" />
+    <Content Include="img\ScreenTransition\screen-transition-tie.png" />
     <Content Include="img\Title\1player-disabled.png" />
     <Content Include="img\Title\1player0.png" />
     <Content Include="img\Title\1player1.png" />
@@ -79,6 +140,9 @@
     <Content Include="img\Title\logo-title.png" />
     <Content Include="Scripts\Howler\howler.min.js" />
     <Content Include="Scripts\Pixi.js\pixi.min.js" />
+    <Content Include="sound\music-moustache.mp3" />
+    <Content Include="sound\score-wheel.mp3" />
+    <Content Include="sound\music-score.mp3" />
     <Content Include="sound\title-loop.mp3" />
     <Content Include="sound\title-intro.mp3" />
     <Content Include="sound\title-swoosh.mp3" />
@@ -97,8 +161,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\Background\background.ts" />
     <TypeScriptCompile Include="Scripts\Filters\RGBSplitFilter.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\gameState.ts" />
+    <TypeScriptCompile Include="Scripts\GameStates\scoreState.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\levelMoustache\grid.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\levelMoustache\point.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\levelMoustache\shapes.ts" />
@@ -107,8 +173,11 @@
     <TypeScriptCompile Include="Scripts\GameStates\titleState.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\levelMoustache.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\introState.ts" />
+    <TypeScriptCompile Include="Scripts\Intro\intro.ts" />
     <TypeScriptCompile Include="Scripts\Sound\sound.ts" />
     <TypeScriptCompile Include="Scripts\Util\easingCurves.ts" />
+    <TypeScriptCompile Include="Scripts\Util\sceneTransition.ts" />
+    <TypeScriptCompile Include="Scripts\Util\scoreCounter.ts" />
     <TypeScriptCompile Include="Scripts\Util\mathHelper.ts" />
     <TypeScriptCompile Include="Scripts\Util\keyboardState.ts" />
     <TypeScriptCompile Include="Scripts\Util\mouseState.ts" />
@@ -124,9 +193,7 @@
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="img\Intro\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
   </PropertyGroup>

@@ -28,10 +28,35 @@
         return newPoints;
     }
 
-    public setPos(newPoints: Point[]) {
+    public onExit() {
+
+        for (let n = 0; n < this.sprites.length; n++) {
+
+            Game.app.stage.removeChild(this.sprites[n]);
+        }
+    }
+
+    public addSprites(player: number) {
+
+        for (let point of this.points) {
+
+            let img = "box-p" + player + "-" + MathHelper.randomInt(0, 3);
+
+            this.sprites.push(new PIXI.Sprite(PIXI.Loader.shared.resources[img].texture));
+        }
+
+        this.updateSprites(player, 1);
+
+        for (let n = 0; n < this.sprites.length; n++) {
+
+            Game.app.stage.addChild(this.sprites[n]);
+        }
+    }
+
+    public setPos(player: number, newPoints: Point[], partTimeLeftCurrentRow: number) {
 
         this.points = newPoints;
-        this.updateSprites();
+        this.updateSprites(player, partTimeLeftCurrentRow);
     }
 
     // return a set of points showing where this shape would be if we dropped it one
@@ -59,7 +84,7 @@
         throw new Error("This method is abstract");
     }
 
-    public updateSprites() {
+    public updateSprites(player, partTimeLeftCurrentRow) {
 
         for (var i = 0; i < this.points.length; i++) {
 
@@ -72,11 +97,55 @@
                 row = 0;
             }
 
-            sprite.x = this.faceBgx + Grid.rowInfos[row].x + point.x * Grid.rowInfos[row].w;
-            sprite.y = this.faceBgy + Grid.rowInfos[row].y
+            let deltax;
+            let deltay;
 
-            sprite.scale.x = 0.5 * Grid.rowInfos[row].w / 33.9;   //  Nedersta raden ger scale = 0.5
+            if (row == 0) {
+
+                deltax = 0;
+                deltay = -19 * partTimeLeftCurrentRow;
+            }
+            else if (row == 20) {
+
+                //  Detta är när raden åker ur näsan
+
+                deltax = ((Grid.rowInfos[row - 1].x + point.x * Grid.rowInfos[row - 1].w) -
+                    (Grid.rowInfos[row].x + point.x * Grid.rowInfos[row].w)) * EasingCurves.easeInExpo(partTimeLeftCurrentRow);
+
+                deltay = (Grid.rowInfos[row - 1].y - Grid.rowInfos[row].y) * EasingCurves.easeInExpo(partTimeLeftCurrentRow);
+            }
+            else {
+
+                deltax = ((Grid.rowInfos[row - 1].x + point.x * Grid.rowInfos[row - 1].w) -
+                    (Grid.rowInfos[row].x + point.x * Grid.rowInfos[row].w)) * partTimeLeftCurrentRow;
+
+                deltay = (Grid.rowInfos[row - 1].y - Grid.rowInfos[row].y) * partTimeLeftCurrentRow;
+            }
+
+            sprite.x = this.faceBgx + Grid.rowInfos[row].x + point.x * Grid.rowInfos[row].w + deltax;
+            sprite.y = this.faceBgy + Grid.rowInfos[row].y + deltay;
+
+            sprite.scale.x = 0.5 * Grid.rowInfos[row].w / 33.9;   //  Nedersta raden (i gameMatrix - inte moustache) ger scale = 0.5
             sprite.scale.y = 0.5;
+
+            if (partTimeLeftCurrentRow == 1) {
+
+                if (row == 20 && point.x == 0) {
+
+                    let img = "box-p" + player + "-left-" + MathHelper.randomInt(0, 1);
+                    sprite.texture = PIXI.Loader.shared.resources[img].texture;
+                }
+                else if (row == 20 && point.x == 9) {
+
+                    let img = "box-p" + player + "-right-" + MathHelper.randomInt(0, 1);
+                    sprite.texture = PIXI.Loader.shared.resources[img].texture;
+                }
+                else if (row == 26 && (point.x == 0 || point.x == 9)) {
+
+                    let img = "box-p" + player + "-" + MathHelper.randomInt(0, 3);
+                    sprite.texture = PIXI.Loader.shared.resources[img].texture;
+                }
+            }
         }
     }
 }
@@ -89,6 +158,7 @@ class SquareShape extends Shape {
 
         var x = cols / 2;
         var y = -2;
+
         this.points = [];
         this.points.push(new Point(x, y));
         this.points.push(new Point(x + 1, y));
@@ -120,18 +190,6 @@ class LShape extends Shape {
         this.points.push(new Point(x, y)); // 1 is our base point
         this.points.push(new Point(x, y + 1));
         this.points.push(new Point(x + (leftHanded ? -1 : 1), y + 1));
-
-        this.sprites.push(new PIXI.Sprite(PIXI.Loader.shared.resources["box"].texture));
-        this.sprites.push(new PIXI.Sprite(PIXI.Loader.shared.resources["box"].texture));
-        this.sprites.push(new PIXI.Sprite(PIXI.Loader.shared.resources["box"].texture));
-        this.sprites.push(new PIXI.Sprite(PIXI.Loader.shared.resources["box"].texture));
-
-        this.updateSprites();
-
-        for (let n = 0; n < this.sprites.length; n++) {
-
-            Game.app.stage.addChild(this.sprites[n]);
-        }
     }
 
     public rotate(clockwise: boolean): Point[] {
@@ -230,6 +288,7 @@ class StraightShape extends Shape {
 
         var x = cols / 2;
         var y = -2;
+
         this.points = [];
         this.points.push(new Point(x, y - 2));
         this.points.push(new Point(x, y - 1));
@@ -256,7 +315,6 @@ class StraightShape extends Shape {
                 newPoints[2] = new Point(this.points[2].x, this.points[2].y);
                 newPoints[3] = new Point(this.points[2].x - 1, this.points[2].y);
                 break;
-
         }
 
         return newPoints;
@@ -316,5 +374,24 @@ class TShape extends Shape {
         }
 
         return newPoints;
+    }
+}
+
+class DotShape extends Shape {
+
+    //  Används bara för att spawna lite startblock
+
+    constructor(faceBgx: number, faceBgy: number, x: number, y: number) {
+
+        super(faceBgx, faceBgy);
+
+        this.points = [];
+
+        this.points.push(new Point(x, y));
+    }
+
+    public rotate(clockwise: boolean): Point[] {
+
+        return this.points;
     }
 }

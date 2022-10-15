@@ -13,11 +13,19 @@ class Game {
     static keyboard: Keyboard;
     static soundPlayer: SoundPlayer;
 
+    static background: Background;
+    static intro: Intro;
+
     static doneLoading: boolean;
+
+    static sceneTransition: SceneTransition;
 
     static loadingState: GameState;
     static currentStatePlayer1: GameState;
     static currentStatePlayer2: GameState;
+
+    static scoreStatePlayer1: ScoreState;
+    static scoreStatePlayer2: ScoreState;
 
     static twoPlayerGame: boolean;
 
@@ -68,14 +76,6 @@ class Game {
     static loadLoadingScreenResources() {
 
         //  Loading screen
-        Game.loadingScreenLoader.add('fz0', 'img/Loading/fz0.png');
-        Game.loadingScreenLoader.add('fz1', 'img/Loading/fz1.png');
-        Game.loadingScreenLoader.add('fz2', 'img/Loading/fz2.png');
-        Game.loadingScreenLoader.add('fz3', 'img/Loading/fz3.png');
-        Game.loadingScreenLoader.add('fz4', 'img/Loading/fz4.png');
-        Game.loadingScreenLoader.add('fz5', 'img/Loading/fz5.png');
-        Game.loadingScreenLoader.add('fz6', 'img/Loading/fz6.png');
-        Game.loadingScreenLoader.add('fz7', 'img/Loading/fz7.png');
 
         Game.loadingScreenLoader.add('pipe0', 'img/Loading/pipe0.png');
         Game.loadingScreenLoader.add('pipe1', 'img/Loading/pipe1.png');
@@ -116,6 +116,34 @@ class Game {
 
     static loadResources() {
 
+        //  Background
+        PIXI.Loader.shared.add('background0', 'img/Background/0.png');
+        PIXI.Loader.shared.add('background1', 'img/Background/1.png');
+        PIXI.Loader.shared.add('background2', 'img/Background/2.png');
+        PIXI.Loader.shared.add('background3', 'img/Background/3.png');
+        PIXI.Loader.shared.add('background4', 'img/Background/4.png');
+        PIXI.Loader.shared.add('background5', 'img/Background/5.png');
+
+        //  Score
+        PIXI.Loader.shared.add('score-background', 'img/Score/background.png');
+        PIXI.Loader.shared.add('score-foreground', 'img/Score/foreground.png');
+        PIXI.Loader.shared.add('number-0', 'img/Score/0.png');
+        PIXI.Loader.shared.add('number-1', 'img/Score/1.png');
+        PIXI.Loader.shared.add('number-2', 'img/Score/2.png');
+        PIXI.Loader.shared.add('number-3', 'img/Score/3.png');
+        PIXI.Loader.shared.add('number-4', 'img/Score/4.png');
+        PIXI.Loader.shared.add('number-5', 'img/Score/5.png');
+        PIXI.Loader.shared.add('number-6', 'img/Score/6.png');
+        PIXI.Loader.shared.add('number-7', 'img/Score/7.png');
+        PIXI.Loader.shared.add('number-8', 'img/Score/8.png');
+        PIXI.Loader.shared.add('number-9', 'img/Score/9.png');
+
+        //  Intro
+        PIXI.Loader.shared.add('intro-tie-left', 'img/Intro/tie-left.png');
+        PIXI.Loader.shared.add('intro-tie-right', 'img/Intro/tie-right.png');
+        PIXI.Loader.shared.add('intro-moustache-title', 'img/Intro/moustache-title.png');
+        PIXI.Loader.shared.add('intro-moustache-subtitle', 'img/Intro/moustache-subtitle.png');
+
         //  Title
         PIXI.Loader.shared.add('1player-disabled', 'img/Title/1player-disabled.png');
         PIXI.Loader.shared.add('1player0', 'img/Title/1player0.png');
@@ -129,9 +157,61 @@ class Game {
         PIXI.Loader.shared.add('logo-subtitle', 'img/Title/logo-subtitle.png');
         PIXI.Loader.shared.add('logo-title', 'img/Title/logo-title.png');
 
+        //  Screen Transition
+        PIXI.Loader.shared.add('screen-transition-boxer', 'img/ScreenTransition/screen-transition-boxer.png');
+        PIXI.Loader.shared.add('screen-transition-moustache', 'img/ScreenTransition/screen-transition-moustache.png');
+        PIXI.Loader.shared.add('screen-transition-tie', 'img/ScreenTransition/screen-transition-tie.png');
+
+        //  Score Screen
+        PIXI.Loader.shared.add('score-bg', 'img/ScoreState/score-bg.png');
+        PIXI.Loader.shared.add('number-0-white', 'img/ScoreState/0.png');
+        PIXI.Loader.shared.add('number-1-white', 'img/ScoreState/1.png');
+        PIXI.Loader.shared.add('number-2-white', 'img/ScoreState/2.png');
+        PIXI.Loader.shared.add('number-3-white', 'img/ScoreState/3.png');
+        PIXI.Loader.shared.add('number-4-white', 'img/ScoreState/4.png');
+        PIXI.Loader.shared.add('number-5-white', 'img/ScoreState/5.png');
+        PIXI.Loader.shared.add('number-6-white', 'img/ScoreState/6.png');
+        PIXI.Loader.shared.add('number-7-white', 'img/ScoreState/7.png');
+        PIXI.Loader.shared.add('number-8-white', 'img/ScoreState/8.png');
+        PIXI.Loader.shared.add('number-9-white', 'img/ScoreState/9.png');
+        PIXI.Loader.shared.add('procent-white', 'img/ScoreState/procent.png');
+
+
         //  Level Moustache
-        PIXI.Loader.shared.add('box', 'img/LevelMoustache/box.png');
-        PIXI.Loader.shared.add('face-bg', 'img/LevelMoustache/face-bg.png');
+        PIXI.Loader.shared.add('box-p1-0', 'img/LevelMoustache/box-p1-0.png');
+        PIXI.Loader.shared.add('box-p1-1', 'img/LevelMoustache/box-p1-1.png');
+        PIXI.Loader.shared.add('box-p1-2', 'img/LevelMoustache/box-p1-2.png');
+        PIXI.Loader.shared.add('box-p1-3', 'img/LevelMoustache/box-p1-3.png');
+        PIXI.Loader.shared.add('box-p1-left-0', 'img/LevelMoustache/box-p1-left-0.png');
+        PIXI.Loader.shared.add('box-p1-left-1', 'img/LevelMoustache/box-p1-left-1.png');
+        PIXI.Loader.shared.add('box-p1-right-0', 'img/LevelMoustache/box-p1-right-0.png');
+        PIXI.Loader.shared.add('box-p1-right-1', 'img/LevelMoustache/box-p1-right-1.png');
+        PIXI.Loader.shared.add('box-p2-0', 'img/LevelMoustache/box-p2-0.png');
+        PIXI.Loader.shared.add('box-p2-1', 'img/LevelMoustache/box-p2-1.png');
+        PIXI.Loader.shared.add('box-p2-2', 'img/LevelMoustache/box-p2-2.png');
+        PIXI.Loader.shared.add('box-p2-3', 'img/LevelMoustache/box-p2-3.png');
+        PIXI.Loader.shared.add('box-p2-left-0', 'img/LevelMoustache/box-p2-left-0.png');
+        PIXI.Loader.shared.add('box-p2-left-1', 'img/LevelMoustache/box-p2-left-1.png');
+        PIXI.Loader.shared.add('box-p2-right-0', 'img/LevelMoustache/box-p2-right-0.png');
+        PIXI.Loader.shared.add('box-p2-right-1', 'img/LevelMoustache/box-p2-right-1.png');
+        PIXI.Loader.shared.add('eye-left-0', 'img/LevelMoustache/eye-left-0.png');
+        PIXI.Loader.shared.add('eye-left-1', 'img/LevelMoustache/eye-left-1.png');
+        PIXI.Loader.shared.add('eye-left-2', 'img/LevelMoustache/eye-left-2.png');
+        PIXI.Loader.shared.add('eye-right-0', 'img/LevelMoustache/eye-right-0.png');
+        PIXI.Loader.shared.add('eye-right-1', 'img/LevelMoustache/eye-right-1.png');
+        PIXI.Loader.shared.add('eye-right-2', 'img/LevelMoustache/eye-right-2.png');
+        PIXI.Loader.shared.add('face-bg-1', 'img/LevelMoustache/face-bg-1.png');
+        PIXI.Loader.shared.add('face-bg-2', 'img/LevelMoustache/face-bg-2.png');
+        PIXI.Loader.shared.add('mouth-0', 'img/LevelMoustache/mouth-0.png');
+        PIXI.Loader.shared.add('mouth-1', 'img/LevelMoustache/mouth-1.png');
+        PIXI.Loader.shared.add('mouth-2', 'img/LevelMoustache/mouth-2.png');
+        PIXI.Loader.shared.add('nose-0', 'img/LevelMoustache/nose-0.png');
+        PIXI.Loader.shared.add('nose-0-front', 'img/LevelMoustache/nose-0-front.png');
+        PIXI.Loader.shared.add('nose-1', 'img/LevelMoustache/nose-1.png');
+        PIXI.Loader.shared.add('nose-1-front', 'img/LevelMoustache/nose-1-front.png');
+        PIXI.Loader.shared.add('nose-2', 'img/LevelMoustache/nose-2.png');
+        PIXI.Loader.shared.add('nose-2-front', 'img/LevelMoustache/nose-2-front.png');
+        PIXI.Loader.shared.add('nose-front-base', 'img/LevelMoustache/nose-front-base.png');
     }
 
     static loadingScreenResourcesLoaded(resources: any) {
@@ -153,6 +233,10 @@ class Game {
         const fpsCounter = new FpsCounter();
         Game.app.stage.addChild(fpsCounter);
 
+        Game.background = new Background();
+        Game.sceneTransition = new SceneTransition();
+        Game.intro = new Intro();
+            
         Game.doneLoading = true;
     }
 
@@ -166,7 +250,8 @@ class Game {
             var width = window.innerHeight * ratio;
             var height = window.innerHeight;
 
-        } else {
+        }
+        else {
 
             var width = window.innerWidth;
             var height = window.innerWidth / ratio;
@@ -182,11 +267,23 @@ class Game {
 
         let elapsedTime = Date.now() - Game.lastFrameTime;
 
-        Game.currentStatePlayer1.update(elapsedTime);
+        if (Game.background != undefined && Game.background.visible) {
 
-        if (Game.currentStatePlayer2 != null) {
+            Game.background.update(elapsedTime);
+        }
 
-            Game.currentStatePlayer2.update(elapsedTime);
+        if (Game.intro != undefined && Game.intro.isPlaying) {
+
+            Game.intro.update(elapsedTime);
+        }
+        else {
+
+            Game.currentStatePlayer1.update(elapsedTime);
+
+            if (Game.currentStatePlayer2 != null) {
+
+                Game.currentStatePlayer2.update(elapsedTime);
+            }
         }
 
         Game.keyboard.update();

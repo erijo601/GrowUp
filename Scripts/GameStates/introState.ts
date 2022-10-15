@@ -4,7 +4,9 @@
 
     constructor(xOffset: number, upKey: string, downKey: string, leftKey: string, rightKey: string) {
 
-        super(xOffset, upKey, downKey, leftKey, rightKey);
+        super(1, xOffset, upKey, downKey, leftKey, rightKey);
+
+        this.stateName = "IntroState";
 
         this.background = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-bg"].texture);
         this.background.scale.x = 2;

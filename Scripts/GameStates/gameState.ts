@@ -1,13 +1,17 @@
 ﻿class GameState {
 
+    public stateName: string;
+    public player: number;
     public xOffset: number;
     public upKey: string;
     public downKey: string;
     public leftKey: string;
     public rightKey: string;
 
-    constructor(xOffset: number, upKey: string, downKey: string, leftKey: string, rightKey: string) {
+    constructor(player: number, xOffset: number, upKey: string, downKey: string, leftKey: string, rightKey: string) {
 
+        this.stateName = "GameState";
+        this.player = player;
         this.xOffset = xOffset;
         this.upKey = upKey;
         this.downKey = downKey;

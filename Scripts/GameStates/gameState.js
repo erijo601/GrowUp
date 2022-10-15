@@ -1,5 +1,7 @@
 var GameState = /** @class */ (function () {
-    function GameState(xOffset, upKey, downKey, leftKey, rightKey) {
+    function GameState(player, xOffset, upKey, downKey, leftKey, rightKey) {
+        this.stateName = "GameState";
+        this.player = player;
         this.xOffset = xOffset;
         this.upKey = upKey;
         this.downKey = downKey;

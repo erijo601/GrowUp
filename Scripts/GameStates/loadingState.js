@@ -16,21 +16,8 @@ var __extends = (this && this.__extends) || (function () {
 var LoadingState = /** @class */ (function (_super) {
     __extends(LoadingState, _super);
     function LoadingState() {
-        var _this = _super.call(this, 0, null, null, null, null) || this;
-        var fzTextures = [];
-        for (var n = 0; n < 8; n++) {
-            fzTextures.push(Game.loadingScreenLoader.resources["fz" + n].texture);
-        }
-        fzTextures.push(Game.loadingScreenLoader.resources["fz0"].texture);
-        _this.logoFz = new PIXI.AnimatedSprite(fzTextures);
-        _this.logoFz.loop = false;
-        _this.logoFz.animationSpeed = 0.2;
-        _this.logoFz.x = 730;
-        _this.logoFz.y = 70;
-        var that = _this;
-        _this.logoFz.onComplete = function () {
-            that.logoTimer = setTimeout(function () { that.logoFz.gotoAndPlay(0); }, 2000);
-        };
+        var _this = _super.call(this, 1, 0, null, null, null, null) || this;
+        _this.stateName = "LoadingState";
         var pipeTextures = [];
         pipeTextures.push(Game.loadingScreenLoader.resources["pipe0"].texture);
         pipeTextures.push(Game.loadingScreenLoader.resources["pipe1"].texture);
@@ -45,26 +32,25 @@ var LoadingState = /** @class */ (function (_super) {
         _this.pipe.loop = false;
         _this.pipe.animationSpeed = 0.3;
         _this.pipe.x = 786;
-        _this.pipe.y = 777;
+        _this.pipe.y = 677;
         _this.activeLetters = [];
         _this.onEnter();
         return _this;
     }
     LoadingState.prototype.onEnter = function () {
-        Game.app.stage.addChild(this.logoFz);
         Game.app.stage.addChild(this.pipe);
-        this.logoFz.gotoAndPlay(0);
         this.totalTimeElasped = 0;
         this.timeLeftCurrentFrame = 500;
         this.nextLoadingLetter = 0;
         this.timeTilNextLoadingLetter = 500;
+        this.noMoreLetters = false;
     };
     LoadingState.prototype.onExit = function () {
-        Game.app.stage.removeChild(this.logoFz);
+        this.pipe.visible = false;
+        Game.app.stage.removeChild(this.pipe);
         for (var n = 0; n < this.activeLetters.length; n++) {
             this.activeLetters[n].removeFromStage();
         }
-        clearTimeout(this.logoTimer);
         Game.app.renderer.backgroundColor = 0xffffff;
         Game.currentStatePlayer1 = new TitleState(0, 'w', 's', 'a', 'd');
         Game.currentStatePlayer1.onEnter();
@@ -80,30 +66,55 @@ var LoadingState = /** @class */ (function (_super) {
             for (var n_1 = 0; n_1 < this.activeLetters.length; n_1++) {
                 this.activeLetters[n_1].changeFrame();
             }
-            this.timeLeftCurrentFrame += 500;
+            this.timeLeftCurrentFrame += 400;
         }
         //  Spawn new loading letters
-        if (this.timeTilNextLoadingLetter > 0) {
+        if (this.timeTilNextLoadingLetter > 0 && !this.noMoreLetters) {
             this.timeTilNextLoadingLetter -= elapsedTime;
             if (this.timeTilNextLoadingLetter <= 0) {
                 if (this.nextLoadingLetter == 7) {
                     for (var n_2 = 0; n_2 < this.activeLetters.length; n_2++) {
-                        this.activeLetters[n_2].totalFadeoutTime = 3000;
-                        this.activeLetters[n_2].fadeoutTimeLeft = 3000;
+                        this.activeLetters[n_2].totalFadeoutTime = 1000;
+                        this.activeLetters[n_2].fadeoutTimeLeft = 1000;
                     }
                     this.nextLoadingLetter = 0;
-                    this.timeTilNextLoadingLetter += 3000;
+                    this.timeTilNextLoadingLetter += 1000;
                 }
                 else {
+                    if (this.nextLoadingLetter == 0 && Game.doneLoading) {
+                        this.noMoreLetters = true;
+                    }
                     this.pipe.gotoAndPlay(0);
                     var that_1 = this;
                     this.pipe.onFrameChange = function (currentFrame) {
+                        if (that_1.noMoreLetters) {
+                            //  Långsammare windup-animation för den sista puffen
+                            if (currentFrame == 1) {
+                                that_1.pipe.animationSpeed = 0.2;
+                            }
+                            else if (currentFrame == 2) {
+                                that_1.pipe.animationSpeed = 0.15;
+                            }
+                            else if (currentFrame == 3) {
+                                that_1.pipe.animationSpeed = 0.125;
+                            }
+                            else if (currentFrame == 4) {
+                                that_1.pipe.animationSpeed = 0.1;
+                            }
+                            else {
+                                that_1.pipe.animationSpeed = 0.3;
+                            }
+                        }
                         if (currentFrame == 6) {
-                            //  TODO: Jag ska inte alltid spawna loading letter här. En gång på slutet ska jag spawna press enter letters (alla samtidigt)
-                            that_1.spawnLoadingLetter();
+                            if (that_1.noMoreLetters) {
+                                that_1.spawnPressEnterLetters();
+                            }
+                            else {
+                                that_1.spawnLoadingLetter();
+                            }
                         }
                     };
-                    this.timeTilNextLoadingLetter += 800;
+                    this.timeTilNextLoadingLetter += 650;
                 }
             }
         }
@@ -119,31 +130,45 @@ var LoadingState = /** @class */ (function (_super) {
     LoadingState.prototype.spawnLoadingLetter = function () {
         switch (this.nextLoadingLetter) {
             case 0:
-                this.activeLetters.push(new SmokeLetter('l', 630, 546));
+                this.activeLetters.push(new SmokeLetter('l', 630, 446));
                 break;
             case 1:
-                this.activeLetters.push(new SmokeLetter('o', 722, 547));
+                this.activeLetters.push(new SmokeLetter('o', 722, 447));
                 break;
             case 2:
-                this.activeLetters.push(new SmokeLetter('a', 828, 543));
+                this.activeLetters.push(new SmokeLetter('a', 828, 443));
                 break;
             case 3:
-                this.activeLetters.push(new SmokeLetter('d', 931, 546));
+                this.activeLetters.push(new SmokeLetter('d', 931, 446));
                 break;
             case 4:
-                this.activeLetters.push(new SmokeLetter('i', 1027, 546));
+                this.activeLetters.push(new SmokeLetter('i', 1010, 446));
                 break;
             case 5:
-                this.activeLetters.push(new SmokeLetter('n', 1100, 545));
+                this.activeLetters.push(new SmokeLetter('n', 1100, 445));
                 break;
             case 6:
-                this.activeLetters.push(new SmokeLetter('g', 1202, 550));
+                this.activeLetters.push(new SmokeLetter('g', 1202, 445));
                 break;
         }
         this.nextLoadingLetter++;
         if (this.nextLoadingLetter > 7) {
             this.nextLoadingLetter = 7;
         }
+    };
+    LoadingState.prototype.spawnPressEnterLetters = function () {
+        //  TODO P and R
+        this.activeLetters.push(new SmokeLetter('p', 440, 446));
+        this.activeLetters.push(new SmokeLetter('r', 535, 446));
+        this.activeLetters.push(new SmokeLetter('e', 630, 446));
+        this.activeLetters.push(new SmokeLetter('s', 722, 447));
+        this.activeLetters.push(new SmokeLetter('s', 828, 443));
+        this.activeLetters.push(new SmokeLetter('e', 1010, 446));
+        this.activeLetters.push(new SmokeLetter('n', 1100, 445));
+        this.activeLetters.push(new SmokeLetter('t', 1202, 445));
+        this.activeLetters.push(new SmokeLetter('e', 1295, 445));
+        this.activeLetters.push(new SmokeLetter('r', 1390, 445));
+        //  TODO E and R
     };
     return LoadingState;
 }(GameState));

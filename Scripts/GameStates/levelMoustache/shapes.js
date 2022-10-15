@@ -29,9 +29,25 @@ var Shape = /** @class */ (function () {
         }
         return newPoints;
     };
-    Shape.prototype.setPos = function (newPoints) {
+    Shape.prototype.onExit = function () {
+        for (var n = 0; n < this.sprites.length; n++) {
+            Game.app.stage.removeChild(this.sprites[n]);
+        }
+    };
+    Shape.prototype.addSprites = function (player) {
+        for (var _i = 0, _a = this.points; _i < _a.length; _i++) {
+            var point = _a[_i];
+            var img = "box-p" + player + "-" + MathHelper.randomInt(0, 3);
+            this.sprites.push(new PIXI.Sprite(PIXI.Loader.shared.resources[img].texture));
+        }
+        this.updateSprites(player, 1);
+        for (var n = 0; n < this.sprites.length; n++) {
+            Game.app.stage.addChild(this.sprites[n]);
+        }
+    };
+    Shape.prototype.setPos = function (player, newPoints, partTimeLeftCurrentRow) {
         this.points = newPoints;
-        this.updateSprites();
+        this.updateSprites(player, partTimeLeftCurrentRow);
     };
     // return a set of points showing where this shape would be if we dropped it one
     Shape.prototype.drop = function () {
@@ -50,7 +66,7 @@ var Shape = /** @class */ (function () {
     Shape.prototype.rotate = function (clockwise) {
         throw new Error("This method is abstract");
     };
-    Shape.prototype.updateSprites = function () {
+    Shape.prototype.updateSprites = function (player, partTimeLeftCurrentRow) {
         for (var i = 0; i < this.points.length; i++) {
             var sprite = this.sprites[i];
             var point = this.points[i];
@@ -58,10 +74,41 @@ var Shape = /** @class */ (function () {
             if (row < 0) {
                 row = 0;
             }
-            sprite.x = this.faceBgx + Grid.rowInfos[row].x + point.x * Grid.rowInfos[row].w;
-            sprite.y = this.faceBgy + Grid.rowInfos[row].y;
-            sprite.scale.x = 0.5 * Grid.rowInfos[row].w / 33.9; //  Nedersta raden ger scale = 0.5
+            var deltax = void 0;
+            var deltay = void 0;
+            if (row == 0) {
+                deltax = 0;
+                deltay = -19 * partTimeLeftCurrentRow;
+            }
+            else if (row == 20) {
+                //  Detta är när raden åker ur näsan
+                deltax = ((Grid.rowInfos[row - 1].x + point.x * Grid.rowInfos[row - 1].w) -
+                    (Grid.rowInfos[row].x + point.x * Grid.rowInfos[row].w)) * EasingCurves.easeInExpo(partTimeLeftCurrentRow);
+                deltay = (Grid.rowInfos[row - 1].y - Grid.rowInfos[row].y) * EasingCurves.easeInExpo(partTimeLeftCurrentRow);
+            }
+            else {
+                deltax = ((Grid.rowInfos[row - 1].x + point.x * Grid.rowInfos[row - 1].w) -
+                    (Grid.rowInfos[row].x + point.x * Grid.rowInfos[row].w)) * partTimeLeftCurrentRow;
+                deltay = (Grid.rowInfos[row - 1].y - Grid.rowInfos[row].y) * partTimeLeftCurrentRow;
+            }
+            sprite.x = this.faceBgx + Grid.rowInfos[row].x + point.x * Grid.rowInfos[row].w + deltax;
+            sprite.y = this.faceBgy + Grid.rowInfos[row].y + deltay;
+            sprite.scale.x = 0.5 * Grid.rowInfos[row].w / 33.9; //  Nedersta raden (i gameMatrix - inte moustache) ger scale = 0.5
             sprite.scale.y = 0.5;
+            if (partTimeLeftCurrentRow == 1) {
+                if (row == 20 && point.x == 0) {
+                    var img = "box-p" + player + "-left-" + MathHelper.randomInt(0, 1);
+                    sprite.texture = PIXI.Loader.shared.resources[img].texture;
+                }
+                else if (row == 20 && point.x == 9) {
+                    var img = "box-p" + player + "-right-" + MathHelper.randomInt(0, 1);
+                    sprite.texture = PIXI.Loader.shared.resources[img].texture;
+                }
+                else if (row == 26 && (point.x == 0 || point.x == 9)) {
+                    var img = "box-p" + player + "-" + MathHelper.randomInt(0, 3);
+                    sprite.texture = PIXI.Loader.shared.resources[img].texture;
+                }
+            }
         }
     };
     return Shape;
@@ -97,14 +144,6 @@ var LShape = /** @class */ (function (_super) {
         _this.points.push(new Point(x, y)); // 1 is our base point
         _this.points.push(new Point(x, y + 1));
         _this.points.push(new Point(x + (leftHanded ? -1 : 1), y + 1));
-        _this.sprites.push(new PIXI.Sprite(PIXI.Loader.shared.resources["box"].texture));
-        _this.sprites.push(new PIXI.Sprite(PIXI.Loader.shared.resources["box"].texture));
-        _this.sprites.push(new PIXI.Sprite(PIXI.Loader.shared.resources["box"].texture));
-        _this.sprites.push(new PIXI.Sprite(PIXI.Loader.shared.resources["box"].texture));
-        _this.updateSprites();
-        for (var n = 0; n < _this.sprites.length; n++) {
-            Game.app.stage.addChild(_this.sprites[n]);
-        }
         return _this;
     }
     LShape.prototype.rotate = function (clockwise) {
@@ -254,5 +293,19 @@ var TShape = /** @class */ (function (_super) {
         return newPoints;
     };
     return TShape;
+}(Shape));
+var DotShape = /** @class */ (function (_super) {
+    __extends(DotShape, _super);
+    //  Används bara för att spawna lite startblock
+    function DotShape(faceBgx, faceBgy, x, y) {
+        var _this = _super.call(this, faceBgx, faceBgy) || this;
+        _this.points = [];
+        _this.points.push(new Point(x, y));
+        return _this;
+    }
+    DotShape.prototype.rotate = function (clockwise) {
+        return this.points;
+    };
+    return DotShape;
 }(Shape));
 //# sourceMappingURL=shapes.js.map
