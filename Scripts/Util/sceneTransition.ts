@@ -48,7 +48,7 @@
             sprite.zIndex = 10000 + n;
             sprite.x = 0;
             sprite.y = 0;
-            sprite.tint = (0.5 + 0.5 * Math.random()) * 0xFFFFFF;
+            sprite.tint = (0.2 + 0.5 * Math.random()) * 0xFFFFFF;
 
             this.tieListPos.push(new Point(0, 0));
 
@@ -66,15 +66,15 @@
 
         let types = [];
 
-        //if (TransitionType.Moustache != this.lastTransitionType) {
+        if (TransitionType.Moustache != this.lastTransitionType) {
 
-        //    types.push(TransitionType.Moustache);
-        //}
+            types.push(TransitionType.Moustache);
+        }
 
-        //if (TransitionType.Boxer != this.lastTransitionType) {
+        if (TransitionType.Boxer != this.lastTransitionType) {
 
-        //    types.push(TransitionType.Boxer);
-        //}
+            types.push(TransitionType.Boxer);
+        }
 
         if (TransitionType.Tie != this.lastTransitionType) {
 

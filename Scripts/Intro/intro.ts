@@ -15,6 +15,9 @@
     private titleMoustache: PIXI.Sprite;
     private subtitleMoustache: PIXI.Sprite;
 
+    private titleTie: PIXI.Sprite;
+    private subtitleTie: PIXI.Sprite;
+
     private timeMoveInOut: number = 750;
     private timeSlowMotion: number = 3000;
 
@@ -22,14 +25,21 @@
 
         this.tieLeft = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-tie-left"].texture);
         this.tieRight = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-tie-right"].texture);
+
         this.titleMoustache = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-moustache-title"].texture);
         this.subtitleMoustache = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-moustache-subtitle"].texture);
+
+        this.titleTie = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-tie-title"].texture);
+        this.subtitleTie = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-tie-subtitle"].texture);
 
         this.tieRight.y = 377;
         this.tieLeft.y = 491;
 
         this.titleMoustache.y = 442;
         this.subtitleMoustache.y = 592;
+
+        this.titleTie.y = 442;
+        this.subtitleTie.y = 592;
 
         this.isPlaying = false;
     }
@@ -38,6 +48,14 @@
 
         this.currentTitle = this.titleMoustache;
         this.currentSubtitle = this.subtitleMoustache;
+
+        this.start();
+    }
+
+    public startLevelTie() {
+
+        this.currentTitle = this.titleTie;
+        this.currentSubtitle = this.subtitleTie;
 
         this.start();
     }
@@ -63,14 +81,14 @@
 
         this.tieLeft.zIndex = 1000;
         this.tieRight.zIndex = 1001;
-        this.subtitleMoustache.zIndex = 1002;
-        this.titleMoustache.zIndex = 1003;
+        this.currentSubtitle.zIndex = 1002;
+        this.currentTitle.zIndex = 1003;
 
         Game.app.stage.addChild(this.tieLeft);
-        Game.app.stage.addChild(this.subtitleMoustache);
+        Game.app.stage.addChild(this.currentSubtitle);
 
         Game.app.stage.addChild(this.tieRight);
-        Game.app.stage.addChild(this.titleMoustache);
+        Game.app.stage.addChild(this.currentTitle);
     }
 
     public update(elapsedTime: number): void {
@@ -131,10 +149,10 @@
             this.isPlaying = false;
 
             Game.app.stage.removeChild(this.tieLeft);
-            Game.app.stage.removeChild(this.subtitleMoustache);
+            Game.app.stage.removeChild(this.currentSubtitle);
 
             Game.app.stage.removeChild(this.tieRight);
-            Game.app.stage.removeChild(this.titleMoustache);
+            Game.app.stage.removeChild(this.currentTitle);
         }        
     }    
 }

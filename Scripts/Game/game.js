@@ -6,7 +6,7 @@ var Game = /** @class */ (function () {
         Game.init();
     }
     Game.init = function () {
-        PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST; //  Pixelated
+        PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
         Game.app = new PIXI.Application({
             resolution: devicePixelRatio,
             backgroundColor: 0x000000
@@ -91,6 +91,8 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('intro-tie-right', 'img/Intro/tie-right.png');
         PIXI.Loader.shared.add('intro-moustache-title', 'img/Intro/moustache-title.png');
         PIXI.Loader.shared.add('intro-moustache-subtitle', 'img/Intro/moustache-subtitle.png');
+        PIXI.Loader.shared.add('intro-tie-title', 'img/Intro/tie-title.png');
+        PIXI.Loader.shared.add('intro-tie-subtitle', 'img/Intro/tie-subtitle.png');
         //  Title
         PIXI.Loader.shared.add('1player-disabled', 'img/Title/1player-disabled.png');
         PIXI.Loader.shared.add('1player0', 'img/Title/1player0.png');
@@ -98,7 +100,10 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('2players-disabled', 'img/Title/2players-disabled.png');
         PIXI.Loader.shared.add('2players0', 'img/Title/2players0.png');
         PIXI.Loader.shared.add('2players1', 'img/Title/2players1.png');
+        PIXI.Loader.shared.add('enter', 'img/Title/enter.png');
         PIXI.Loader.shared.add('gamemode-background', 'img/Title/gamemode-background.png');
+        PIXI.Loader.shared.add('instructions-p1', 'img/Title/instructions-p1.png');
+        PIXI.Loader.shared.add('instructions-p2', 'img/Title/instructions-p2.png');
         PIXI.Loader.shared.add('logo-background', 'img/Title/logo-background.png');
         PIXI.Loader.shared.add('logo-pipe', 'img/Title/logo-pipe.png');
         PIXI.Loader.shared.add('logo-subtitle', 'img/Title/logo-subtitle.png');
@@ -155,6 +160,9 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('nose-2', 'img/LevelMoustache/nose-2.png');
         PIXI.Loader.shared.add('nose-2-front', 'img/LevelMoustache/nose-2-front.png');
         PIXI.Loader.shared.add('nose-front-base', 'img/LevelMoustache/nose-front-base.png');
+        //  Level Tie
+        PIXI.Loader.shared.add('level-tie-background', 'img/LevelTie/level-tie-background.png');
+        PIXI.Loader.shared.add('tie-rope', 'img/LevelTie/tie-rope.png');
     };
     Game.loadingScreenResourcesLoaded = function (resources) {
         Game.currentStatePlayer1 = new LoadingState();

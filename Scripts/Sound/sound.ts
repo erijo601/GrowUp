@@ -5,6 +5,7 @@
     public titleSwoosh: Howl;
     public musicScoreScreen: Howl;
     public musicMoustache: Howl;
+    public musicTie: Howl;
     public scoreWheel: Howl;
 
     constructor() {
@@ -54,6 +55,13 @@
 
         this.musicMoustache = new Howl({
             src: ['sound/music-moustache.mp3'],
+            preload: true,
+            volume: 1.0,
+            loop: false
+        });
+
+        this.musicTie = new Howl({
+            src: ['sound/music-tie.mp3'],
             preload: true,
             volume: 1.0,
             loop: false

@@ -35,6 +35,8 @@
     <Content Include="img\Intro\moustache-title.png" />
     <Content Include="img\Intro\tie-left.png" />
     <Content Include="img\Intro\tie-right.png" />
+    <Content Include="img\Intro\tie-subtitle.png" />
+    <Content Include="img\Intro\tie-title.png" />
     <Content Include="img\LevelMoustache\box-p1-0.png" />
     <Content Include="img\LevelMoustache\box-p1-1.png" />
     <Content Include="img\LevelMoustache\box-p1-2.png" />
@@ -69,6 +71,8 @@
     <Content Include="img\LevelMoustache\nose-2-front.png" />
     <Content Include="img\LevelMoustache\nose-2.png" />
     <Content Include="img\LevelMoustache\nose-front-base.png" />
+    <Content Include="img\LevelTie\level-tie-background.png" />
+    <Content Include="img\LevelTie\tie-rope.png" />
     <Content Include="img\Loading\cloud-alt.png" />
     <Content Include="img\Loading\cloud.png" />
     <Content Include="img\Loading\letter-a-alt.png" />
@@ -133,7 +137,10 @@
     <Content Include="img\Title\2players-disabled.png" />
     <Content Include="img\Title\2players0.png" />
     <Content Include="img\Title\2players1.png" />
+    <Content Include="img\Title\enter.png" />
     <Content Include="img\Title\gamemode-background.png" />
+    <Content Include="img\Title\instructions-p1.png" />
+    <Content Include="img\Title\instructions-p2.png" />
     <Content Include="img\Title\logo-background.png" />
     <Content Include="img\Title\logo-pipe.png" />
     <Content Include="img\Title\logo-subtitle.png" />
@@ -141,6 +148,7 @@
     <Content Include="Scripts\Howler\howler.min.js" />
     <Content Include="Scripts\Pixi.js\pixi.min.js" />
     <Content Include="sound\music-moustache.mp3" />
+    <Content Include="sound\music-tie.mp3" />
     <Content Include="sound\score-wheel.mp3" />
     <Content Include="sound\music-score.mp3" />
     <Content Include="sound\title-loop.mp3" />
@@ -164,6 +172,7 @@
     <TypeScriptCompile Include="Scripts\Background\background.ts" />
     <TypeScriptCompile Include="Scripts\Filters\RGBSplitFilter.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\gameState.ts" />
+    <TypeScriptCompile Include="Scripts\GameStates\levelTie.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\scoreState.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\levelMoustache\grid.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\levelMoustache\point.ts" />

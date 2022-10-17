@@ -517,6 +517,7 @@
 
 enum Level {
     Moustache,
+    Tie,
     Hat,
     Office,
     Whiskey

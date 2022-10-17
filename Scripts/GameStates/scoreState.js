@@ -345,8 +345,9 @@ var ScoreState = /** @class */ (function (_super) {
 var Level;
 (function (Level) {
     Level[Level["Moustache"] = 0] = "Moustache";
-    Level[Level["Hat"] = 1] = "Hat";
-    Level[Level["Office"] = 2] = "Office";
-    Level[Level["Whiskey"] = 3] = "Whiskey";
+    Level[Level["Tie"] = 1] = "Tie";
+    Level[Level["Hat"] = 2] = "Hat";
+    Level[Level["Office"] = 3] = "Office";
+    Level[Level["Whiskey"] = 4] = "Whiskey";
 })(Level || (Level = {}));
 //# sourceMappingURL=scoreState.js.map

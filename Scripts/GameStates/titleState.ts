@@ -11,9 +11,13 @@
     public twoPlayers0: PIXI.Sprite;
     public twoPlayers1: PIXI.Sprite;
     public twoPlayersDisabled: PIXI.Sprite;
+    public instructions1: PIXI.Sprite;
+    public instructions2: PIXI.Sprite;
+    public pressEnter: PIXI.Sprite;
 
     public timeLeftCurrentFrame: number;
     public currentFrame: number;
+    public instructionsScaleTimer: number;
 
     public totalTimeElasped: number;
 
@@ -75,6 +79,28 @@
         this.twoPlayersDisabled.x = 987;
         this.twoPlayersDisabled.y = 321;
         this.twoPlayersDisabled.visible = true;
+
+        this.instructions1 = new PIXI.Sprite(PIXI.Loader.shared.resources["instructions-p1"].texture);
+        this.instructions1.x = 152+175;
+        this.instructions1.y = 38+131;
+        this.instructions1.pivot.x = this.instructions1.width / 2;
+        this.instructions1.pivot.y = this.instructions1.height / 2;
+        this.instructions1.visible = false;
+
+        this.instructions2 = new PIXI.Sprite(PIXI.Loader.shared.resources["instructions-p2"].texture);
+        this.instructions2.x = 1393+175;
+        this.instructions2.y = 38+128;
+        this.instructions2.pivot.x = this.instructions2.width / 2;
+        this.instructions2.pivot.y = this.instructions2.height / 2;
+        this.instructions2.visible = false;
+
+        this.pressEnter = new PIXI.Sprite(PIXI.Loader.shared.resources["enter"].texture);
+        this.pressEnter.x = 858+80;
+        this.pressEnter.y = 842+100;
+        this.pressEnter.pivot.x = this.pressEnter.width / 2;
+        this.pressEnter.pivot.y = this.pressEnter.height / 2;
+        this.pressEnter.zIndex = 1000;
+        this.pressEnter.visible = false;
     }
 
     public onEnter(): void {
@@ -102,11 +128,19 @@
         Game.app.stage.addChild(this.logoPipe);
         Game.app.stage.addChild(this.logoTitle);
         Game.app.stage.addChild(this.logoSubtitle);
+        Game.app.stage.addChild(this.instructions1);
+        Game.app.stage.addChild(this.instructions2);
+        Game.app.stage.addChild(this.pressEnter);
 
         Game.twoPlayerGame = false;
         this.timeLeftCurrentFrame = 100;
         this.currentFrame = 0;
         this.totalTimeElasped = 0;
+
+        this.instructionsScaleTimer = 0;
+        this.instructions1.visible = false;
+        this.instructions2.visible = false;
+        this.pressEnter.visible = false;
 
         Game.soundPlayer.titleIntro.play();
     }
@@ -124,6 +158,9 @@
         Game.app.stage.removeChild(this.logoPipe);
         Game.app.stage.removeChild(this.logoSubtitle);
         Game.app.stage.removeChild(this.logoTitle);
+        Game.app.stage.removeChild(this.instructions1);
+        Game.app.stage.removeChild(this.instructions2);
+        Game.app.stage.removeChild(this.pressEnter);
 
         if (Game.twoPlayerGame) {
 
@@ -133,13 +170,6 @@
             Game.currentStatePlayer1 = new LevelMoustache(1, 0, 'w', 's', 'a', 'd');
             Game.currentStatePlayer2 = new LevelMoustache(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
 
-            //  Test
-            //Game.currentStatePlayer1 = Game.scoreStatePlayer1;
-            //Game.currentStatePlayer2 = Game.scoreStatePlayer2;
-            //Game.scoreStatePlayer1.beforeOnEnter(Level.Moustache, 50);
-            //Game.scoreStatePlayer2.beforeOnEnter(Level.Moustache, 91);
-            //  Slut test
-
             Game.currentStatePlayer1.onEnter();
             Game.currentStatePlayer2.onEnter();
         }
@@ -147,12 +177,10 @@
 
             Game.scoreStatePlayer1 = new ScoreState(1, 480, 'w', 's', 'a', 'd');
 
-            Game.currentStatePlayer1 = new LevelMoustache(1, 480, 'w', 's', 'a', 'd');
+            //Game.currentStatePlayer1 = new LevelMoustache(1, 480, 'w', 's', 'a', 'd');
 
             //  Test
-            Game.currentStatePlayer1 = Game.scoreStatePlayer1;
-            Game.scoreStatePlayer1.beforeOnEnter(Level.Moustache, 51);
-            //  Slut test
+            Game.currentStatePlayer1 = new LevelTie(1, 480, 'w', 's', 'a', 'd');
 
             Game.currentStatePlayer1.onEnter();
         }
@@ -237,8 +265,6 @@
         }
         else if (this.totalTimeElasped < 3300) {
 
-            this.totalTimeElasped += elapsedTime;
-
             let part = (this.totalTimeElasped - 3000) / (3300 - 3000);
 
             this.logoSubtitle.alpha = part < 0.5 ? part * 0.5 : 1;
@@ -267,7 +293,7 @@
 
             this.logoBackground.alpha = 1;
         }
-        else {
+        else if (this.totalTimeElasped < 4300) {
 
             this.gamemodeBackground.alpha = 1;
             this.gamemodeBackground.alpha = 1;
@@ -291,6 +317,30 @@
             this.logoSubtitle.alpha = 1;
             this.logoBackground.alpha = 1;
         }
+        else if (this.totalTimeElasped < 4800) {
+
+            this.instructions1.visible = true;
+            this.instructions1.alpha = (this.totalTimeElasped - 4300) / 500;
+
+            this.instructions2.visible = true;
+            this.instructions2.alpha = (this.totalTimeElasped - 4300) / 500;
+        }
+
+        if (this.totalTimeElasped > 6000 && this.totalTimeElasped < 6300) {
+
+            this.pressEnter.visible = true;
+            this.pressEnter.alpha = (this.totalTimeElasped - 6000) / 300;
+        }
+        else if (this.totalTimeElasped > 7300) {
+
+            this.pressEnter.alpha = 1;
+        }
+
+        if (this.totalTimeElasped < 8000) {
+
+            this.totalTimeElasped += elapsedTime;
+        }
+
 
         this.timeLeftCurrentFrame -= elapsedTime;
 
@@ -322,6 +372,22 @@
             }
         }
 
+        this.instructionsScaleTimer -= elapsedTime;
+
+        if (this.instructionsScaleTimer <= 0) {
+
+            this.instructionsScaleTimer += 2000;            
+        }
+
+        this.instructions1.scale.x = 1 - 0.02 * Math.sin(2 * Math.PI * this.instructionsScaleTimer / 2000);
+        this.instructions1.scale.y = 1 - 0.02 * Math.sin(2 * Math.PI * this.instructionsScaleTimer / 2000);
+
+        this.instructions2.scale.x = 1 - 0.02 * Math.sin(2 * Math.PI * this.instructionsScaleTimer / 2000);
+        this.instructions2.scale.y = 1 - 0.02 * Math.sin(2 * Math.PI * this.instructionsScaleTimer / 2000);
+
+        this.pressEnter.scale.x = 1 - 0.03 * Math.cos(2 * Math.PI * this.instructionsScaleTimer / 2000);
+        this.pressEnter.scale.y = 1 - 0.03 * Math.cos(2 * Math.PI * this.instructionsScaleTimer / 2000);
+
         // elapsedTime in ms
 
         if (Game.keyboard.current.isPressed('a') && !Game.keyboard.last.isPressed('a') && Game.twoPlayerGame == true) {
@@ -333,7 +399,25 @@
             Game.soundPlayer.titleSwoosh.play();
         }
 
+        if (Game.keyboard.current.isPressed('arrowleft') && !Game.keyboard.last.isPressed('arrowleft') && Game.twoPlayerGame == true) {
+
+            Game.twoPlayerGame = false;
+            this.onePlayerDisabled.visible = false;
+            this.twoPlayersDisabled.visible = true;
+
+            Game.soundPlayer.titleSwoosh.play();
+        }
+
         if (Game.keyboard.current.isPressed('d') && !Game.keyboard.last.isPressed('d') && Game.twoPlayerGame == false) {
+
+            Game.twoPlayerGame = true;
+            this.onePlayerDisabled.visible = true;
+            this.twoPlayersDisabled.visible = false;
+
+            Game.soundPlayer.titleSwoosh.play();
+        }
+
+        if (Game.keyboard.current.isPressed('arrowright') && !Game.keyboard.last.isPressed('arrowright') && Game.twoPlayerGame == false) {
 
             Game.twoPlayerGame = true;
             this.onePlayerDisabled.visible = true;

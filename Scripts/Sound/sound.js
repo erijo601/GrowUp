@@ -40,6 +40,12 @@ var SoundPlayer = /** @class */ (function () {
             volume: 1.0,
             loop: false
         });
+        this.musicTie = new Howl({
+            src: ['sound/music-tie.mp3'],
+            preload: true,
+            volume: 1.0,
+            loop: false
+        });
         this.scoreWheel = new Howl({
             src: ['sound/score-wheel.mp3'],
             preload: true,

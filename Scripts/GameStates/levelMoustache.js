@@ -253,7 +253,7 @@ var LevelMoustache = /** @class */ (function (_super) {
             Game.scoreStatePlayer1.beforeOnEnter(Level.Moustache, this.scoreCounter.getScore());
             Game.currentStatePlayer1 = Game.scoreStatePlayer1;
             Game.currentStatePlayer1.onEnter();
-            if (Game.twoPlayerGame && Game.currentStatePlayer2.stateName == "LevelMoustache") {
+            if (Game.twoPlayerGame && Game.currentStatePlayer2.stateName == this.stateName) {
                 Game.currentStatePlayer2.onExit();
             }
         }
@@ -261,7 +261,7 @@ var LevelMoustache = /** @class */ (function (_super) {
             Game.scoreStatePlayer2.beforeOnEnter(Level.Moustache, this.scoreCounter.getScore());
             Game.currentStatePlayer2 = Game.scoreStatePlayer2;
             Game.currentStatePlayer2.onEnter();
-            if (Game.twoPlayerGame && Game.currentStatePlayer1.stateName == "LevelMoustache") {
+            if (Game.twoPlayerGame && Game.currentStatePlayer1.stateName == this.stateName) {
                 Game.currentStatePlayer1.onExit();
             }
         }
