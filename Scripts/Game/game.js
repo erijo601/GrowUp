@@ -161,8 +161,16 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('nose-2-front', 'img/LevelMoustache/nose-2-front.png');
         PIXI.Loader.shared.add('nose-front-base', 'img/LevelMoustache/nose-front-base.png');
         //  Level Tie
+        PIXI.Loader.shared.add('tie-arm', 'img/LevelTie/arm.png');
+        PIXI.Loader.shared.add('tie-hand0', 'img/LevelTie/hand0.png');
+        PIXI.Loader.shared.add('tie-hand1', 'img/LevelTie/hand1.png');
+        PIXI.Loader.shared.add('tie-hand2', 'img/LevelTie/hand2.png');
+        PIXI.Loader.shared.add('tie-hand3', 'img/LevelTie/hand3.png');
         PIXI.Loader.shared.add('level-tie-background', 'img/LevelTie/level-tie-background.png');
+        PIXI.Loader.shared.add('level-tie-neck', 'img/LevelTie/level-tie-neck.png');
         PIXI.Loader.shared.add('tie-rope', 'img/LevelTie/tie-rope.png');
+        PIXI.Loader.shared.add('tie-loop-back', 'img/LevelTie/tie-loop-back.png');
+        PIXI.Loader.shared.add('tie-loop-front', 'img/LevelTie/tie-loop-front.png');
     };
     Game.loadingScreenResourcesLoaded = function (resources) {
         Game.currentStatePlayer1 = new LoadingState();

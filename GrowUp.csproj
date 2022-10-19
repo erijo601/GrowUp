@@ -71,7 +71,15 @@
     <Content Include="img\LevelMoustache\nose-2-front.png" />
     <Content Include="img\LevelMoustache\nose-2.png" />
     <Content Include="img\LevelMoustache\nose-front-base.png" />
+    <Content Include="img\LevelTie\arm.png" />
+    <Content Include="img\LevelTie\hand0.png" />
+    <Content Include="img\LevelTie\hand1.png" />
+    <Content Include="img\LevelTie\hand2.png" />
+    <Content Include="img\LevelTie\hand3.png" />
     <Content Include="img\LevelTie\level-tie-background.png" />
+    <Content Include="img\LevelTie\level-tie-neck.png" />
+    <Content Include="img\LevelTie\tie-loop-back.png" />
+    <Content Include="img\LevelTie\tie-loop-front.png" />
     <Content Include="img\LevelTie\tie-rope.png" />
     <Content Include="img\Loading\cloud-alt.png" />
     <Content Include="img\Loading\cloud.png" />
