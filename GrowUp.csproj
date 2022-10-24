@@ -78,6 +78,18 @@
     <Content Include="img\LevelTie\hand3.png" />
     <Content Include="img\LevelTie\level-tie-background.png" />
     <Content Include="img\LevelTie\level-tie-neck.png" />
+    <Content Include="img\LevelTie\p1-mini-strangle0.png" />
+    <Content Include="img\LevelTie\p1-mini-strangle1.png" />
+    <Content Include="img\LevelTie\p1-mini-strangle2.png" />
+    <Content Include="img\LevelTie\p1-mini-tie0.png" />
+    <Content Include="img\LevelTie\p1-mini-tie1.png" />
+    <Content Include="img\LevelTie\p1-mini-tie2.png" />
+    <Content Include="img\LevelTie\p2-mini-strangle0.png" />
+    <Content Include="img\LevelTie\p2-mini-strangle1.png" />
+    <Content Include="img\LevelTie\p2-mini-strangle2.png" />
+    <Content Include="img\LevelTie\p2-mini-tie0.png" />
+    <Content Include="img\LevelTie\p2-mini-tie1.png" />
+    <Content Include="img\LevelTie\p2-mini-tie2.png" />
     <Content Include="img\LevelTie\tie-loop-back.png" />
     <Content Include="img\LevelTie\tie-loop-front.png" />
     <Content Include="img\LevelTie\tie-rope.png" />
@@ -192,6 +204,7 @@
     <TypeScriptCompile Include="Scripts\GameStates\introState.ts" />
     <TypeScriptCompile Include="Scripts\Intro\intro.ts" />
     <TypeScriptCompile Include="Scripts\Sound\sound.ts" />
+    <TypeScriptCompile Include="Scripts\Util\colorHelper.ts" />
     <TypeScriptCompile Include="Scripts\Util\easingCurves.ts" />
     <TypeScriptCompile Include="Scripts\Util\sceneTransition.ts" />
     <TypeScriptCompile Include="Scripts\Util\scoreCounter.ts" />

@@ -17,14 +17,15 @@ var LevelTie = /** @class */ (function (_super) {
     __extends(LevelTie, _super);
     function LevelTie(player, xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, player, xOffset, upKey, downKey, leftKey, rightKey) || this;
+        _this.gameEndsOnTime = 93000 - 1200; //  93000 = sångens längd, 1200 = transition
         _this.loopWidth = 310 * 1.2;
         _this.stateName = "LevelTie";
         _this.scoreCounter = new ScoreCounter(xOffset, 4, 16, 0);
         _this.background = new PIXI.Sprite(PIXI.Loader.shared.resources["level-tie-background"].texture);
-        _this.background.x = xOffset;
+        _this.background.x = xOffset + 100;
         _this.background.y = 0;
         _this.neck = new PIXI.Sprite(PIXI.Loader.shared.resources["level-tie-neck"].texture);
-        _this.neck.x = xOffset + 180;
+        _this.neck.x = xOffset + 180 + 100;
         _this.neck.y = 0;
         _this.tieLoop = new PIXI.Sprite(PIXI.Loader.shared.resources["tie-loop-front"].texture);
         _this.tieLoop.pivot.x = 190;
@@ -37,7 +38,7 @@ var LevelTie = /** @class */ (function (_super) {
         _this.tieLoopBack.scale.x = 1.2;
         _this.tieLoopBack.zIndex = 9;
         _this.points = [];
-        _this.baseX = xOffset + 388;
+        _this.baseX = xOffset + 388 + 100;
         var baseY = 370;
         var steps = 20;
         for (var n = 0; n < steps; n++) {
@@ -61,13 +62,21 @@ var LevelTie = /** @class */ (function (_super) {
         _this.timeLeftHandFrame = 150;
         _this.handFrame = 0;
         _this.handFrameDirection = 1;
+        _this.timeLeftMiniFrame = 150;
+        _this.miniFrame = 0;
+        _this.miniFrameDirection = 1;
         _this.hand = new PIXI.Sprite(PIXI.Loader.shared.resources["tie-hand" + _this.handFrame].texture);
         _this.hand.zIndex = 12;
         _this.hand.x = _this.arm.x + 440;
         _this.hand.y = _this.arm.y;
+        _this.mini = new PIXI.Sprite(PIXI.Loader.shared.resources["p" + _this.player + "-mini-tie" + _this.miniFrame].texture);
+        _this.mini.zIndex = 13;
+        _this.mini.x = _this.xOffset + 130;
+        _this.mini.y = 170;
         if (player == 2) {
             _this.arm.scale.x = -1; //  Mirror
             _this.hand.scale.x = -1;
+            _this.mini.x = 1920 - 549 + 150;
         }
         _this.updateHand(0);
         return _this;
@@ -81,8 +90,22 @@ var LevelTie = /** @class */ (function (_super) {
         Game.app.stage.addChild(this.tieLoop);
         Game.app.stage.addChild(this.arm);
         Game.app.stage.addChild(this.hand);
+        Game.app.stage.addChild(this.mini);
         this.totalElapsedTime = 0;
+        this.totalTimeScore = 0;
+        this.stranglePart = 0;
+        this.isStrangle = false;
         this.timeLeftHandFrame = 150;
+        this.timeLeftMiniFrame = 100;
+        this.handFrame = 0;
+        this.miniFrame = 0;
+        //  Undvik synk mellan p1 och p2
+        if (this.player == 2) {
+            this.timeLeftHandFrame = 50;
+            this.timeLeftMiniFrame = 75;
+            this.miniFrame = 1;
+            this.handFrame = 2;
+        }
         Game.sceneTransition.startShrinking();
         Game.soundPlayer.musicTie.play();
     };
@@ -94,6 +117,7 @@ var LevelTie = /** @class */ (function (_super) {
         Game.app.stage.removeChild(this.rope);
         Game.app.stage.removeChild(this.hand);
         Game.app.stage.removeChild(this.arm);
+        Game.app.stage.removeChild(this.mini);
         this.scoreCounter.onExit();
         Game.soundPlayer.musicTie.stop();
         if (this.player == 1) {
@@ -118,7 +142,6 @@ var LevelTie = /** @class */ (function (_super) {
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
             Game.sceneTransition.update(elapsedTime);
             if (Game.sceneTransition.isDone()) {
-                //Game.soundPlayer.musicTie.play();
                 Game.intro.startLevelTie();
             }
             return;
@@ -133,6 +156,7 @@ var LevelTie = /** @class */ (function (_super) {
         this.updateRope(elapsedTime);
         this.checkCollision(elapsedTime);
         this.updateHand(elapsedTime);
+        this.updateMini(elapsedTime);
         this.scoreCounter.update(elapsedTime);
     };
     LevelTie.prototype.updateRope = function (elapsedTime) {
@@ -167,14 +191,24 @@ var LevelTie = /** @class */ (function (_super) {
             //  Collision left!
             this.tieLoop.x = tieX - ropeWidth + this.loopWidth / 2;
             this.tieLoopBack.x = this.tieLoop.x;
+            this.stranglePart += elapsedTime / 3000;
+            this.isStrangle = true;
         }
         else if (tieX + ropeWidth > this.tieLoop.x + this.loopWidth / 2) {
             //  Collision right!
             this.tieLoop.x = tieX + ropeWidth - this.loopWidth / 2;
             this.tieLoopBack.x = this.tieLoop.x;
+            this.stranglePart += elapsedTime / 3000;
+            this.isStrangle = true;
         }
         else {
             //  No collision
+            this.totalTimeScore += elapsedTime;
+            var newScore = Math.floor(this.totalTimeScore / this.gameEndsOnTime);
+            if (newScore > this.scoreCounter.getScore()) {
+                this.scoreCounter.setNewScore(newScore, 200);
+            }
+            this.stranglePart -= elapsedTime / 3000;
             var speed = 700;
             if (Game.keyboard.current.isPressed(this.rightKey) && !Game.keyboard.current.isPressed(this.leftKey)) {
                 this.tieLoop.x += speed * elapsedTime / 1000;
@@ -184,7 +218,28 @@ var LevelTie = /** @class */ (function (_super) {
                 this.tieLoop.x -= speed * elapsedTime / 1000;
                 this.tieLoopBack.x = this.tieLoop.x;
             }
+            this.isStrangle = false;
         }
+        if (this.stranglePart > 1) {
+            this.stranglePart = 1;
+        }
+        else if (this.stranglePart < 0) {
+            this.stranglePart = 0;
+        }
+        var r;
+        var g;
+        var b;
+        if (this.stranglePart < 0.5) {
+            r = 255;
+            g = 255 * (1 - this.stranglePart * 2);
+            b = 255 * (1 - this.stranglePart * 2);
+        }
+        else {
+            r = 255;
+            g = 0;
+            b = 255 * (this.stranglePart * 2);
+        }
+        this.neck.tint = ColorHelper.rgbToHex(r, g, b);
     };
     LevelTie.prototype.updateHand = function (elapsedTime) {
         this.arm.x = this.tieLoop.x - 700 - 189;
@@ -206,6 +261,39 @@ var LevelTie = /** @class */ (function (_super) {
                 this.handFrame = 1;
             }
             this.hand.texture = PIXI.Loader.shared.resources["tie-hand" + this.handFrame].texture;
+        }
+    };
+    LevelTie.prototype.updateMini = function (elapsedTime) {
+        this.timeLeftMiniFrame -= elapsedTime;
+        if (this.timeLeftMiniFrame <= 0) {
+            this.timeLeftMiniFrame += 150;
+            this.miniFrame += this.miniFrameDirection;
+            if (this.miniFrame > 2) {
+                this.miniFrameDirection = -1;
+                this.miniFrame = 1;
+            }
+            else if (this.miniFrame < 0) {
+                this.miniFrameDirection = 1;
+                this.miniFrame = 1;
+            }
+            if (this.isStrangle) {
+                if (this.player == 1) {
+                    this.mini.x = this.xOffset;
+                }
+                else {
+                    this.mini.x = 1920 - 549;
+                }
+                this.mini.texture = PIXI.Loader.shared.resources["p" + this.player + "-mini-strangle" + this.miniFrame].texture;
+            }
+            else {
+                if (this.player == 1) {
+                    this.mini.x = this.xOffset + 130;
+                }
+                else {
+                    this.mini.x = 1920 - 549 + 150;
+                }
+                this.mini.texture = PIXI.Loader.shared.resources["p" + this.player + "-mini-tie" + this.miniFrame].texture;
+            }
         }
     };
     return LevelTie;

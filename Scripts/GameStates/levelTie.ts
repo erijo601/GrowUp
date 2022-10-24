@@ -6,21 +6,31 @@
     private scoreCounter: ScoreCounter;
 
     private totalElapsedTime: number;
+    private totalTimeScore: number;
+    private gameEndsOnTime: number = 93000 - 1200;  //  93000 = sångens längd, 1200 = transition
+    private stranglePart: number;
 
     private points: PIXI.Point[];
     private rope: PIXI.SimpleRope;
 
     private baseX: number;  //  I mitten av spelplanen, där slipsen hänger
 
+    private isStrangle: boolean;
+
     private tieLoop: PIXI.Sprite;
     private tieLoopBack: PIXI.Sprite;
     private arm: PIXI.Sprite;
     private hand: PIXI.Sprite;
+    private mini: PIXI.Sprite;
     private loopWidth: number = 310*1.2;
 
     private timeLeftHandFrame: number;
     private handFrame: number;
     private handFrameDirection: number;
+
+    private timeLeftMiniFrame: number;
+    private miniFrame: number;
+    private miniFrameDirection: number;
 
     constructor(player: number, xOffset: number, upKey: string, downKey: string, leftKey: string, rightKey: string) {
 
@@ -31,11 +41,11 @@
         this.scoreCounter = new ScoreCounter(xOffset, 4, 16, 0);
 
         this.background = new PIXI.Sprite(PIXI.Loader.shared.resources["level-tie-background"].texture);
-        this.background.x = xOffset;
+        this.background.x = xOffset + 100;
         this.background.y = 0;
 
         this.neck = new PIXI.Sprite(PIXI.Loader.shared.resources["level-tie-neck"].texture);
-        this.neck.x = xOffset + 180;
+        this.neck.x = xOffset + 180 + 100;
         this.neck.y = 0;
 
         this.tieLoop = new PIXI.Sprite(PIXI.Loader.shared.resources["tie-loop-front"].texture);
@@ -52,7 +62,7 @@
 
         this.points = [];
 
-        this.baseX = xOffset + 388;
+        this.baseX = xOffset + 388 + 100;
         let baseY = 370;
         let steps = 20;
 
@@ -84,15 +94,26 @@
         this.handFrame = 0;
         this.handFrameDirection = 1;
 
+        this.timeLeftMiniFrame = 150;
+        this.miniFrame = 0;
+        this.miniFrameDirection = 1;
+
         this.hand = new PIXI.Sprite(PIXI.Loader.shared.resources["tie-hand" + this.handFrame].texture);
         this.hand.zIndex = 12;
         this.hand.x = this.arm.x + 440 ;
         this.hand.y = this.arm.y;
 
+        this.mini = new PIXI.Sprite(PIXI.Loader.shared.resources["p" + this.player + "-mini-tie" + this.miniFrame].texture);
+        this.mini.zIndex = 13;
+        this.mini.x = this.xOffset + 130;
+        this.mini.y = 170;
+
         if (player == 2) {
 
             this.arm.scale.x = -1;  //  Mirror
             this.hand.scale.x = -1;
+
+            this.mini.x = 1920 - 549 + 150;
         }
 
         this.updateHand(0);
@@ -109,10 +130,27 @@
         Game.app.stage.addChild(this.tieLoop);
         Game.app.stage.addChild(this.arm);
         Game.app.stage.addChild(this.hand);
+        Game.app.stage.addChild(this.mini);
 
         this.totalElapsedTime = 0;
+        this.totalTimeScore = 0;
+        this.stranglePart = 0;
+
+        this.isStrangle = false;
 
         this.timeLeftHandFrame = 150;
+        this.timeLeftMiniFrame = 100;
+        this.handFrame = 0;
+        this.miniFrame = 0;
+
+        //  Undvik synk mellan p1 och p2
+        if (this.player == 2) {
+
+            this.timeLeftHandFrame = 50;
+            this.timeLeftMiniFrame = 75;
+            this.miniFrame = 1;
+            this.handFrame = 2;
+        }
 
         Game.sceneTransition.startShrinking();
 
@@ -128,6 +166,7 @@
         Game.app.stage.removeChild(this.rope);
         Game.app.stage.removeChild(this.hand);
         Game.app.stage.removeChild(this.arm);
+        Game.app.stage.removeChild(this.mini);
 
         this.scoreCounter.onExit();
 
@@ -169,7 +208,6 @@
 
             if (Game.sceneTransition.isDone()) {
 
-                //Game.soundPlayer.musicTie.play();
                 Game.intro.startLevelTie();
             }
 
@@ -193,6 +231,8 @@
         this.checkCollision(elapsedTime);
 
         this.updateHand(elapsedTime);
+
+        this.updateMini(elapsedTime);
 
         this.scoreCounter.update(elapsedTime);
     }
@@ -249,6 +289,10 @@
 
             this.tieLoop.x = tieX - ropeWidth + this.loopWidth / 2;
             this.tieLoopBack.x = this.tieLoop.x;
+
+            this.stranglePart += elapsedTime / 3000;
+
+            this.isStrangle = true;
         }
         else if (tieX + ropeWidth > this.tieLoop.x + this.loopWidth / 2) {
 
@@ -256,10 +300,25 @@
 
             this.tieLoop.x = tieX + ropeWidth - this.loopWidth / 2;
             this.tieLoopBack.x = this.tieLoop.x;
+
+            this.stranglePart += elapsedTime / 3000;
+
+            this.isStrangle = true;
         }
         else {
 
             //  No collision
+
+            this.totalTimeScore += elapsedTime;
+
+            let newScore = Math.floor(this.totalTimeScore / this.gameEndsOnTime);
+
+            if (newScore > this.scoreCounter.getScore()) {
+
+                this.scoreCounter.setNewScore(newScore, 200);
+            }
+
+            this.stranglePart -= elapsedTime / 3000;
 
             let speed = 700;
 
@@ -274,7 +333,37 @@
                 this.tieLoop.x -= speed * elapsedTime / 1000;
                 this.tieLoopBack.x = this.tieLoop.x;
             }
-        }        
+
+            this.isStrangle = false;
+        }
+
+        if (this.stranglePart > 1) {
+
+            this.stranglePart = 1;
+        }
+        else if (this.stranglePart < 0) {
+
+            this.stranglePart = 0;
+        }
+
+        let r;
+        let g;
+        let b;
+
+        if (this.stranglePart < 0.5) {
+
+            r = 255;
+            g = 255 * (1 - this.stranglePart * 2);
+            b = 255 * (1 - this.stranglePart * 2);
+        }
+        else {
+
+            r = 255;
+            g = 0;
+            b = 255 * (this.stranglePart * 2);
+        }
+
+        this.neck.tint = ColorHelper.rgbToHex(r, g, b);
     }
 
     public updateHand(elapsedTime: number) {
@@ -308,6 +397,56 @@
             }
 
             this.hand.texture = PIXI.Loader.shared.resources["tie-hand" + this.handFrame].texture;
+        }
+    }
+
+    public updateMini(elapsedTime: number) {
+
+        this.timeLeftMiniFrame -= elapsedTime;
+
+        if (this.timeLeftMiniFrame <= 0) {
+
+            this.timeLeftMiniFrame += 150;
+
+            this.miniFrame += this.miniFrameDirection;
+
+            if (this.miniFrame > 2) {
+
+                this.miniFrameDirection = -1;
+                this.miniFrame = 1;
+            }
+            else if (this.miniFrame < 0) {
+
+                this.miniFrameDirection = 1;
+                this.miniFrame = 1;
+            }
+
+            if (this.isStrangle) {
+
+                if (this.player == 1) {
+
+                    this.mini.x = this.xOffset;
+                }
+                else {
+
+                    this.mini.x = 1920 - 549;
+                }
+
+                this.mini.texture = PIXI.Loader.shared.resources["p" + this.player + "-mini-strangle" + this.miniFrame].texture;
+            }
+            else {
+
+                if (this.player == 1) {
+
+                    this.mini.x = this.xOffset + 130;
+                }
+                else {
+
+                    this.mini.x = 1920 - 549 + 150;
+                }
+
+                this.mini.texture = PIXI.Loader.shared.resources["p" + this.player + "-mini-tie" + this.miniFrame].texture;
+            }
         }
     }
 }

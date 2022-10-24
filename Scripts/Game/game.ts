@@ -229,6 +229,18 @@ class Game {
         PIXI.Loader.shared.add('tie-rope', 'img/LevelTie/tie-rope.png');
         PIXI.Loader.shared.add('tie-loop-back', 'img/LevelTie/tie-loop-back.png');
         PIXI.Loader.shared.add('tie-loop-front', 'img/LevelTie/tie-loop-front.png');
+        PIXI.Loader.shared.add('p1-mini-strangle0', 'img/LevelTie/p1-mini-strangle0.png');
+        PIXI.Loader.shared.add('p1-mini-strangle1', 'img/LevelTie/p1-mini-strangle1.png');
+        PIXI.Loader.shared.add('p1-mini-strangle2', 'img/LevelTie/p1-mini-strangle2.png');
+        PIXI.Loader.shared.add('p2-mini-strangle0', 'img/LevelTie/p2-mini-strangle0.png');
+        PIXI.Loader.shared.add('p2-mini-strangle1', 'img/LevelTie/p2-mini-strangle1.png');
+        PIXI.Loader.shared.add('p2-mini-strangle2', 'img/LevelTie/p2-mini-strangle2.png');
+        PIXI.Loader.shared.add('p1-mini-tie0', 'img/LevelTie/p1-mini-tie0.png');
+        PIXI.Loader.shared.add('p1-mini-tie1', 'img/LevelTie/p1-mini-tie1.png');
+        PIXI.Loader.shared.add('p1-mini-tie2', 'img/LevelTie/p1-mini-tie2.png');
+        PIXI.Loader.shared.add('p2-mini-tie0', 'img/LevelTie/p2-mini-tie0.png');
+        PIXI.Loader.shared.add('p2-mini-tie1', 'img/LevelTie/p2-mini-tie1.png');
+        PIXI.Loader.shared.add('p2-mini-tie2', 'img/LevelTie/p2-mini-tie2.png');
     }
 
     static loadingScreenResourcesLoaded(resources: any) {
