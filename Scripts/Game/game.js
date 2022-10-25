@@ -183,6 +183,10 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('p2-mini-tie0', 'img/LevelTie/p2-mini-tie0.png');
         PIXI.Loader.shared.add('p2-mini-tie1', 'img/LevelTie/p2-mini-tie1.png');
         PIXI.Loader.shared.add('p2-mini-tie2', 'img/LevelTie/p2-mini-tie2.png');
+        PIXI.Loader.shared.add('p1-mini-between0', 'img/LevelTie/p1-mini-between0.png');
+        PIXI.Loader.shared.add('p1-mini-between1', 'img/LevelTie/p1-mini-between1.png');
+        PIXI.Loader.shared.add('p2-mini-between0', 'img/LevelTie/p2-mini-between0.png');
+        PIXI.Loader.shared.add('p2-mini-between1', 'img/LevelTie/p2-mini-between1.png');
     };
     Game.loadingScreenResourcesLoaded = function (resources) {
         Game.currentStatePlayer1 = new LoadingState();

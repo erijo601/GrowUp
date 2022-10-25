@@ -105,6 +105,15 @@ var LevelMoustache = /** @class */ (function (_super) {
         _this.totalTimeDropGrid = 8750;
         _this.totalTimeDropCurrentShape = 150;
         _this.spawnBag = [];
+        if (_this.player == 1) {
+            _this.pressEnter = new PIXI.Sprite(PIXI.Loader.shared.resources["enter"].texture);
+            _this.pressEnter.x = 858 + 80;
+            _this.pressEnter.y = 842 + 100;
+            _this.pressEnter.pivot.x = _this.pressEnter.width / 2;
+            _this.pressEnter.pivot.y = _this.pressEnter.height / 2;
+            _this.pressEnter.zIndex = 1000;
+            _this.pressEnter.visible = false;
+        }
         return _this;
     }
     LevelMoustache.prototype.fillSpawnBag = function () {
@@ -196,6 +205,10 @@ var LevelMoustache = /** @class */ (function (_super) {
             sprite.visible = false;
             Game.app.stage.addChild(sprite);
         }
+        if (this.player == 1) {
+            this.pressEnter.visible = false;
+            Game.app.stage.addChild(this.pressEnter);
+        }
         this.addStartPieces();
         this.currentShape = this.spawnShape();
         //Game.soundPlayer.musicMoustache.play();
@@ -250,6 +263,7 @@ var LevelMoustache = /** @class */ (function (_super) {
         this.scoreCounter.onExit();
         Game.soundPlayer.musicMoustache.stop();
         if (this.player == 1) {
+            Game.app.stage.removeChild(this.pressEnter);
             Game.scoreStatePlayer1.beforeOnEnter(Level.Moustache, this.scoreCounter.getScore());
             Game.currentStatePlayer1 = Game.scoreStatePlayer1;
             Game.currentStatePlayer1.onEnter();
@@ -282,8 +296,19 @@ var LevelMoustache = /** @class */ (function (_super) {
                 this.onExit();
             }
         }
+        this.totalElapsedTime += elapsedTime;
         if (this.totalElapsedTime > 90000) {
-            //  TODO: Visa "Press enter"
+            if (this.player == 1) {
+                this.pressEnter.visible = true;
+                if (this.totalElapsedTime > 90000 && this.totalElapsedTime < 90300) {
+                    this.pressEnter.alpha = (this.totalElapsedTime - 90000) / 300;
+                }
+                else if (this.totalElapsedTime > 90300) {
+                    this.pressEnter.alpha = 1;
+                }
+                this.pressEnter.scale.x = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
+                this.pressEnter.scale.y = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
+            }
             if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter') &&
                 !Game.sceneTransition.isGrowing) {
                 Game.sceneTransition.startGrowing();
@@ -291,7 +316,6 @@ var LevelMoustache = /** @class */ (function (_super) {
             return;
         }
         this.scoreCounter.update(elapsedTime);
-        this.totalElapsedTime += elapsedTime;
         if (this.timeTilAnimLeftEye > 0) {
             this.timeTilAnimLeftEye -= elapsedTime;
         }

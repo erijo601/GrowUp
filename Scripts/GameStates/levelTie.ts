@@ -22,7 +22,10 @@
     private arm: PIXI.Sprite;
     private hand: PIXI.Sprite;
     private mini: PIXI.Sprite;
-    private loopWidth: number = 310*1.2;
+    private betweenFrame: number;
+    private betweenFrameDirection: number;
+    private loopWidth: number = 310 * 1.2;
+
 
     private timeLeftHandFrame: number;
     private handFrame: number;
@@ -142,6 +145,9 @@
         this.timeLeftMiniFrame = 100;
         this.handFrame = 0;
         this.miniFrame = 0;
+
+        this.betweenFrame = -1;
+        this.betweenFrameDirection = -1;
 
         //  Undvik synk mellan p1 och p2
         if (this.player == 2) {
@@ -292,6 +298,23 @@
 
             this.stranglePart += elapsedTime / 3000;
 
+            if (!this.isStrangle && this.betweenFrame > -1 && this.betweenFrame < 2) {
+
+                this.betweenFrame = 0;
+                this.betweenFrameDirection = 1;
+
+                if (this.player == 1) {
+
+                    this.mini.x = this.xOffset;
+                }
+                else {
+
+                    this.mini.x = 1920 - 549;
+                }
+
+                this.mini.texture = PIXI.Loader.shared.resources["p" + this.player + "-mini-between" + this.betweenFrame].texture;
+            }
+
             this.isStrangle = true;
         }
         else if (tieX + ropeWidth > this.tieLoop.x + this.loopWidth / 2) {
@@ -302,6 +325,23 @@
             this.tieLoopBack.x = this.tieLoop.x;
 
             this.stranglePart += elapsedTime / 3000;
+
+            if (!this.isStrangle && this.betweenFrame > -1 && this.betweenFrame < 2) {
+
+                this.betweenFrame = 0;
+                this.betweenFrameDirection = 1;
+
+                if (this.player == 1) {
+
+                    this.mini.x = this.xOffset;
+                }
+                else {
+
+                    this.mini.x = 1920 - 549;
+                }
+
+                this.mini.texture = PIXI.Loader.shared.resources["p" + this.player + "-mini-between" + this.betweenFrame].texture;
+            }
 
             this.isStrangle = true;
         }
@@ -332,6 +372,23 @@
 
                 this.tieLoop.x -= speed * elapsedTime / 1000;
                 this.tieLoopBack.x = this.tieLoop.x;
+            }
+
+            if (this.isStrangle && (this.betweenFrame > 1 || this.betweenFrame < 0)) {
+
+                this.betweenFrame = 1;
+                this.betweenFrameDirection = -1;
+
+                if (this.player == 1) {
+
+                    this.mini.x = this.xOffset;
+                }
+                else {
+
+                    this.mini.x = 1920 - 549;
+                }
+
+                this.mini.texture = PIXI.Loader.shared.resources["p" + this.player + "-mini-between" + this.betweenFrame].texture;
             }
 
             this.isStrangle = false;
@@ -404,6 +461,11 @@
 
         this.timeLeftMiniFrame -= elapsedTime;
 
+        if (this.isStrangle || (this.betweenFrame > -1 && this.betweenFrame < 2)) {
+
+            this.timeLeftMiniFrame -= elapsedTime * 0.5;
+        }
+
         if (this.timeLeftMiniFrame <= 0) {
 
             this.timeLeftMiniFrame += 150;
@@ -421,7 +483,26 @@
                 this.miniFrame = 1;
             }
 
-            if (this.isStrangle) {
+            if (this.betweenFrame > -1 && this.betweenFrame < 2) {
+
+                this.betweenFrame += this.betweenFrameDirection;
+            }
+
+            if (this.betweenFrame > -1 && this.betweenFrame < 2) {
+
+                if (this.player == 1) {
+
+                    this.mini.x = this.xOffset;
+                }
+                else {
+
+                    this.mini.x = 1920 - 549;
+                }
+
+                this.mini.texture = PIXI.Loader.shared.resources["p" + this.player + "-mini-between" + this.betweenFrame].texture;
+
+            }
+            else if (this.isStrangle) {
 
                 if (this.player == 1) {
 

@@ -345,7 +345,6 @@
             this.totalTimeElasped += elapsedTime;
         }
 
-
         this.timeLeftCurrentFrame -= elapsedTime;
 
         if (this.timeLeftCurrentFrame < 0) {

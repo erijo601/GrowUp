@@ -17,6 +17,7 @@
     private nose: PIXI.Sprite[];
     private noseFront: PIXI.Sprite[];
     private noseFrontBase: PIXI.Sprite;
+    private pressEnter: PIXI.Sprite;
 
     private totalElapsedTime: number;
 
@@ -167,6 +168,17 @@
         this.totalTimeDropCurrentShape = 150;
 
         this.spawnBag = [];
+
+        if (this.player == 1) {
+
+            this.pressEnter = new PIXI.Sprite(PIXI.Loader.shared.resources["enter"].texture);
+            this.pressEnter.x = 858 + 80;
+            this.pressEnter.y = 842 + 100;
+            this.pressEnter.pivot.x = this.pressEnter.width / 2;
+            this.pressEnter.pivot.y = this.pressEnter.height / 2;
+            this.pressEnter.zIndex = 1000;
+            this.pressEnter.visible = false;
+        }
     }
 
     private fillSpawnBag() {
@@ -294,6 +306,13 @@
             Game.app.stage.addChild(sprite);
         }
 
+        if (this.player == 1) {
+
+            this.pressEnter.visible = false;
+
+            Game.app.stage.addChild(this.pressEnter);
+        }
+
         this.addStartPieces();
 
         this.currentShape = this.spawnShape();
@@ -372,6 +391,8 @@
 
         if (this.player == 1) {
 
+            Game.app.stage.removeChild(this.pressEnter);
+
             Game.scoreStatePlayer1.beforeOnEnter(Level.Moustache, this.scoreCounter.getScore());
 
             Game.currentStatePlayer1 = Game.scoreStatePlayer1;
@@ -423,9 +444,26 @@
             }
         }
 
+        this.totalElapsedTime += elapsedTime;
+
         if (this.totalElapsedTime > 90000) {
 
-            //  TODO: Visa "Press enter"
+            if (this.player == 1) {
+
+                this.pressEnter.visible = true;
+
+                if (this.totalElapsedTime > 90000 && this.totalElapsedTime < 90300) {
+
+                    this.pressEnter.alpha = (this.totalElapsedTime - 90000) / 300;
+                }
+                else if (this.totalElapsedTime > 90300) {
+
+                    this.pressEnter.alpha = 1;
+                }
+
+                this.pressEnter.scale.x = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
+                this.pressEnter.scale.y = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
+            }
 
             if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter') &&
                 !Game.sceneTransition.isGrowing) {
@@ -437,8 +475,6 @@
         }
 
         this.scoreCounter.update(elapsedTime);
-
-        this.totalElapsedTime += elapsedTime;
 
         if (this.timeTilAnimLeftEye > 0) {
 
