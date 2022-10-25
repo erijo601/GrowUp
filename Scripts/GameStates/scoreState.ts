@@ -3,6 +3,8 @@
     private background: PIXI.Sprite;
     private scoreCounter: ScoreCounter;
 
+    private pressEnter: PIXI.Sprite;
+
     private spriteMoustacheOnes: PIXI.Sprite;
     private spriteMoustacheTens: PIXI.Sprite;
     private spriteMoustacheHundreds: PIXI.Sprite;
@@ -34,6 +36,7 @@
     private spriteTotalProcent: PIXI.Sprite;
 
     private scoreLevelMoustache: number;
+    private scoreLevelTie: number;
     private scoreLevelHat: number;
     private scoreLevelOffice: number;
     private scoreLevelWhiskey: number;
@@ -43,6 +46,8 @@
     private currentLevel: Level;
 
     private timeTilStartCounting: number;
+
+    private elapsedTimePressEnter: number;
 
     private lastScoreCounterValue: number;
 
@@ -55,6 +60,7 @@
         this.scoreCounter = new ScoreCounter(xOffset, 4, 16, 0);
 
         this.scoreLevelMoustache = -1;
+        this.scoreLevelTie = -1;
         this.scoreLevelHat = -1;
         this.scoreLevelOffice = -1;
         this.scoreLevelWhiskey = -1;
@@ -216,6 +222,15 @@
         this.spriteTotalProcent.y = 440;
         this.spriteTotalProcent.zIndex = 1001;
         this.spriteTotalProcent.visible = false;
+
+
+        this.pressEnter = new PIXI.Sprite(PIXI.Loader.shared.resources["enter"].texture);
+        this.pressEnter.x = 858 + 80;
+        this.pressEnter.y = 842 + 100;
+        this.pressEnter.pivot.x = this.pressEnter.width / 2;
+        this.pressEnter.pivot.y = this.pressEnter.height / 2;
+        this.pressEnter.zIndex = 1000;
+        this.pressEnter.visible = false;
     }
 
     public beforeOnEnter(currentLevel: Level, scoreCurrentLevel: number): void {
@@ -231,6 +246,10 @@
 
             //  Värdet 0 gör räknaren synlig
             this.scoreLevelMoustache = 0;
+        }
+        else if (this.currentLevel == Level.Tie) {
+
+            this.scoreLevelTie = 0;
         }
         else if (this.currentLevel == Level.Hat) {
 
@@ -277,9 +296,13 @@
         Game.app.stage.addChild(this.spriteTotalHundreds);
         Game.app.stage.addChild(this.spriteTotalProcent);
 
+        this.pressEnter.visible = false;
+        Game.app.stage.addChild(this.pressEnter);
+
         this.scoreCounter.onEnter();
 
         this.timeTilStartCounting = 2000;
+        this.elapsedTimePressEnter = 0;
 
         Game.sceneTransition.startShrinking();
     }
@@ -313,17 +336,37 @@
         Game.app.stage.removeChild(this.spriteTotalHundreds);
         Game.app.stage.removeChild(this.spriteTotalProcent);
 
-
-
-
+        Game.app.stage.removeChild(this.pressEnter);
 
         this.scoreCounter.onExit();
 
-        //  TODO: Ladda nästa bana
+        if (Game.twoPlayerGame) {
+
+            if (this.currentLevel == Level.Moustache) {
+
+                Game.currentStatePlayer1 = new LevelTie(1, 0, 'w', 's', 'a', 'd');
+                Game.currentStatePlayer2 = new LevelTie(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+            }
+            //  TODO: more levels...
 
 
-        //Game.currentStatePlayer1 = new TitleState(this.xOffset, this.upKey, this.downKey, this.leftKey, this.rightKey);
-        //Game.currentStatePlayer1.onEnter();
+
+
+            Game.currentStatePlayer1.onEnter();
+            Game.currentStatePlayer2.onEnter();
+        }
+        else {
+
+            if (this.currentLevel == Level.Moustache) {
+
+                Game.currentStatePlayer1 = new LevelTie(1, 480, 'w', 's', 'a', 'd');
+            }
+            //  TODO: more levels...
+
+
+
+            Game.currentStatePlayer1.onEnter();
+        }
     }
 
     public update(elapsedTime: number): void {
@@ -340,23 +383,6 @@
             }
 
             return;
-        }
-
-        this.scoreCounter.update(elapsedTime);
-
-        if (Game.scoreStatePlayer1.scoreCounter.isCounting() == false &&
-            (Game.twoPlayerGame == false || Game.scoreStatePlayer2.scoreCounter.isCounting() == false) &&
-            !Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
-
-            if (!Game.sceneTransition.isGrowing) {
-
-                Game.sceneTransition.startGrowing();
-
-                if (Game.soundPlayer.musicScoreScreen.playing) {
-
-                    Game.soundPlayer.musicScoreScreen.fade(1, 0, 2500);
-                }
-            }
         }
 
         if (Game.sceneTransition.isGrowing) {
@@ -386,7 +412,37 @@
             }
         }
 
-        if (!this.scoreCounter.isCounting()) {
+        this.scoreCounter.update(elapsedTime);
+
+        if (Game.scoreStatePlayer1.scoreCounter.isCounting() == false &&
+            (Game.twoPlayerGame == false || Game.scoreStatePlayer2.scoreCounter.isCounting() == false)) {
+
+            this.pressEnter.visible = true;
+
+            this.elapsedTimePressEnter += elapsedTime;
+
+            this.pressEnter.alpha = this.elapsedTimePressEnter / 300;
+
+            if (this.pressEnter.alpha > 1) {
+
+                this.pressEnter.alpha = 1;
+            }
+
+            this.pressEnter.scale.x = 1 - 0.03 * Math.cos(2 * Math.PI * this.elapsedTimePressEnter / 2000);
+            this.pressEnter.scale.y = 1 - 0.03 * Math.cos(2 * Math.PI * this.elapsedTimePressEnter / 2000);
+
+            if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
+
+                if (!Game.sceneTransition.isGrowing) {
+
+                    Game.sceneTransition.startGrowing();
+
+                    if (Game.soundPlayer.musicScoreScreen.playing) {
+
+                        Game.soundPlayer.musicScoreScreen.fade(1, 0, 2500);
+                    }
+                }
+            }
 
             //  Waiting for the player to press enter
             return;
@@ -400,6 +456,11 @@
 
             //  Maxpoäng är 100 så här är score = procent
             this.scoreLevelMoustache = this.scoreCurrentLevel - this.scoreCounter.getScore();
+        }
+        else if (this.currentLevel == Level.Tie) {
+
+            //  Maxpoäng är 100 så här är score = procent
+            this.scoreLevelTie = this.scoreCurrentLevel - this.scoreCounter.getScore();
         }
         else if (this.currentLevel == Level.Hat) {
 
@@ -417,12 +478,15 @@
         let scoreTotal = 0;
 
         scoreTotal += this.scoreLevelMoustache > -1 ? this.scoreLevelMoustache : 0;
+        scoreTotal += this.scoreLevelTie > -1 ? this.scoreLevelTie : 0;
         scoreTotal += this.scoreLevelHat > -1 ? this.scoreLevelHat : 0;
         scoreTotal += this.scoreLevelOffice > -1 ? this.scoreLevelOffice : 0;
         scoreTotal += this.scoreLevelWhiskey > -1 ? this.scoreLevelWhiskey : 0;
 
         let maxScore = 0;
         maxScore += 100;    //  Max score on LevelMoustache is 100
+        maxScore += 100;    //  Max score on LevelTie is 100
+        //  TODO: Add more to maxScore for the other levels
 
         this.totalScore = Math.floor(100 * scoreTotal / maxScore);
 
@@ -470,7 +534,44 @@
             this.spriteMoustacheProcent.visible = false;
         }
 
+        if (this.scoreLevelTie > -1) {
 
+            let hundreds = Math.floor(this.scoreLevelTie / 100);
+            let tens = Math.floor(this.scoreLevelTie / 10);
+            let ones = this.scoreLevelTie - hundreds * 100 - tens * 10;
+
+            this.spriteTieProcent.visible = true;
+
+            this.spriteTieOnes.texture = PIXI.Loader.shared.resources["number-" + ones + "-white"].texture;
+            this.spriteTieOnes.visible = true;
+
+            if (tens > 0) {
+
+                this.spriteTieTens.texture = PIXI.Loader.shared.resources["number-" + tens + "-white"].texture;
+                this.spriteTieTens.visible = true;
+            }
+            else {
+
+                this.spriteTieTens.visible = false;
+            }
+
+            if (hundreds > 0) {
+
+                this.spriteTieHundreds.texture = PIXI.Loader.shared.resources["number-" + hundreds + "-white"].texture;
+                this.spriteTieHundreds.visible = true;
+            }
+            else {
+
+                this.spriteTieHundreds.visible = false;
+            }
+        }
+        else {
+
+            this.spriteTieOnes.visible = false;
+            this.spriteTieTens.visible = false;
+            this.spriteTieHundreds.visible = false;
+            this.spriteTieProcent.visible = false;
+        }
 
 
         //  TODO: All other scores

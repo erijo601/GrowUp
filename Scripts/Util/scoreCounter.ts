@@ -105,6 +105,16 @@
         Game.app.stage.removeChild(this.spriteHundredsAlt);
     }
 
+    public getDesiredScore(): number {
+
+        if (this.desiredScore < 0) {
+
+            return 0;
+        }
+
+        return this.desiredScore;
+    }
+
     public getScore(): number {
 
         if (this.currentScore < 0) {
@@ -121,6 +131,11 @@
 
             //  Dirty hack. Scoreanimationen stannar på 1 när den egentligen ska räkna ner till 0. Detta hack fixar problemet.
             score = -1;
+        }
+
+        if (score == this.desiredScore) {
+
+            return;
         }
 
         this.desiredScore = score;

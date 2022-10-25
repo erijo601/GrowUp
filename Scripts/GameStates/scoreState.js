@@ -20,6 +20,7 @@ var ScoreState = /** @class */ (function (_super) {
         _this.stateName = "ScoreState";
         _this.scoreCounter = new ScoreCounter(xOffset, 4, 16, 0);
         _this.scoreLevelMoustache = -1;
+        _this.scoreLevelTie = -1;
         _this.scoreLevelHat = -1;
         _this.scoreLevelOffice = -1;
         _this.scoreLevelWhiskey = -1;
@@ -148,6 +149,13 @@ var ScoreState = /** @class */ (function (_super) {
         _this.spriteTotalProcent.y = 440;
         _this.spriteTotalProcent.zIndex = 1001;
         _this.spriteTotalProcent.visible = false;
+        _this.pressEnter = new PIXI.Sprite(PIXI.Loader.shared.resources["enter"].texture);
+        _this.pressEnter.x = 858 + 80;
+        _this.pressEnter.y = 842 + 100;
+        _this.pressEnter.pivot.x = _this.pressEnter.width / 2;
+        _this.pressEnter.pivot.y = _this.pressEnter.height / 2;
+        _this.pressEnter.zIndex = 1000;
+        _this.pressEnter.visible = false;
         return _this;
     }
     ScoreState.prototype.beforeOnEnter = function (currentLevel, scoreCurrentLevel) {
@@ -158,6 +166,9 @@ var ScoreState = /** @class */ (function (_super) {
         if (this.currentLevel == Level.Moustache) {
             //  Värdet 0 gör räknaren synlig
             this.scoreLevelMoustache = 0;
+        }
+        else if (this.currentLevel == Level.Tie) {
+            this.scoreLevelTie = 0;
         }
         else if (this.currentLevel == Level.Hat) {
             this.scoreLevelHat = 0;
@@ -192,8 +203,11 @@ var ScoreState = /** @class */ (function (_super) {
         Game.app.stage.addChild(this.spriteTotalTens);
         Game.app.stage.addChild(this.spriteTotalHundreds);
         Game.app.stage.addChild(this.spriteTotalProcent);
+        this.pressEnter.visible = false;
+        Game.app.stage.addChild(this.pressEnter);
         this.scoreCounter.onEnter();
         this.timeTilStartCounting = 2000;
+        this.elapsedTimePressEnter = 0;
         Game.sceneTransition.startShrinking();
     };
     ScoreState.prototype.onExit = function () {
@@ -218,10 +232,25 @@ var ScoreState = /** @class */ (function (_super) {
         Game.app.stage.removeChild(this.spriteTotalTens);
         Game.app.stage.removeChild(this.spriteTotalHundreds);
         Game.app.stage.removeChild(this.spriteTotalProcent);
+        Game.app.stage.removeChild(this.pressEnter);
         this.scoreCounter.onExit();
         //  TODO: Ladda nästa bana
-        //Game.currentStatePlayer1 = new TitleState(this.xOffset, this.upKey, this.downKey, this.leftKey, this.rightKey);
-        //Game.currentStatePlayer1.onEnter();
+        if (Game.twoPlayerGame) {
+            if (this.currentLevel == Level.Moustache) {
+                Game.currentStatePlayer1 = new LevelTie(1, 0, 'w', 's', 'a', 'd');
+                Game.currentStatePlayer2 = new LevelTie(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+            }
+            //  TODO: more levels...
+            Game.currentStatePlayer1.onEnter();
+            Game.currentStatePlayer2.onEnter();
+        }
+        else {
+            if (this.currentLevel == Level.Moustache) {
+                Game.currentStatePlayer1 = new LevelTie(1, 480, 'w', 's', 'a', 'd');
+            }
+            //  TODO: more levels...
+            Game.currentStatePlayer1.onEnter();
+        }
     };
     ScoreState.prototype.update = function (elapsedTime) {
         // elapsedTime in ms
@@ -234,12 +263,21 @@ var ScoreState = /** @class */ (function (_super) {
         }
         this.scoreCounter.update(elapsedTime);
         if (Game.scoreStatePlayer1.scoreCounter.isCounting() == false &&
-            (Game.twoPlayerGame == false || Game.scoreStatePlayer2.scoreCounter.isCounting() == false) &&
-            !Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
-            if (!Game.sceneTransition.isGrowing) {
-                Game.sceneTransition.startGrowing();
-                if (Game.soundPlayer.musicScoreScreen.playing) {
-                    Game.soundPlayer.musicScoreScreen.fade(1, 0, 2500);
+            (Game.twoPlayerGame == false || Game.scoreStatePlayer2.scoreCounter.isCounting() == false)) {
+            this.pressEnter.visible = true;
+            this.elapsedTimePressEnter += elapsedTime;
+            this.pressEnter.alpha = this.elapsedTimePressEnter / 300;
+            if (this.pressEnter.alpha > 1) {
+                this.pressEnter.alpha = 1;
+            }
+            this.pressEnter.scale.x = 1 - 0.03 * Math.cos(2 * Math.PI * this.elapsedTimePressEnter / 2000);
+            this.pressEnter.scale.y = 1 - 0.03 * Math.cos(2 * Math.PI * this.elapsedTimePressEnter / 2000);
+            if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
+                if (!Game.sceneTransition.isGrowing) {
+                    Game.sceneTransition.startGrowing();
+                    if (Game.soundPlayer.musicScoreScreen.playing) {
+                        Game.soundPlayer.musicScoreScreen.fade(1, 0, 2500);
+                    }
                 }
             }
         }
@@ -270,6 +308,10 @@ var ScoreState = /** @class */ (function (_super) {
             //  Maxpoäng är 100 så här är score = procent
             this.scoreLevelMoustache = this.scoreCurrentLevel - this.scoreCounter.getScore();
         }
+        else if (this.currentLevel == Level.Tie) {
+            //  Maxpoäng är 100 så här är score = procent
+            this.scoreLevelTie = this.scoreCurrentLevel - this.scoreCounter.getScore();
+        }
         else if (this.currentLevel == Level.Hat) {
             this.scoreLevelHat = this.scoreCurrentLevel - this.scoreCounter.getScore();
         }
@@ -281,11 +323,14 @@ var ScoreState = /** @class */ (function (_super) {
         }
         var scoreTotal = 0;
         scoreTotal += this.scoreLevelMoustache > -1 ? this.scoreLevelMoustache : 0;
+        scoreTotal += this.scoreLevelTie > -1 ? this.scoreLevelTie : 0;
         scoreTotal += this.scoreLevelHat > -1 ? this.scoreLevelHat : 0;
         scoreTotal += this.scoreLevelOffice > -1 ? this.scoreLevelOffice : 0;
         scoreTotal += this.scoreLevelWhiskey > -1 ? this.scoreLevelWhiskey : 0;
         var maxScore = 0;
         maxScore += 100; //  Max score on LevelMoustache is 100
+        maxScore += 100; //  Max score on LevelTie is 100
+        //  TODO: Add more to maxScore for the other levels
         this.totalScore = Math.floor(100 * scoreTotal / maxScore);
         this.updateSprites();
     };
@@ -317,6 +362,34 @@ var ScoreState = /** @class */ (function (_super) {
             this.spriteMoustacheTens.visible = false;
             this.spriteMoustacheHundreds.visible = false;
             this.spriteMoustacheProcent.visible = false;
+        }
+        if (this.scoreLevelTie > -1) {
+            var hundreds_2 = Math.floor(this.scoreLevelTie / 100);
+            var tens_2 = Math.floor(this.scoreLevelTie / 10);
+            var ones_2 = this.scoreLevelTie - hundreds_2 * 100 - tens_2 * 10;
+            this.spriteTieProcent.visible = true;
+            this.spriteTieOnes.texture = PIXI.Loader.shared.resources["number-" + ones_2 + "-white"].texture;
+            this.spriteTieOnes.visible = true;
+            if (tens_2 > 0) {
+                this.spriteTieTens.texture = PIXI.Loader.shared.resources["number-" + tens_2 + "-white"].texture;
+                this.spriteTieTens.visible = true;
+            }
+            else {
+                this.spriteTieTens.visible = false;
+            }
+            if (hundreds_2 > 0) {
+                this.spriteTieHundreds.texture = PIXI.Loader.shared.resources["number-" + hundreds_2 + "-white"].texture;
+                this.spriteTieHundreds.visible = true;
+            }
+            else {
+                this.spriteTieHundreds.visible = false;
+            }
+        }
+        else {
+            this.spriteTieOnes.visible = false;
+            this.spriteTieTens.visible = false;
+            this.spriteTieHundreds.visible = false;
+            this.spriteTieProcent.visible = false;
         }
         //  TODO: All other scores
         var hundreds = Math.floor(this.totalScore / 100);

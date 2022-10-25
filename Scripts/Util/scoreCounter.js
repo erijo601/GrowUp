@@ -67,6 +67,12 @@ var ScoreCounter = /** @class */ (function () {
         Game.app.stage.removeChild(this.spriteHundreds);
         Game.app.stage.removeChild(this.spriteHundredsAlt);
     };
+    ScoreCounter.prototype.getDesiredScore = function () {
+        if (this.desiredScore < 0) {
+            return 0;
+        }
+        return this.desiredScore;
+    };
     ScoreCounter.prototype.getScore = function () {
         if (this.currentScore < 0) {
             return 0;
@@ -77,6 +83,9 @@ var ScoreCounter = /** @class */ (function () {
         if (score == 0) {
             //  Dirty hack. Scoreanimationen stannar på 1 när den egentligen ska räkna ner till 0. Detta hack fixar problemet.
             score = -1;
+        }
+        if (score == this.desiredScore) {
+            return;
         }
         this.desiredScore = score;
         this.totalTimeDigitChange = totalTimeDigitChange;

@@ -7,16 +7,20 @@
 
     private totalElapsedTime: number;
     private totalTimeScore: number;
-    private gameEndsOnTime: number = 93000 - 1200;  //  93000 = sångens längd, 1200 = transition
+    private gameEndsOnTime: number = 86000;
     private stranglePart: number;
 
     private points: PIXI.Point[];
     private rope: PIXI.SimpleRope;
 
+    private ropeSpeed: number;
+    private ropeTargetX: number;
+
     private baseX: number;  //  I mitten av spelplanen, där slipsen hänger
 
     private isStrangle: boolean;
 
+    private pressEnter: PIXI.Sprite;
     private tieLoop: PIXI.Sprite;
     private tieLoopBack: PIXI.Sprite;
     private arm: PIXI.Sprite;
@@ -25,7 +29,6 @@
     private betweenFrame: number;
     private betweenFrameDirection: number;
     private loopWidth: number = 310 * 1.2;
-
 
     private timeLeftHandFrame: number;
     private handFrame: number;
@@ -111,12 +114,23 @@
         this.mini.x = this.xOffset + 130;
         this.mini.y = 170;
 
-        if (player == 2) {
+        if (this.player == 2) {
 
             this.arm.scale.x = -1;  //  Mirror
             this.hand.scale.x = -1;
 
             this.mini.x = 1920 - 549 + 150;
+        }
+
+        if (this.player == 1) {
+
+            this.pressEnter = new PIXI.Sprite(PIXI.Loader.shared.resources["enter"].texture);
+            this.pressEnter.x = 858 + 80;
+            this.pressEnter.y = 842 + 100;
+            this.pressEnter.pivot.x = this.pressEnter.width / 2;
+            this.pressEnter.pivot.y = this.pressEnter.height / 2;
+            this.pressEnter.zIndex = 1000;
+            this.pressEnter.visible = false;
         }
 
         this.updateHand(0);
@@ -149,6 +163,9 @@
         this.betweenFrame = -1;
         this.betweenFrameDirection = -1;
 
+        this.ropeTargetX = MathHelper.randomInt(0, 960);
+        this.setRopeSpeed();
+
         //  Undvik synk mellan p1 och p2
         if (this.player == 2) {
 
@@ -156,6 +173,13 @@
             this.timeLeftMiniFrame = 75;
             this.miniFrame = 1;
             this.handFrame = 2;
+        }
+
+        if (this.player == 1) {
+
+            this.pressEnter.visible = false;
+
+            Game.app.stage.addChild(this.pressEnter);
         }
 
         Game.sceneTransition.startShrinking();
@@ -180,6 +204,8 @@
 
         if (this.player == 1) {
 
+            Game.app.stage.removeChild(this.pressEnter);
+
             Game.scoreStatePlayer1.beforeOnEnter(Level.Tie, this.scoreCounter.getScore());
 
             Game.currentStatePlayer1 = Game.scoreStatePlayer1;
@@ -192,7 +218,7 @@
         }
         else {
 
-            Game.scoreStatePlayer2.beforeOnEnter(Level.Moustache, this.scoreCounter.getScore());
+            Game.scoreStatePlayer2.beforeOnEnter(Level.Tie, this.scoreCounter.getScore());
 
             Game.currentStatePlayer2 = Game.scoreStatePlayer2;
             Game.currentStatePlayer2.onEnter();
@@ -232,6 +258,36 @@
 
         this.totalElapsedTime += elapsedTime;
 
+        this.scoreCounter.update(elapsedTime);
+
+        if (this.totalElapsedTime > this.gameEndsOnTime) {
+
+            if (this.player == 1) {
+
+                this.pressEnter.visible = true;
+
+                if (this.totalElapsedTime > this.gameEndsOnTime && this.totalElapsedTime < this.gameEndsOnTime + 300) {
+
+                    this.pressEnter.alpha = (this.totalElapsedTime - this.gameEndsOnTime) / 300;
+                }
+                else if (this.totalElapsedTime > this.gameEndsOnTime + 300) {
+
+                    this.pressEnter.alpha = 1;
+                }
+
+                this.pressEnter.scale.x = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
+                this.pressEnter.scale.y = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
+            }
+
+            if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter') &&
+                !Game.sceneTransition.isGrowing) {
+
+                Game.sceneTransition.startGrowing();
+            }
+
+            return;
+        }        
+
         this.updateRope(elapsedTime);
 
         this.checkCollision(elapsedTime);
@@ -239,20 +295,56 @@
         this.updateHand(elapsedTime);
 
         this.updateMini(elapsedTime);
+    }
 
-        this.scoreCounter.update(elapsedTime);
+    private setRopeSpeed() {
+
+        let partLevelDone = this.totalElapsedTime / this.gameEndsOnTime;
+
+        if (partLevelDone > 0.75) {
+
+            partLevelDone = 1;
+        }
+
+        let minSpeed = Math.floor(300 + 700 * partLevelDone);
+        let maxSpeed = Math.floor(500 + 700 * partLevelDone);
+
+        this.ropeSpeed = MathHelper.randomInt(minSpeed, maxSpeed);
+
+        if (this.ropeTargetX < 0) {
+
+            this.ropeTargetX = MathHelper.randomInt(100, 650);
+        }
+        else {
+
+            this.ropeTargetX = MathHelper.randomInt(-650, -100);
+        }
     }
 
     private updateRope(elapsedTime: number) {
 
-        let ropeSpeed = 300;
         let ropeInertia = 100;
 
         //  Control the rope by changing it last link
 
-        //  TODO: Kör mer random (med ökande svårighetsgrad) på hur repet rör sig. Eller i takt med musiken om det går. 
+        if (this.points[this.points.length - 1].x < this.ropeTargetX) {
 
-        this.points[this.points.length - 1].x = 600 * Math.sin(Math.PI * 2 * this.totalElapsedTime / 3000);
+            this.points[this.points.length - 1].x += this.ropeSpeed * elapsedTime / 1000;
+
+            if (this.points[this.points.length - 1].x >= this.ropeTargetX) {
+
+                this.setRopeSpeed();
+            }
+        }
+        else {
+
+            this.points[this.points.length - 1].x -= this.ropeSpeed * elapsedTime / 1000;
+
+            if (this.points[this.points.length - 1].x <= this.ropeTargetX) {
+
+                this.setRopeSpeed();
+            }
+        }
 
         //  The first link is static (knot), the last link is controlling the movement. All other links follows the last
 
@@ -293,12 +385,12 @@
 
             //  Collision left!
 
-            this.tieLoop.x = tieX - ropeWidth + this.loopWidth / 2;
+            this.tieLoop.x = tieX - ropeWidth + this.loopWidth / 2 - 1;
             this.tieLoopBack.x = this.tieLoop.x;
 
             this.stranglePart += elapsedTime / 3000;
 
-            if (!this.isStrangle && this.betweenFrame > -1 && this.betweenFrame < 2) {
+            if (!this.isStrangle && (this.betweenFrame < 0 || this.betweenFrame > 1)) {
 
                 this.betweenFrame = 0;
                 this.betweenFrameDirection = 1;
@@ -321,12 +413,12 @@
 
             //  Collision right!
 
-            this.tieLoop.x = tieX + ropeWidth - this.loopWidth / 2;
+            this.tieLoop.x = tieX + ropeWidth - this.loopWidth / 2 + 1;
             this.tieLoopBack.x = this.tieLoop.x;
 
             this.stranglePart += elapsedTime / 3000;
 
-            if (!this.isStrangle && this.betweenFrame > -1 && this.betweenFrame < 2) {
+            if (!this.isStrangle && (this.betweenFrame < 0 || this.betweenFrame > 1)) {
 
                 this.betweenFrame = 0;
                 this.betweenFrameDirection = 1;
@@ -351,9 +443,9 @@
 
             this.totalTimeScore += elapsedTime;
 
-            let newScore = Math.floor(this.totalTimeScore / this.gameEndsOnTime);
+            let newScore = Math.floor(100 * this.totalTimeScore / this.gameEndsOnTime);
 
-            if (newScore > this.scoreCounter.getScore()) {
+            if (newScore > this.scoreCounter.getDesiredScore()) {
 
                 this.scoreCounter.setNewScore(newScore, 200);
             }
@@ -374,7 +466,7 @@
                 this.tieLoopBack.x = this.tieLoop.x;
             }
 
-            if (this.isStrangle && (this.betweenFrame > 1 || this.betweenFrame < 0)) {
+            if (this.isStrangle && (this.betweenFrame < 0 || this.betweenFrame > 1)) {
 
                 this.betweenFrame = 1;
                 this.betweenFrameDirection = -1;
