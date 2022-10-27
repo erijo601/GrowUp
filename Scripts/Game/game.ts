@@ -145,6 +145,8 @@ class Game {
         PIXI.Loader.shared.add('intro-moustache-subtitle', 'img/Intro/moustache-subtitle.png');
         PIXI.Loader.shared.add('intro-tie-title', 'img/Intro/tie-title.png');
         PIXI.Loader.shared.add('intro-tie-subtitle', 'img/Intro/tie-subtitle.png');
+        PIXI.Loader.shared.add('intro-hat-title', 'img/Intro/hat-title.png');
+        PIXI.Loader.shared.add('intro-hat-subtitle', 'img/Intro/hat-subtitle.png');
 
         //  Title
         PIXI.Loader.shared.add('1player-disabled', 'img/Title/1player-disabled.png');
@@ -180,7 +182,6 @@ class Game {
         PIXI.Loader.shared.add('number-8-white', 'img/ScoreState/8.png');
         PIXI.Loader.shared.add('number-9-white', 'img/ScoreState/9.png');
         PIXI.Loader.shared.add('procent-white', 'img/ScoreState/procent.png');
-
 
         //  Level Moustache
         PIXI.Loader.shared.add('box-p1-0', 'img/LevelMoustache/box-p1-0.png');
@@ -245,6 +246,22 @@ class Game {
         PIXI.Loader.shared.add('p1-mini-between1', 'img/LevelTie/p1-mini-between1.png');
         PIXI.Loader.shared.add('p2-mini-between0', 'img/LevelTie/p2-mini-between0.png');
         PIXI.Loader.shared.add('p2-mini-between1', 'img/LevelTie/p2-mini-between1.png');
+
+        //  Level Hat
+        PIXI.Loader.shared.add('level-hat-background', 'img/LevelHat/level-hat-background.png');
+        PIXI.Loader.shared.add('level-hat-clap0', 'img/LevelHat/clap0.png');
+        PIXI.Loader.shared.add('level-hat-clap1', 'img/LevelHat/clap1.png');
+        PIXI.Loader.shared.add('level-hat-clap2', 'img/LevelHat/clap2.png');
+        PIXI.Loader.shared.add('level-hat-clap3', 'img/LevelHat/clap3.png');
+        PIXI.Loader.shared.add('level-hat-clap4', 'img/LevelHat/clap4.png');
+        PIXI.Loader.shared.add('level-hat-clap5', 'img/LevelHat/clap5.png');
+        PIXI.Loader.shared.add('level-hat-hair-p1', 'img/LevelHat/hair-p1.png');
+        PIXI.Loader.shared.add('level-hat-hair-p2', 'img/LevelHat/hair-p2.png');
+        PIXI.Loader.shared.add('level-hat-idle0', 'img/LevelHat/idle0.png');
+        PIXI.Loader.shared.add('level-hat-idle1', 'img/LevelHat/idle1.png');
+        PIXI.Loader.shared.add('level-hat-legs0', 'img/LevelHat/legs0.png');
+        PIXI.Loader.shared.add('level-hat-legs1', 'img/LevelHat/legs1.png');
+        PIXI.Loader.shared.add('level-hat-legs2', 'img/LevelHat/legs2.png');
     }
 
     static loadingScreenResourcesLoaded(resources: any) {

@@ -8,12 +8,16 @@ var Intro = /** @class */ (function () {
         this.subtitleMoustache = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-moustache-subtitle"].texture);
         this.titleTie = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-tie-title"].texture);
         this.subtitleTie = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-tie-subtitle"].texture);
+        this.titleHat = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-hat-title"].texture);
+        this.subtitleHat = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-hat-subtitle"].texture);
         this.tieRight.y = 377;
         this.tieLeft.y = 491;
         this.titleMoustache.y = 442;
         this.subtitleMoustache.y = 592;
         this.titleTie.y = 442;
         this.subtitleTie.y = 592;
+        this.titleHat.y = 442;
+        this.subtitleHat.y = 592;
         this.isPlaying = false;
     }
     Intro.prototype.startLevelMoustache = function () {
@@ -24,6 +28,11 @@ var Intro = /** @class */ (function () {
     Intro.prototype.startLevelTie = function () {
         this.currentTitle = this.titleTie;
         this.currentSubtitle = this.subtitleTie;
+        this.start();
+    };
+    Intro.prototype.startLevelHat = function () {
+        this.currentTitle = this.titleHat;
+        this.currentSubtitle = this.subtitleHat;
         this.start();
     };
     Intro.prototype.start = function () {

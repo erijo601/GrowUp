@@ -234,7 +234,6 @@ var ScoreState = /** @class */ (function (_super) {
         Game.app.stage.removeChild(this.spriteTotalProcent);
         Game.app.stage.removeChild(this.pressEnter);
         this.scoreCounter.onExit();
-        //  TODO: Ladda nästa bana
         if (Game.twoPlayerGame) {
             if (this.currentLevel == Level.Moustache) {
                 Game.currentStatePlayer1 = new LevelTie(1, 0, 'w', 's', 'a', 'd');
@@ -261,6 +260,23 @@ var ScoreState = /** @class */ (function (_super) {
             }
             return;
         }
+        if (Game.sceneTransition.isGrowing) {
+            Game.sceneTransition.update(elapsedTime);
+            if (Game.sceneTransition.isDone()) {
+                this.onExit();
+                return;
+            }
+        }
+        if (this.timeTilStartCounting > 0) {
+            this.timeTilStartCounting -= elapsedTime;
+            if (this.timeTilStartCounting <= 0) {
+                elapsedTime += this.timeTilStartCounting;
+                this.scoreCounter.setNewScore(0, 100);
+            }
+            else {
+                return;
+            }
+        }
         this.scoreCounter.update(elapsedTime);
         if (Game.scoreStatePlayer1.scoreCounter.isCounting() == false &&
             (Game.twoPlayerGame == false || Game.scoreStatePlayer2.scoreCounter.isCounting() == false)) {
@@ -280,25 +296,6 @@ var ScoreState = /** @class */ (function (_super) {
                     }
                 }
             }
-        }
-        if (Game.sceneTransition.isGrowing) {
-            Game.sceneTransition.update(elapsedTime);
-            if (Game.sceneTransition.isDone()) {
-                this.onExit();
-                return;
-            }
-        }
-        if (this.timeTilStartCounting > 0) {
-            this.timeTilStartCounting -= elapsedTime;
-            if (this.timeTilStartCounting <= 0) {
-                elapsedTime += this.timeTilStartCounting;
-                this.scoreCounter.setNewScore(0, 100);
-            }
-            else {
-                return;
-            }
-        }
-        if (!this.scoreCounter.isCounting()) {
             //  Waiting for the player to press enter
             return;
         }
