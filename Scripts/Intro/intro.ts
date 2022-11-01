@@ -21,8 +21,8 @@
     private titleHat: PIXI.Sprite;
     private subtitleHat: PIXI.Sprite;
 
-    private timeMoveInOut: number = 750;
-    private timeSlowMotion: number = 3000;
+    private timeMoveInOut: number = 75;// 0;
+    private timeSlowMotion: number = 300;// 0;
 
     constructor() {
 

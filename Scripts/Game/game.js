@@ -204,6 +204,13 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('level-hat-legs0', 'img/LevelHat/legs0.png');
         PIXI.Loader.shared.add('level-hat-legs1', 'img/LevelHat/legs1.png');
         PIXI.Loader.shared.add('level-hat-legs2', 'img/LevelHat/legs2.png');
+        PIXI.Loader.shared.add('level-hat-legs3', 'img/LevelHat/legs3.png');
+        PIXI.Loader.shared.add('level-hat-grab-torso', 'img/LevelHat/level-hat-grab-torso.png');
+        PIXI.Loader.shared.add('level-hat-grab-left-lower-arm', 'img/LevelHat/grab-left-lower-arm.png');
+        PIXI.Loader.shared.add('level-hat-grab-left-upper-arm', 'img/LevelHat/grab-left-upper-arm.png');
+        PIXI.Loader.shared.add('level-hat-grab-right-lower-arm', 'img/LevelHat/grab-right-lower-arm.png');
+        PIXI.Loader.shared.add('level-hat-grab-right-upper-arm', 'img/LevelHat/grab-right-upper-arm.png');
+        PIXI.Loader.shared.add('level-hat-flying', 'img/LevelHat/hat-flying.png');
     };
     Game.loadingScreenResourcesLoaded = function (resources) {
         Game.currentStatePlayer1 = new LoadingState();

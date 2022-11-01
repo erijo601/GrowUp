@@ -45,14 +45,21 @@
     <Content Include="img\LevelHat\clap3.png" />
     <Content Include="img\LevelHat\clap4.png" />
     <Content Include="img\LevelHat\clap5.png" />
+    <Content Include="img\LevelHat\grab-left-lower-arm.png" />
+    <Content Include="img\LevelHat\grab-left-upper-arm.png" />
+    <Content Include="img\LevelHat\grab-right-lower-arm.png" />
+    <Content Include="img\LevelHat\grab-right-upper-arm.png" />
     <Content Include="img\LevelHat\hair-p1.png" />
     <Content Include="img\LevelHat\hair-p2.png" />
+    <Content Include="img\LevelHat\hat-flying.png" />
     <Content Include="img\LevelHat\idle0.png" />
     <Content Include="img\LevelHat\idle1.png" />
     <Content Include="img\LevelHat\legs0.png" />
     <Content Include="img\LevelHat\legs1.png" />
     <Content Include="img\LevelHat\legs2.png" />
+    <Content Include="img\LevelHat\legs3.png" />
     <Content Include="img\LevelHat\level-hat-background.png" />
+    <Content Include="img\LevelHat\level-hat-grab-torso.png" />
     <Content Include="img\LevelMoustache\box-p1-0.png" />
     <Content Include="img\LevelMoustache\box-p1-1.png" />
     <Content Include="img\LevelMoustache\box-p1-2.png" />
@@ -210,7 +217,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\Background\background.ts" />
-    <TypeScriptCompile Include="Scripts\Filters\RGBSplitFilter.ts" />
+    <TypeScriptCompile Include="Scripts\Filters\LevelHatFilter.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\gameState.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\levelHat.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\levelTie.ts" />
