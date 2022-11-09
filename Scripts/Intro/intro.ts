@@ -24,8 +24,8 @@
     private titleOffice: PIXI.Sprite;
     private subtitleOffice: PIXI.Sprite;
 
-    private timeMoveInOut: number = 75;// 0;
-    private timeSlowMotion: number = 30;// 00;
+    private timeMoveInOut: number = 750;
+    private timeSlowMotion: number = 3000;
 
     constructor() {
 

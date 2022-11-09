@@ -237,7 +237,6 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('level-hat-hockey5', 'img/LevelHat/hockey5.png');
         PIXI.Loader.shared.add('level-hat-hockey6', 'img/LevelHat/hockey6.png');
         //  Level Office
-        PIXI.Loader.shared.add('level-office-cubicle', 'img/LevelOffice/cubicle.png');
         PIXI.Loader.shared.add('level-office-player-background-p1', 'img/LevelOffice/player-background-p1.png');
         PIXI.Loader.shared.add('level-office-player-background-p2', 'img/LevelOffice/player-background-p2.png');
         PIXI.Loader.shared.add('level-office-player-idle-p1', 'img/LevelOffice/player-idle-p1.png');
@@ -276,6 +275,19 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('level-office-cutscene-head-p2', 'img/LevelOffice/cutscene-head-p2.png');
         PIXI.Loader.shared.add('level-office-cutscene-text-end', 'img/LevelOffice/cutscene-text-end.png');
         PIXI.Loader.shared.add('level-office-cutscene-text-start', 'img/LevelOffice/cutscene-text-start.png');
+        PIXI.Loader.shared.add('level-office-cubicle-computer', 'img/LevelOffice/cubicle-computer.png');
+        PIXI.Loader.shared.add('level-office-cubicle-item0', 'img/LevelOffice/cubicle-item0.png');
+        PIXI.Loader.shared.add('level-office-cubicle-item1', 'img/LevelOffice/cubicle-item1.png');
+        PIXI.Loader.shared.add('level-office-cubicle-item2', 'img/LevelOffice/cubicle-item2.png');
+        PIXI.Loader.shared.add('level-office-cubicle-item3', 'img/LevelOffice/cubicle-item3.png');
+        PIXI.Loader.shared.add('level-office-cubicle-item4', 'img/LevelOffice/cubicle-item4.png');
+        PIXI.Loader.shared.add('level-office-cubicle-item5', 'img/LevelOffice/cubicle-item5.png');
+        PIXI.Loader.shared.add('level-office-cubicle-item6', 'img/LevelOffice/cubicle-item6.png');
+        PIXI.Loader.shared.add('level-office-cubicle-worker0', 'img/LevelOffice/cubicle-worker0.png');
+        PIXI.Loader.shared.add('level-office-cubicle-worker1', 'img/LevelOffice/cubicle-worker1.png');
+        PIXI.Loader.shared.add('level-office-cubicle-worker2', 'img/LevelOffice/cubicle-worker2.png');
+        PIXI.Loader.shared.add('level-office-cubicle0', 'img/LevelOffice/cubicle0.png');
+        PIXI.Loader.shared.add('level-office-cubicle1', 'img/LevelOffice/cubicle1.png');
     };
     Game.loadingScreenResourcesLoaded = function (resources) {
         Game.currentStatePlayer1 = new LoadingState();

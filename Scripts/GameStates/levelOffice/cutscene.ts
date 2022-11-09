@@ -240,7 +240,7 @@
         if (this.cupsHad > 0 && this.head.angle == 0) {
 
             this.eye.visible = true;
-            this.eye.angle += this.cupsHad * 120 * elapsedTime / 1000;
+            this.eye.angle += this.cupsHad * 360 * elapsedTime / 1000;
         }
         else {
 

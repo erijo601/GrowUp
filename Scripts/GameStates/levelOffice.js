@@ -17,7 +17,7 @@ var LevelOffice = /** @class */ (function (_super) {
     __extends(LevelOffice, _super);
     function LevelOffice(player, xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, player, xOffset, upKey, downKey, leftKey, rightKey) || this;
-        _this.gameEndsOnTime = 86000;
+        _this.gameEndsOnTime = 86450;
         _this.stateName = "LevelOffice";
         _this.scoreCounter = new ScoreCounter(xOffset, 4, 16, 0);
         _this.cutscene = new Cutscene(xOffset, 130, player, _this.upKey, _this.downKey, _this.leftKey, _this.rightKey, _this.scoreCounter);
@@ -57,6 +57,26 @@ var LevelOffice = /** @class */ (function (_super) {
             _this.otherPlayerLegsSprite.pivot.y = 92;
             _this.otherPlayerLegsSprite.zIndex = 97;
         }
+        _this.directionUpSprite = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-finger-up"].texture);
+        _this.directionUpSprite.x = _this.world.x + _this.world.width / 2 - 22;
+        _this.directionUpSprite.y = _this.world.y;
+        _this.directionUpSprite.zIndex = 110;
+        _this.directionUpSprite.visible = false;
+        _this.directionDownSprite = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-finger-down"].texture);
+        _this.directionDownSprite.x = _this.world.x + _this.world.width / 2 - 22;
+        _this.directionDownSprite.y = _this.world.y + _this.world.height - 100;
+        _this.directionDownSprite.zIndex = 110;
+        _this.directionDownSprite.visible = false;
+        _this.directionLeftSprite = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-finger-left"].texture);
+        _this.directionLeftSprite.x = _this.world.x;
+        _this.directionLeftSprite.y = _this.world.y + _this.world.height / 2 - 22;
+        _this.directionLeftSprite.zIndex = 110;
+        _this.directionLeftSprite.visible = false;
+        _this.directionRightSprite = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-finger-right"].texture);
+        _this.directionRightSprite.x = _this.world.x + _this.world.width - 100;
+        _this.directionRightSprite.y = _this.world.y + _this.world.height / 2 - 22;
+        _this.directionRightSprite.zIndex = 110;
+        _this.directionRightSprite.visible = false;
         _this.floor = new PIXI.Graphics();
         _this.floor.beginFill(ColorHelper.rgbToHex(123, 157, 156));
         _this.floor.drawRect(0, 0, _this.renderTexture.width, _this.renderTexture.height);
@@ -73,10 +93,14 @@ var LevelOffice = /** @class */ (function (_super) {
         this.currentFrameLegs = 0;
         this.otherPlayerWorldPosition = new Position(600, 600);
         this.nextCheckpoint = 1;
-        this.elapsedTimeInCurrentCheckpoint = 0;
+        this.elapsedTimeInCurrentCheckpoint = 3000;
         Game.app.stage.addChild(this.world);
         Game.app.stage.addChild(this.playerLegsSprite);
         Game.app.stage.addChild(this.playerSprite);
+        Game.app.stage.addChild(this.directionUpSprite);
+        Game.app.stage.addChild(this.directionDownSprite);
+        Game.app.stage.addChild(this.directionLeftSprite);
+        Game.app.stage.addChild(this.directionRightSprite);
         this.scoreCounter.onEnter();
         this.totalElapsedTime = 0;
         if (this.player == 1) {
@@ -86,12 +110,15 @@ var LevelOffice = /** @class */ (function (_super) {
         Game.sceneTransition.startShrinking();
         this.movePlayer(0);
         this.renderWorld();
-        //Game.soundPlayer.musicOffice.play();
     };
     LevelOffice.prototype.onExit = function () {
         Game.app.stage.removeChild(this.world);
         Game.app.stage.removeChild(this.playerLegsSprite);
         Game.app.stage.removeChild(this.playerSprite);
+        Game.app.stage.removeChild(this.directionUpSprite);
+        Game.app.stage.removeChild(this.directionDownSprite);
+        Game.app.stage.removeChild(this.directionLeftSprite);
+        Game.app.stage.removeChild(this.directionRightSprite);
         this.scoreCounter.onExit();
         //Game.soundPlayer.musicOffice.stop();
         if (this.player == 1) {
@@ -118,6 +145,7 @@ var LevelOffice = /** @class */ (function (_super) {
             Game.sceneTransition.update(elapsedTime);
             if (Game.sceneTransition.isDone()) {
                 Game.intro.startLevelOffice();
+                Game.soundPlayer.musicOffice.play();
             }
             return;
         }
@@ -127,10 +155,12 @@ var LevelOffice = /** @class */ (function (_super) {
                 this.onExit();
             }
         }
-        //  TODO: Ändra 1000 och 60000 till riktiga tider
-        var cutsceneStart = 1000;
-        var cutsceneEnd = 60000;
+        var cutsceneStart = 20800;
+        var cutsceneEnd = 39332;
         var textDuration = 1500;
+        if (Game.keyboard.current.isPressed("v")) {
+            console.log(this.totalElapsedTime);
+        }
         if (this.totalElapsedTime > cutsceneStart && this.totalElapsedTime < cutsceneEnd) {
             //  Cutscene!
             if (!this.cutscene.isVisible()) {
@@ -319,10 +349,10 @@ var LevelOffice = /** @class */ (function (_super) {
     };
     LevelOffice.prototype.movePlayer = function (elapsedTime) {
         var turnSpeed = 360; //  Degrees per second
-        var accSpeed = 1000;
-        var naturalBreakAcc = -400;
-        var playerBreakAcc = -1600;
-        var maxSpeed = 1000;
+        var accSpeed = 1400;
+        var naturalBreakAcc = -1000;
+        var playerBreakAcc = -3000;
+        var maxSpeed = 1200;
         var currentLegsTexture = "";
         if (Game.keyboard.current.isPressed(this.leftKey) && !Game.keyboard.current.isPressed(this.rightKey)) {
             this.playerSprite.angle -= turnSpeed * elapsedTime / 1000;
@@ -470,17 +500,40 @@ var LevelOffice = /** @class */ (function (_super) {
     };
     LevelOffice.prototype.checkCheckpoints = function (elapsedTime) {
         this.elapsedTimeInCurrentCheckpoint += elapsedTime;
-        if (this.elapsedTimeInCurrentCheckpoint > 3000) {
-            //  TODO: Show arrow
-        }
+        this.directionUpSprite.visible = false;
+        this.directionDownSprite.visible = false;
+        this.directionLeftSprite.visible = false;
+        this.directionRightSprite.visible = false;
         if (this.checkpoints[this.nextCheckpoint].isInside(this.playerWorldPosition)) {
             this.elapsedTimeInCurrentCheckpoint = 0;
-            //  TODO: Hide arrow
             this.nextCheckpoint++;
             if (this.nextCheckpoint >= this.checkpoints.length) {
                 this.nextCheckpoint = 0;
             }
             this.scoreCounter.setNewScore(this.scoreCounter.getDesiredScore() + 1, 200);
+        }
+        else if (this.elapsedTimeInCurrentCheckpoint > 1000) {
+            for (var i = 0; i < this.checkpoints.length; i++) {
+                if (this.checkpoints[i].isInside(this.playerWorldPosition)) {
+                    if (this.checkpoints[i].directionNext == Direction.Up) {
+                        this.directionUpSprite.visible = true;
+                        this.directionUpSprite.alpha = 0.5 + 0.5 * Math.sin(2 * Math.PI * this.totalElapsedTime / 500);
+                    }
+                    else if (this.checkpoints[i].directionNext == Direction.Down) {
+                        this.directionDownSprite.visible = true;
+                        this.directionDownSprite.alpha = 0.5 + 0.5 * Math.sin(2 * Math.PI * this.totalElapsedTime / 500);
+                    }
+                    else if (this.checkpoints[i].directionNext == Direction.Left) {
+                        this.directionLeftSprite.visible = true;
+                        this.directionLeftSprite.alpha = 0.5 + 0.5 * Math.sin(2 * Math.PI * this.totalElapsedTime / 500);
+                    }
+                    else if (this.checkpoints[i].directionNext == Direction.Right) {
+                        this.directionRightSprite.visible = true;
+                        this.directionRightSprite.alpha = 0.5 + 0.5 * Math.sin(2 * Math.PI * this.totalElapsedTime / 500);
+                    }
+                    break;
+                }
+            }
         }
     };
     return LevelOffice;

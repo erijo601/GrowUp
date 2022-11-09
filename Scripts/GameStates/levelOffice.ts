@@ -4,7 +4,7 @@
     private cutscene: Cutscene;
 
     private totalElapsedTime: number;
-    private gameEndsOnTime: number = 86000;
+    private gameEndsOnTime: number = 81450;
 
     private playerSprite: PIXI.Sprite;
     private playerLegsSprite: PIXI.Sprite;
@@ -18,6 +18,11 @@
     private renderTexture: PIXI.RenderTexture;
 
     private floor: PIXI.Graphics;
+
+    private directionUpSprite: PIXI.Sprite;
+    private directionDownSprite: PIXI.Sprite;
+    private directionLeftSprite: PIXI.Sprite;
+    private directionRightSprite: PIXI.Sprite;
 
     private cubicles: Cubicle[];
     private checkpoints: Checkpoint[];
@@ -86,6 +91,30 @@
             this.otherPlayerLegsSprite.zIndex = 97;
         }
 
+        this.directionUpSprite = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-finger-up"].texture);
+        this.directionUpSprite.x = this.world.x + this.world.width / 2 - 22;
+        this.directionUpSprite.y = this.world.y;
+        this.directionUpSprite.zIndex = 110;
+        this.directionUpSprite.visible = false;
+
+        this.directionDownSprite = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-finger-down"].texture);
+        this.directionDownSprite.x = this.world.x + this.world.width / 2 - 22;
+        this.directionDownSprite.y = this.world.y + this.world.height - 100;
+        this.directionDownSprite.zIndex = 110;
+        this.directionDownSprite.visible = false;
+
+        this.directionLeftSprite = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-finger-left"].texture);
+        this.directionLeftSprite.x = this.world.x;
+        this.directionLeftSprite.y = this.world.y + this.world.height / 2 - 22;
+        this.directionLeftSprite.zIndex = 110;
+        this.directionLeftSprite.visible = false;
+
+        this.directionRightSprite = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-finger-right"].texture);
+        this.directionRightSprite.x = this.world.x + this.world.width - 100;
+        this.directionRightSprite.y = this.world.y + this.world.height / 2 - 22;
+        this.directionRightSprite.zIndex = 110;
+        this.directionRightSprite.visible = false;
+
         this.floor = new PIXI.Graphics();
 
         this.floor.beginFill(ColorHelper.rgbToHex(123, 157, 156));
@@ -107,12 +136,17 @@
         this.otherPlayerWorldPosition = new Position(600, 600);
 
         this.nextCheckpoint = 1;
-        this.elapsedTimeInCurrentCheckpoint = 0;
+        this.elapsedTimeInCurrentCheckpoint = 3000;
 
         Game.app.stage.addChild(this.world);
 
         Game.app.stage.addChild(this.playerLegsSprite);
         Game.app.stage.addChild(this.playerSprite);
+        Game.app.stage.addChild(this.directionUpSprite);
+        Game.app.stage.addChild(this.directionDownSprite);
+        Game.app.stage.addChild(this.directionLeftSprite);
+        Game.app.stage.addChild(this.directionRightSprite);
+
 
         this.scoreCounter.onEnter();
 
@@ -129,8 +163,6 @@
 
         this.movePlayer(0);
         this.renderWorld();
-
-        //Game.soundPlayer.musicOffice.play();
     }
 
     public onExit(): void {
@@ -139,6 +171,10 @@
 
         Game.app.stage.removeChild(this.playerLegsSprite);
         Game.app.stage.removeChild(this.playerSprite);
+        Game.app.stage.removeChild(this.directionUpSprite);
+        Game.app.stage.removeChild(this.directionDownSprite);
+        Game.app.stage.removeChild(this.directionLeftSprite);
+        Game.app.stage.removeChild(this.directionRightSprite);
 
         this.scoreCounter.onExit();
 
@@ -183,6 +219,7 @@
             if (Game.sceneTransition.isDone()) {
 
                 Game.intro.startLevelOffice();
+                Game.soundPlayer.musicOffice.play();
             }
 
             return;
@@ -198,10 +235,15 @@
             }
         }
 
-        //  TODO: Ändra 1000 och 60000 till riktiga tider
-        let cutsceneStart = 1000;
-        let cutsceneEnd = 60000;
+        let cutsceneStart = 20800;
+        let cutsceneEnd = 39332;
         let textDuration = 1500;
+
+        if (Game.keyboard.current.isPressed("v")) {
+
+            console.log(this.totalElapsedTime);
+        }
+
 
         if (this.totalElapsedTime > cutsceneStart && this.totalElapsedTime < cutsceneEnd) {
 
@@ -242,7 +284,6 @@
         }
 
         this.totalElapsedTime += elapsedTime;
-
 
         this.movePlayer(elapsedTime);
 
@@ -463,10 +504,10 @@
     private movePlayer(elapsedTime: number) {
 
         let turnSpeed = 360;    //  Degrees per second
-        let accSpeed = 1000;
-        let naturalBreakAcc = -400;
-        let playerBreakAcc = -1600;
-        let maxSpeed = 1000;
+        let accSpeed = 1400;
+        let naturalBreakAcc = -1000;
+        let playerBreakAcc = -2500;
+        let maxSpeed = 1200;
 
         let currentLegsTexture = "";
 
@@ -700,15 +741,15 @@
 
         this.elapsedTimeInCurrentCheckpoint += elapsedTime;
 
-        if (this.elapsedTimeInCurrentCheckpoint > 3000) {
-
-            //  TODO: Show arrow
-        }
+        this.directionUpSprite.visible = false;
+        this.directionDownSprite.visible = false;
+        this.directionLeftSprite.visible = false;
+        this.directionRightSprite.visible = false;
 
         if (this.checkpoints[this.nextCheckpoint].isInside(this.playerWorldPosition)) {
 
             this.elapsedTimeInCurrentCheckpoint = 0;
-            //  TODO: Hide arrow
+
             this.nextCheckpoint++;
 
             if (this.nextCheckpoint >= this.checkpoints.length) {
@@ -718,6 +759,36 @@
 
             this.scoreCounter.setNewScore(this.scoreCounter.getDesiredScore() + 1, 200);
         }
+        else if (this.elapsedTimeInCurrentCheckpoint > 1000) {
 
+            for (let i = 0; i < this.checkpoints.length; i++) {
+
+                if (this.checkpoints[i].isInside(this.playerWorldPosition)) {
+
+                    if (this.checkpoints[i].directionNext == Direction.Up) {
+
+                        this.directionUpSprite.visible = true;
+                        this.directionUpSprite.alpha = 0.5 + 0.5 * Math.sin(2 * Math.PI * this.totalElapsedTime / 500);
+                    }
+                    else if (this.checkpoints[i].directionNext == Direction.Down) {
+
+                        this.directionDownSprite.visible = true;
+                        this.directionDownSprite.alpha = 0.5 + 0.5 * Math.sin(2 * Math.PI * this.totalElapsedTime / 500);
+                    }
+                    else if (this.checkpoints[i].directionNext == Direction.Left) {
+
+                        this.directionLeftSprite.visible = true;
+                        this.directionLeftSprite.alpha = 0.5 + 0.5 * Math.sin(2 * Math.PI * this.totalElapsedTime / 500);
+                    }
+                    else if (this.checkpoints[i].directionNext == Direction.Right) {
+
+                        this.directionRightSprite.visible = true;
+                        this.directionRightSprite.alpha = 0.5 + 0.5 * Math.sin(2 * Math.PI * this.totalElapsedTime / 500);
+                    }
+
+                    break;
+                }
+            }
+        }
     }
 }

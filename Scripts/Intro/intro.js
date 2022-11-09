@@ -1,7 +1,7 @@
 var Intro = /** @class */ (function () {
     function Intro() {
-        this.timeMoveInOut = 75; // 0;
-        this.timeSlowMotion = 30; // 00;
+        this.timeMoveInOut = 750;
+        this.timeSlowMotion = 3000;
         this.tieLeft = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-tie-left"].texture);
         this.tieRight = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-tie-right"].texture);
         this.titleMoustache = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-moustache-title"].texture);
