@@ -15,6 +15,9 @@ var GameState = /** @class */ (function () {
     GameState.prototype.update = function (elapsedTime) {
         // elapsedTime in ms
     };
+    GameState.prototype.updateOtherPlayer = function (worldPosition, angle, texture) {
+        //  Used only in LevelOffice
+    };
     return GameState;
 }());
 //# sourceMappingURL=gameState.js.map

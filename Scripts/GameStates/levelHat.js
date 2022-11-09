@@ -17,7 +17,7 @@ var LevelHat = /** @class */ (function (_super) {
     __extends(LevelHat, _super);
     function LevelHat(player, xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, player, xOffset, upKey, downKey, leftKey, rightKey) || this;
-        _this.gameEndsOnTime = 92500;
+        _this.gameEndsOnTime = 83000;
         _this.stateName = "LevelHat";
         _this.scoreCounter = new ScoreCounter(xOffset, 4, 16, 0);
         _this.background = new PIXI.Sprite(PIXI.Loader.shared.resources["level-hat-background"].texture);
@@ -59,7 +59,7 @@ var LevelHat = /** @class */ (function (_super) {
         _this.grabLeftUpperArm = new PIXI.Sprite(PIXI.Loader.shared.resources["level-hat-grab-left-upper-arm"].texture);
         _this.grabLeftUpperArm.x = _this.playerTorso.x + 99;
         _this.grabLeftUpperArm.y = _this.playerTorso.y + 161 + 14;
-        _this.grabLeftUpperArm.zIndex = 100;
+        _this.grabLeftUpperArm.zIndex = 101;
         _this.grabLeftUpperArm.pivot.x = 58;
         _this.grabLeftUpperArm.pivot.y = 14;
         _this.grabLeftUpperArm.visible = false;
@@ -82,6 +82,15 @@ var LevelHat = /** @class */ (function (_super) {
         _this.hatFlying.pivot.x = _this.hatFlying.width / 2;
         _this.hatFlying.pivot.y = _this.hatFlying.height / 2;
         _this.hatFlying.y = 330;
+        _this.keydown = new PIXI.Sprite(PIXI.Loader.shared.resources["keydown-p1"].texture);
+        _this.keydown.y = _this.playerTorso.y - 45;
+        _this.keydown.zIndex = 1000;
+        _this.keydown.visible = false;
+        _this.hockeyPlayer = new PIXI.Sprite(PIXI.Loader.shared.resources["level-hat-hockey0"].texture);
+        _this.hockeyPlayer.pivot.x = _this.hockeyPlayer.width / 2;
+        _this.hockeyPlayer.pivot.y = _this.hockeyPlayer.height;
+        _this.hockeyPlayer.visible = false;
+        _this.hockeyPlayerMoveTimeLeft = 0;
         _this.levelHatFilter = new LevelHatFilter();
         return _this;
     }
@@ -97,7 +106,10 @@ var LevelHat = /** @class */ (function (_super) {
         Game.app.stage.addChild(this.grabRightLowerArm);
         Game.app.stage.addChild(this.grabRightUpperArm);
         Game.app.stage.addChild(this.hatFlying);
+        Game.app.stage.addChild(this.keydown);
+        Game.app.stage.addChild(this.hockeyPlayer);
         this.totalElapsedTime = 0;
+        this.timeHoldingHat = 0;
         if (this.player == 1) {
             this.pressEnter.visible = false;
             Game.app.stage.addChild(this.pressEnter);
@@ -105,6 +117,8 @@ var LevelHat = /** @class */ (function (_super) {
         this.xPos = this.background.x + this.background.width / 2;
         this.xSpeed = 10;
         this.partGrab = 0;
+        this.grabPulldownTimeLeft = 0;
+        this.keydownFramePressed = false;
         this.hatFlying.x = this.xPos + (Math.random() > 0.5 ? 1 : -1) * MathHelper.randomInt(this.background.width / 4, this.background.width / 2);
         this.lastHatTarget = this.xOffset + MathHelper.randomInt(0, this.background.width);
         this.hatTarget = this.xOffset + MathHelper.randomInt(0, this.background.width);
@@ -114,13 +128,15 @@ var LevelHat = /** @class */ (function (_super) {
         this.currentFrameLegs = MathHelper.randomInt(0, 3);
         this.timeLeftCurrentFrameArms = MathHelper.randomInt(0, 250);
         this.currentFrameArms = MathHelper.randomInt(0, 1);
+        this.grabKeydownAnimTimeLeft = 200;
+        this.timeTilSpawnHockeyPlayer = 5000;
         this.xScale = 1;
         this.updatePlayerSprites(0);
         if (this.player == 1) {
             Game.sceneTransition.startShrinking();
             Game.app.stage.filters = [this.levelHatFilter];
             if (Game.twoPlayerGame) {
-                this.levelHatFilter.iceRect = new PIXI.Rectangle(this.xOffset, this.playerLegs.y + this.playerLegs.height, this.background.width * 2, 200);
+                this.levelHatFilter.iceRect = new PIXI.Rectangle(this.xOffset, this.playerLegs.y + this.playerLegs.height, this.background.width * 2 + 30, 200);
             }
             else {
                 this.levelHatFilter.iceRect = new PIXI.Rectangle(this.xOffset, this.playerLegs.y + this.playerLegs.height, this.background.width, 200);
@@ -138,6 +154,8 @@ var LevelHat = /** @class */ (function (_super) {
         Game.app.stage.removeChild(this.grabRightLowerArm);
         Game.app.stage.removeChild(this.grabRightUpperArm);
         Game.app.stage.removeChild(this.hatFlying);
+        Game.app.stage.removeChild(this.keydown);
+        Game.app.stage.removeChild(this.hockeyPlayer);
         this.scoreCounter.onExit();
         Game.soundPlayer.musicHat.stop();
         if (this.player == 1) {
@@ -177,6 +195,18 @@ var LevelHat = /** @class */ (function (_super) {
         }
         this.totalElapsedTime += elapsedTime;
         this.scoreCounter.update(elapsedTime);
+        this.timeTilSpawnHockeyPlayer -= elapsedTime;
+        if (this.timeTilSpawnHockeyPlayer <= 0) {
+            var hockeySpawnTimer = 5000;
+            if (this.totalElapsedTime > this.gameEndsOnTime * 0.75) {
+                hockeySpawnTimer = 3000;
+            }
+            else if (this.totalElapsedTime > this.gameEndsOnTime * 0.5) {
+                hockeySpawnTimer = 4000;
+            }
+            this.timeTilSpawnHockeyPlayer += hockeySpawnTimer;
+            this.spawnHockeyPlayer();
+        }
         if (this.totalElapsedTime > this.gameEndsOnTime) {
             if (this.player == 1) {
                 this.pressEnter.visible = true;
@@ -196,12 +226,51 @@ var LevelHat = /** @class */ (function (_super) {
             return;
         }
         this.updateHat(elapsedTime);
+        this.updateHockeyPlayer(elapsedTime);
         this.movePlayer(elapsedTime);
         this.updatePlayerSprites(elapsedTime);
     };
     LevelHat.prototype.updateHat = function (elapsedTime) {
+        if (this.grabPulldownTimeLeft > 0) {
+            this.grabPulldownTimeLeft -= elapsedTime;
+            if (this.grabPulldownTimeLeft < 0) {
+                this.grabPulldownTimeLeft = 0;
+            }
+            this.partGrab = 1 - this.grabPulldownTimeLeft / 200;
+        }
         if (this.partGrab > 0) {
-            this.partGrab -= elapsedTime / 2000;
+            this.timeHoldingHat += elapsedTime;
+            var currentScore = Math.floor(this.timeHoldingHat / 500);
+            if (currentScore > this.scoreCounter.getDesiredScore()) {
+                this.scoreCounter.setNewScore(currentScore, 300);
+            }
+            this.keydown.x = this.playerTorso.x - 23;
+            this.keydown.y = this.hatFlying.y - 80;
+            this.grabKeydownAnimTimeLeft -= elapsedTime;
+            if (this.grabKeydownAnimTimeLeft <= 0) {
+                this.grabKeydownAnimTimeLeft += 150;
+                this.keydownFramePressed = !this.keydownFramePressed;
+                if (this.keydownFramePressed) {
+                    this.keydown.texture = PIXI.Loader.shared.resources["keydown-pressed-p" + this.player].texture;
+                }
+                else {
+                    this.keydown.texture = PIXI.Loader.shared.resources["keydown-p" + this.player].texture;
+                }
+            }
+            if (this.grabPulldownTimeLeft <= 0) {
+                this.partGrab -= elapsedTime / 2000;
+            }
+            if (Game.keyboard.current.isPressed(this.downKey) && !Game.keyboard.last.isPressed(this.downKey)) {
+                this.grabDownPressCounter++;
+                if (this.grabDownPressCounter > 3) {
+                    this.grabDownPressCounter = 0;
+                    this.partGrab += this.extraGrab;
+                    if (this.partGrab > 1) {
+                        this.partGrab = 1;
+                    }
+                    this.extraGrab *= 0.85;
+                }
+            }
             if (this.partGrab <= 0) {
                 this.lastHatTarget = this.hatFlying.x;
                 if (this.hatTarget > this.xOffset + this.background.width / 2) {
@@ -215,12 +284,13 @@ var LevelHat = /** @class */ (function (_super) {
             }
         }
         if (this.partGrab > 0) {
-            this.hatFlying.angle = 0;
+            this.hatFlying.angle = Math.sin(2 * Math.PI * this.totalElapsedTime / 200) * 20;
             this.hatFlying.x = this.grabTorso.x;
             this.hatFlying.y = this.grabTorso.y + 26 + 72 * this.partGrab;
             this.hatFlying.scale.x = this.grabTorso.scale.x;
             return;
         }
+        this.keydown.visible = false;
         this.hatFlying.angle = 45 * Math.sin(2 * Math.PI * this.totalElapsedTime / 3000);
         this.hatFlying.y = 330 + 20 * Math.sin(2 * Math.PI * this.totalElapsedTime / 3000);
         this.timeElapsedHatTarget += elapsedTime;
@@ -268,8 +338,8 @@ var LevelHat = /** @class */ (function (_super) {
             this.xPos = this.xOffset + 187;
             this.xSpeed = 0;
         }
-        else if (this.xPos > this.xOffset + 960 + 187) {
-            this.xPos = this.xOffset + 960 + 187;
+        else if (this.xPos > this.xOffset + 930 + 187) {
+            this.xPos = this.xOffset + 930 + 187;
             this.xSpeed = 0;
         }
         if (!this.isGrabbing && Game.keyboard.current.isPressed(this.upKey) && !Game.keyboard.last.isPressed(this.upKey)) {
@@ -373,11 +443,84 @@ var LevelHat = /** @class */ (function (_super) {
             }
         }
     };
+    LevelHat.prototype.updateHockeyPlayer = function (elapsedTime) {
+        if (!this.hockeyPlayer.visible) {
+            return;
+        }
+        this.timeLeftCurrentFrameHockey -= elapsedTime;
+        if (this.timeLeftCurrentFrameHockey <= 0) {
+            this.timeLeftCurrentFrameHockey += 100;
+            this.currentFrameHockey++;
+            if (this.currentFrameHockey > 6) {
+                this.currentFrameHockey = 0;
+            }
+            this.hockeyPlayer.texture = PIXI.Loader.shared.resources["level-hat-hockey" + this.currentFrameHockey].texture;
+        }
+        this.hockeyPlayerMoveTimeLeft -= elapsedTime;
+        if (this.hockeyPlayerMoveTimeLeft < 400) {
+            this.hockeyPlayerMoveTimeLeft -= elapsedTime;
+        }
+        if (this.hockeyPlayerMoveTimeLeft <= 0) {
+            this.hockeyPlayerMoveTimeLeft = 0;
+            this.hockeyPlayer.visible = false;
+        }
+        var part = EasingCurves.easeInQuart(1 - this.hockeyPlayerMoveTimeLeft / 3000);
+        this.hockeyPlayer.y = 600 + 147 * part;
+        this.hockeyPlayer.scale.x = 0.5 + 0.8 * part;
+        this.hockeyPlayer.scale.y = 0.5 + 0.8 * part;
+        this.hockeyPlayer.tint = ColorHelper.rgbToHex(255 * part, 255 * part, 255 * part);
+        if (part > 0.90) {
+            this.hockeyPlayer.zIndex = 106;
+            var extraPart = (part - 0.9) / 0.1;
+            this.hockeyPlayer.y += extraPart * 100;
+            this.hockeyPlayer.scale.x += extraPart * 0.8;
+            this.hockeyPlayer.scale.y += extraPart * 0.8;
+            if (!this.hockeyPlayerTackle) {
+                this.hockeyPlayerTackle = true;
+                if (Math.abs(this.hockeyPlayer.x - this.playerTorso.x) < 200) {
+                    if (this.hockeyPlayer.x >= this.playerTorso.x) {
+                        this.xSpeed = -300;
+                    }
+                    else {
+                        this.xSpeed = 300;
+                    }
+                    if (this.partGrab > 0) {
+                        this.partGrab = 0;
+                        this.lastHatTarget = this.hatFlying.x;
+                        if (this.hatFlying.x > this.xOffset + this.background.width / 2) {
+                            this.hatTarget = this.xOffset + MathHelper.randomInt(0, this.background.width / 2 - 50);
+                        }
+                        else {
+                            this.hatTarget = this.xOffset + MathHelper.randomInt(this.background.width / 2 + 50, this.background.width);
+                        }
+                        this.timeElapsedHatTarget = 0;
+                        this.totalTimeTilHatTarget = 1000 * Math.abs(this.lastHatTarget - this.hatTarget) / 400;
+                    }
+                }
+            }
+        }
+        else {
+            this.hockeyPlayer.zIndex = 99;
+        }
+    };
+    LevelHat.prototype.spawnHockeyPlayer = function () {
+        this.hockeyPlayerMoveTimeLeft = 3000;
+        this.hockeyPlayer.x = MathHelper.randomInt(this.background.x + this.hockeyPlayer.width / 2, this.background.x + this.background.width - this.hockeyPlayer.width / 2);
+        this.hockeyPlayer.visible = true;
+        this.hockeyPlayerTackle = false;
+        this.currentFrameHockey = 0;
+        this.timeLeftCurrentFrameHockey = 100;
+        this.hockeyPlayer.texture = PIXI.Loader.shared.resources["level-hat-hockey" + this.currentFrameHockey].texture;
+        this.updateHockeyPlayer(0);
+    };
     LevelHat.prototype.checkHatGrab = function () {
-        //  TEst
-        this.partGrab = 1;
-        if (Math.abs(this.playerTorso.x - this.hatFlying.x) < 30) {
+        if (Math.abs(this.playerTorso.x - this.hatFlying.x) < 50) {
             this.partGrab = 1;
+            this.grabPulldownTimeLeft = 200;
+            this.keydownFramePressed = false;
+            this.keydown.visible = true;
+            this.grabDownPressCounter = 0;
+            this.extraGrab = 0.25;
         }
     };
     return LevelHat;

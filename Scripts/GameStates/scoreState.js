@@ -191,6 +191,10 @@ var ScoreState = /** @class */ (function (_super) {
         Game.app.stage.addChild(this.spriteTieTens);
         Game.app.stage.addChild(this.spriteTieHundreds);
         Game.app.stage.addChild(this.spriteTieProcent);
+        Game.app.stage.addChild(this.spriteHatOnes);
+        Game.app.stage.addChild(this.spriteHatTens);
+        Game.app.stage.addChild(this.spriteHatHundreds);
+        Game.app.stage.addChild(this.spriteHatProcent);
         Game.app.stage.addChild(this.spriteOfficeOnes);
         Game.app.stage.addChild(this.spriteOfficeTens);
         Game.app.stage.addChild(this.spriteOfficeHundreds);
@@ -220,6 +224,10 @@ var ScoreState = /** @class */ (function (_super) {
         Game.app.stage.removeChild(this.spriteTieTens);
         Game.app.stage.removeChild(this.spriteTieHundreds);
         Game.app.stage.removeChild(this.spriteTieProcent);
+        Game.app.stage.removeChild(this.spriteHatOnes);
+        Game.app.stage.removeChild(this.spriteHatTens);
+        Game.app.stage.removeChild(this.spriteHatHundreds);
+        Game.app.stage.removeChild(this.spriteHatProcent);
         Game.app.stage.removeChild(this.spriteOfficeOnes);
         Game.app.stage.removeChild(this.spriteOfficeTens);
         Game.app.stage.removeChild(this.spriteOfficeHundreds);
@@ -239,6 +247,10 @@ var ScoreState = /** @class */ (function (_super) {
                 Game.currentStatePlayer1 = new LevelTie(1, 0, 'w', 's', 'a', 'd');
                 Game.currentStatePlayer2 = new LevelTie(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
             }
+            else if (this.currentLevel == Level.Tie) {
+                Game.currentStatePlayer1 = new LevelHat(1, 15, 'w', 's', 'a', 'd');
+                Game.currentStatePlayer2 = new LevelHat(2, 960 + 15, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+            }
             //  TODO: more levels...
             Game.currentStatePlayer1.onEnter();
             Game.currentStatePlayer2.onEnter();
@@ -246,6 +258,9 @@ var ScoreState = /** @class */ (function (_super) {
         else {
             if (this.currentLevel == Level.Moustache) {
                 Game.currentStatePlayer1 = new LevelTie(1, 480, 'w', 's', 'a', 'd');
+            }
+            else if (this.currentLevel == Level.Tie) {
+                Game.currentStatePlayer1 = new LevelHat(1, 480 + 15, 'w', 's', 'a', 'd');
             }
             //  TODO: more levels...
             Game.currentStatePlayer1.onEnter();
@@ -310,6 +325,7 @@ var ScoreState = /** @class */ (function (_super) {
             this.scoreLevelTie = this.scoreCurrentLevel - this.scoreCounter.getScore();
         }
         else if (this.currentLevel == Level.Hat) {
+            //  Maxpoäng är 100 så här är score = procent
             this.scoreLevelHat = this.scoreCurrentLevel - this.scoreCounter.getScore();
         }
         else if (this.currentLevel == Level.Office) {
@@ -327,6 +343,7 @@ var ScoreState = /** @class */ (function (_super) {
         var maxScore = 0;
         maxScore += 100; //  Max score on LevelMoustache is 100
         maxScore += 100; //  Max score on LevelTie is 100
+        maxScore += 100; //  Max score on LevelHat is 100
         //  TODO: Add more to maxScore for the other levels
         this.totalScore = Math.floor(100 * scoreTotal / maxScore);
         this.updateSprites();
@@ -334,7 +351,7 @@ var ScoreState = /** @class */ (function (_super) {
     ScoreState.prototype.updateSprites = function () {
         if (this.scoreLevelMoustache > -1) {
             var hundreds_1 = Math.floor(this.scoreLevelMoustache / 100);
-            var tens_1 = Math.floor(this.scoreLevelMoustache / 10);
+            var tens_1 = Math.floor((this.scoreLevelMoustache - hundreds_1 * 100) / 10);
             var ones_1 = this.scoreLevelMoustache - hundreds_1 * 100 - tens_1 * 10;
             this.spriteMoustacheProcent.visible = true;
             this.spriteMoustacheOnes.texture = PIXI.Loader.shared.resources["number-" + ones_1 + "-white"].texture;
@@ -362,7 +379,7 @@ var ScoreState = /** @class */ (function (_super) {
         }
         if (this.scoreLevelTie > -1) {
             var hundreds_2 = Math.floor(this.scoreLevelTie / 100);
-            var tens_2 = Math.floor(this.scoreLevelTie / 10);
+            var tens_2 = Math.floor((this.scoreLevelTie - hundreds_2 * 100) / 10);
             var ones_2 = this.scoreLevelTie - hundreds_2 * 100 - tens_2 * 10;
             this.spriteTieProcent.visible = true;
             this.spriteTieOnes.texture = PIXI.Loader.shared.resources["number-" + ones_2 + "-white"].texture;
@@ -387,6 +404,34 @@ var ScoreState = /** @class */ (function (_super) {
             this.spriteTieTens.visible = false;
             this.spriteTieHundreds.visible = false;
             this.spriteTieProcent.visible = false;
+        }
+        if (this.scoreLevelHat > -1) {
+            var hundreds_3 = Math.floor(this.scoreLevelHat / 100);
+            var tens_3 = Math.floor((this.scoreLevelHat - hundreds_3 * 100) / 10);
+            var ones_3 = this.scoreLevelHat - hundreds_3 * 100 - tens_3 * 10;
+            this.spriteHatProcent.visible = true;
+            this.spriteHatOnes.texture = PIXI.Loader.shared.resources["number-" + ones_3 + "-white"].texture;
+            this.spriteHatOnes.visible = true;
+            if (tens_3 > 0) {
+                this.spriteHatTens.texture = PIXI.Loader.shared.resources["number-" + tens_3 + "-white"].texture;
+                this.spriteHatTens.visible = true;
+            }
+            else {
+                this.spriteHatTens.visible = false;
+            }
+            if (hundreds_3 > 0) {
+                this.spriteHatHundreds.texture = PIXI.Loader.shared.resources["number-" + hundreds_3 + "-white"].texture;
+                this.spriteHatHundreds.visible = true;
+            }
+            else {
+                this.spriteHatHundreds.visible = false;
+            }
+        }
+        else {
+            this.spriteHatOnes.visible = false;
+            this.spriteHatTens.visible = false;
+            this.spriteHatHundreds.visible = false;
+            this.spriteHatProcent.visible = false;
         }
         //  TODO: All other scores
         var hundreds = Math.floor(this.totalScore / 100);

@@ -1,7 +1,7 @@
 var Intro = /** @class */ (function () {
     function Intro() {
         this.timeMoveInOut = 75; // 0;
-        this.timeSlowMotion = 300; // 0;
+        this.timeSlowMotion = 30; // 00;
         this.tieLeft = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-tie-left"].texture);
         this.tieRight = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-tie-right"].texture);
         this.titleMoustache = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-moustache-title"].texture);
@@ -10,6 +10,8 @@ var Intro = /** @class */ (function () {
         this.subtitleTie = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-tie-subtitle"].texture);
         this.titleHat = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-hat-title"].texture);
         this.subtitleHat = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-hat-subtitle"].texture);
+        this.titleOffice = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-office-title"].texture);
+        this.subtitleOffice = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-office-subtitle"].texture);
         this.tieRight.y = 377;
         this.tieLeft.y = 491;
         this.titleMoustache.y = 442;
@@ -18,6 +20,8 @@ var Intro = /** @class */ (function () {
         this.subtitleTie.y = 592;
         this.titleHat.y = 442;
         this.subtitleHat.y = 592;
+        this.titleOffice.y = 442;
+        this.subtitleOffice.y = 592;
         this.isPlaying = false;
     }
     Intro.prototype.startLevelMoustache = function () {
@@ -33,6 +37,11 @@ var Intro = /** @class */ (function () {
     Intro.prototype.startLevelHat = function () {
         this.currentTitle = this.titleHat;
         this.currentSubtitle = this.subtitleHat;
+        this.start();
+    };
+    Intro.prototype.startLevelOffice = function () {
+        this.currentTitle = this.titleOffice;
+        this.currentSubtitle = this.subtitleOffice;
         this.start();
     };
     Intro.prototype.start = function () {

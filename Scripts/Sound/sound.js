@@ -52,6 +52,12 @@ var SoundPlayer = /** @class */ (function () {
             volume: 1.0,
             loop: false
         });
+        this.musicOffice = new Howl({
+            src: ['sound/music-office.mp3'],
+            preload: true,
+            volume: 0.8,
+            loop: false
+        });
         this.scoreWheel = new Howl({
             src: ['sound/score-wheel.mp3'],
             preload: true,

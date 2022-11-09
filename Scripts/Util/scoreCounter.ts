@@ -31,54 +31,66 @@
         this.desiredScore = score;
 
         this.background = new PIXI.Sprite(PIXI.Loader.shared.resources["score-background"].texture);
-        this.background.x = xOffset + x;
-        this.background.y = y;
         this.background.zIndex = 1000;
         this.background.visible = true;
 
         this.foreground = new PIXI.Sprite(PIXI.Loader.shared.resources["score-foreground"].texture);
-        this.foreground.x = xOffset + x;
-        this.foreground.y = y;
         this.foreground.zIndex = 1002;
         this.foreground.visible = true;
 
         this.spriteOnes = new PIXI.Sprite(PIXI.Loader.shared.resources["number-0"].texture);
-        this.spriteOnes.x = xOffset + x + 102;
-        this.spriteOnes.y = y + 19;
         this.spriteOnes.zIndex = 1001;
         this.spriteOnes.visible = true;
 
         this.spriteOnesAlt = new PIXI.Sprite(PIXI.Loader.shared.resources["number-0"].texture);
-        this.spriteOnesAlt.x = xOffset + x + 102;
-        this.spriteOnesAlt.y = y + 19;
         this.spriteOnesAlt.zIndex = 1001;
         this.spriteOnesAlt.visible = false;
 
         this.spriteTens = new PIXI.Sprite(PIXI.Loader.shared.resources["number-0"].texture);
-        this.spriteTens.x = xOffset + x + 64;
-        this.spriteTens.y = y + 19;
         this.spriteTens.zIndex = 1001;
         this.spriteTens.visible = false;
 
         this.spriteTensAlt = new PIXI.Sprite(PIXI.Loader.shared.resources["number-0"].texture);
-        this.spriteTensAlt.x = xOffset + x + 64;
-        this.spriteTensAlt.y = y + 19;
         this.spriteTensAlt.zIndex = 1001;
         this.spriteTensAlt.visible = false;
 
         this.spriteHundreds = new PIXI.Sprite(PIXI.Loader.shared.resources["number-0"].texture);
-        this.spriteHundreds.x = xOffset + 27;
-        this.spriteHundreds.y = y + 19;
         this.spriteHundreds.zIndex = 1001;
         this.spriteHundreds.visible = false;
 
         this.spriteHundredsAlt = new PIXI.Sprite(PIXI.Loader.shared.resources["number-0"].texture);
-        this.spriteHundredsAlt.x = xOffset + 27;
-        this.spriteHundredsAlt.y = y + 19;
         this.spriteHundredsAlt.zIndex = 1001;
         this.spriteHundredsAlt.visible = false;
 
+        this.setPos(xOffset + x, y);
         this.changeSprites();
+    }
+
+    public setPos(x: number, y: number) {
+
+        this.background.x = x;
+        this.background.y = y;
+
+        this.foreground.x = x;
+        this.foreground.y = y;
+
+        this.spriteOnes.x = x + 102;
+        this.spriteOnes.y = y + 19;
+
+        this.spriteOnesAlt.x = x + 102;
+        this.spriteOnesAlt.y = y + 19;
+
+        this.spriteTens.x = x + 64;
+        this.spriteTens.y = y + 19;
+
+        this.spriteTensAlt.x = x + 64;
+        this.spriteTensAlt.y = y + 19;
+
+        this.spriteHundreds.x = 27;
+        this.spriteHundreds.y = y + 19;
+
+        this.spriteHundredsAlt.x = 27;
+        this.spriteHundredsAlt.y = y + 19;
     }
 
     public onEnter() {
@@ -276,17 +288,17 @@
     private changeSprites() {
 
         let hundreds = Math.floor(this.currentScore / 100);
-        let tens = Math.floor(this.currentScore / 10);
+        let tens = Math.floor((this.currentScore - hundreds * 100) / 10);
         let ones = this.currentScore - hundreds * 100 - tens * 10;
 
         let lastHundreds = Math.floor(this.lastScore / 100);
-        let lastTens = Math.floor(this.lastScore / 10);
+        let lastTens = Math.floor((this.lastScore - lastHundreds * 100) / 10);
         let lastOnes = this.lastScore - lastHundreds * 100 - lastTens * 10;
 
         this.spriteOnes.texture = PIXI.Loader.shared.resources["number-" + ones].texture;
         this.spriteOnesAlt.texture = PIXI.Loader.shared.resources["number-" + lastOnes].texture;
 
-        if (tens > 0) {
+        if (tens > 0 || hundreds > 0) {
 
             this.spriteTens.texture = PIXI.Loader.shared.resources["number-" + tens].texture;
             this.spriteTens.visible = true;

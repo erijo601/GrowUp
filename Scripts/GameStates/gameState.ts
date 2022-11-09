@@ -31,4 +31,9 @@
 
         // elapsedTime in ms
     }
+
+    public updateOtherPlayer(worldPosition: Position, angle: number, texture: string): void {
+
+        //  Used only in LevelOffice
+    }
 }

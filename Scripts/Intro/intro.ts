@@ -21,8 +21,11 @@
     private titleHat: PIXI.Sprite;
     private subtitleHat: PIXI.Sprite;
 
+    private titleOffice: PIXI.Sprite;
+    private subtitleOffice: PIXI.Sprite;
+
     private timeMoveInOut: number = 75;// 0;
-    private timeSlowMotion: number = 300;// 0;
+    private timeSlowMotion: number = 30;// 00;
 
     constructor() {
 
@@ -38,6 +41,9 @@
         this.titleHat = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-hat-title"].texture);
         this.subtitleHat = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-hat-subtitle"].texture);
 
+        this.titleOffice = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-office-title"].texture);
+        this.subtitleOffice = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-office-subtitle"].texture);
+
         this.tieRight.y = 377;
         this.tieLeft.y = 491;
 
@@ -49,6 +55,9 @@
 
         this.titleHat.y = 442;
         this.subtitleHat.y = 592;
+
+        this.titleOffice.y = 442;
+        this.subtitleOffice.y = 592;
 
         this.isPlaying = false;
     }
@@ -73,6 +82,14 @@
 
         this.currentTitle = this.titleHat;
         this.currentSubtitle = this.subtitleHat;
+
+        this.start();
+    }
+
+    public startLevelOffice() {
+
+        this.currentTitle = this.titleOffice;
+        this.currentSubtitle = this.subtitleOffice;
 
         this.start();
     }

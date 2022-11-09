@@ -281,6 +281,11 @@
         Game.app.stage.addChild(this.spriteTieHundreds);
         Game.app.stage.addChild(this.spriteTieProcent);
 
+        Game.app.stage.addChild(this.spriteHatOnes);
+        Game.app.stage.addChild(this.spriteHatTens);
+        Game.app.stage.addChild(this.spriteHatHundreds);
+        Game.app.stage.addChild(this.spriteHatProcent);
+
         Game.app.stage.addChild(this.spriteOfficeOnes);
         Game.app.stage.addChild(this.spriteOfficeTens);
         Game.app.stage.addChild(this.spriteOfficeHundreds);
@@ -321,6 +326,11 @@
         Game.app.stage.removeChild(this.spriteTieHundreds);
         Game.app.stage.removeChild(this.spriteTieProcent);
 
+        Game.app.stage.removeChild(this.spriteHatOnes);
+        Game.app.stage.removeChild(this.spriteHatTens);
+        Game.app.stage.removeChild(this.spriteHatHundreds);
+        Game.app.stage.removeChild(this.spriteHatProcent);
+
         Game.app.stage.removeChild(this.spriteOfficeOnes);
         Game.app.stage.removeChild(this.spriteOfficeTens);
         Game.app.stage.removeChild(this.spriteOfficeHundreds);
@@ -347,6 +357,11 @@
                 Game.currentStatePlayer1 = new LevelTie(1, 0, 'w', 's', 'a', 'd');
                 Game.currentStatePlayer2 = new LevelTie(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
             }
+            else if (this.currentLevel == Level.Tie) {
+
+                Game.currentStatePlayer1 = new LevelHat(1, 15, 'w', 's', 'a', 'd');
+                Game.currentStatePlayer2 = new LevelHat(2, 960 + 15, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+            }
             //  TODO: more levels...
 
 
@@ -360,6 +375,10 @@
             if (this.currentLevel == Level.Moustache) {
 
                 Game.currentStatePlayer1 = new LevelTie(1, 480, 'w', 's', 'a', 'd');
+            }
+            else if (this.currentLevel == Level.Tie) {
+
+                Game.currentStatePlayer1 = new LevelHat(1, 480 + 15, 'w', 's', 'a', 'd');
             }
             //  TODO: more levels...
 
@@ -464,6 +483,7 @@
         }
         else if (this.currentLevel == Level.Hat) {
 
+            //  Maxpoäng är 100 så här är score = procent
             this.scoreLevelHat = this.scoreCurrentLevel - this.scoreCounter.getScore();
         }
         else if (this.currentLevel == Level.Office) {
@@ -486,6 +506,7 @@
         let maxScore = 0;
         maxScore += 100;    //  Max score on LevelMoustache is 100
         maxScore += 100;    //  Max score on LevelTie is 100
+        maxScore += 100;    //  Max score on LevelHat is 100
         //  TODO: Add more to maxScore for the other levels
 
         this.totalScore = Math.floor(100 * scoreTotal / maxScore);
@@ -498,7 +519,7 @@
         if (this.scoreLevelMoustache > -1) {
 
             let hundreds = Math.floor(this.scoreLevelMoustache / 100);
-            let tens = Math.floor(this.scoreLevelMoustache / 10);
+            let tens = Math.floor((this.scoreLevelMoustache - hundreds * 100) / 10);
             let ones = this.scoreLevelMoustache - hundreds * 100 - tens * 10;
 
             this.spriteMoustacheProcent.visible = true;
@@ -537,7 +558,7 @@
         if (this.scoreLevelTie > -1) {
 
             let hundreds = Math.floor(this.scoreLevelTie / 100);
-            let tens = Math.floor(this.scoreLevelTie / 10);
+            let tens = Math.floor((this.scoreLevelTie - hundreds * 100) / 10);
             let ones = this.scoreLevelTie - hundreds * 100 - tens * 10;
 
             this.spriteTieProcent.visible = true;
@@ -573,6 +594,44 @@
             this.spriteTieProcent.visible = false;
         }
 
+        if (this.scoreLevelHat > -1) {
+
+            let hundreds = Math.floor(this.scoreLevelHat / 100);
+            let tens = Math.floor((this.scoreLevelHat - hundreds * 100) / 10);
+            let ones = this.scoreLevelHat - hundreds * 100 - tens * 10;
+
+            this.spriteHatProcent.visible = true;
+
+            this.spriteHatOnes.texture = PIXI.Loader.shared.resources["number-" + ones + "-white"].texture;
+            this.spriteHatOnes.visible = true;
+
+            if (tens > 0) {
+
+                this.spriteHatTens.texture = PIXI.Loader.shared.resources["number-" + tens + "-white"].texture;
+                this.spriteHatTens.visible = true;
+            }
+            else {
+
+                this.spriteHatTens.visible = false;
+            }
+
+            if (hundreds > 0) {
+
+                this.spriteHatHundreds.texture = PIXI.Loader.shared.resources["number-" + hundreds + "-white"].texture;
+                this.spriteHatHundreds.visible = true;
+            }
+            else {
+
+                this.spriteHatHundreds.visible = false;
+            }
+        }
+        else {
+
+            this.spriteHatOnes.visible = false;
+            this.spriteHatTens.visible = false;
+            this.spriteHatHundreds.visible = false;
+            this.spriteHatProcent.visible = false;
+        }
 
         //  TODO: All other scores
 
