@@ -12,6 +12,8 @@ var Intro = /** @class */ (function () {
         this.subtitleHat = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-hat-subtitle"].texture);
         this.titleOffice = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-office-title"].texture);
         this.subtitleOffice = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-office-subtitle"].texture);
+        this.titleWhiskey = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-whiskey-title"].texture);
+        this.subtitleWhiskey = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-whiskey-subtitle"].texture);
         this.tieRight.y = 377;
         this.tieLeft.y = 491;
         this.titleMoustache.y = 442;
@@ -22,6 +24,8 @@ var Intro = /** @class */ (function () {
         this.subtitleHat.y = 592;
         this.titleOffice.y = 442;
         this.subtitleOffice.y = 592;
+        this.titleWhiskey.y = 442;
+        this.subtitleWhiskey.y = 592;
         this.isPlaying = false;
     }
     Intro.prototype.startLevelMoustache = function () {
@@ -40,6 +44,11 @@ var Intro = /** @class */ (function () {
         this.start();
     };
     Intro.prototype.startLevelOffice = function () {
+        this.currentTitle = this.titleOffice;
+        this.currentSubtitle = this.subtitleOffice;
+        this.start();
+    };
+    Intro.prototype.startLevelWhiskey = function () {
         this.currentTitle = this.titleOffice;
         this.currentSubtitle = this.subtitleOffice;
         this.start();

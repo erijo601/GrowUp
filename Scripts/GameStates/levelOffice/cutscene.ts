@@ -125,6 +125,8 @@
         this.instructions.zIndex = 1003;
         this.instructions.x = this.x + 256
         this.instructions.y = this.y + 411;
+        this.instructions.scale.x = 1.5;
+        this.instructions.scale.y = 1.5;
     }
 
     public isVisible(): boolean {
@@ -190,8 +192,6 @@
     }
 
     public update(elapsedTime: number): void {
-
-        this.scoreCounter.update(elapsedTime);
 
         if (this.isTransition) {
 

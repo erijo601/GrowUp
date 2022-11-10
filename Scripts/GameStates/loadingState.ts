@@ -220,7 +220,6 @@
 
     private spawnPressEnterLetters() {
 
-        //  TODO P and R
         this.activeLetters.push(new SmokeLetter('p', 440, 446));
         this.activeLetters.push(new SmokeLetter('r', 535, 446));
         this.activeLetters.push(new SmokeLetter('e', 630, 446));
@@ -232,6 +231,5 @@
         this.activeLetters.push(new SmokeLetter('t', 1202, 445));
         this.activeLetters.push(new SmokeLetter('e', 1295, 445));
         this.activeLetters.push(new SmokeLetter('r', 1390, 445));
-        //  TODO E and R
     }
 }

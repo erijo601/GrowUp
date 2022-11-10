@@ -248,10 +248,20 @@ var ScoreState = /** @class */ (function (_super) {
                 Game.currentStatePlayer2 = new LevelTie(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
             }
             else if (this.currentLevel == Level.Tie) {
+                Game.currentStatePlayer1 = new LevelOffice(1, 0, 'w', 's', 'a', 'd');
+                Game.currentStatePlayer2 = new LevelOffice(2, 960 + 30, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+            }
+            else if (this.currentLevel == Level.Office) {
+                //Game.currentStatePlayer1 = new LevelWhiskey(1, 15, 'w', 's', 'a', 'd');
+                //Game.currentStatePlayer2 = new LevelWhiskey(2, 960 + 15, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+            }
+            else if (this.currentLevel == Level.Whiskey) {
                 Game.currentStatePlayer1 = new LevelHat(1, 15, 'w', 's', 'a', 'd');
                 Game.currentStatePlayer2 = new LevelHat(2, 960 + 15, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
             }
-            //  TODO: more levels...
+            else if (this.currentLevel == Level.Hat) {
+                //  TODO: END GAME
+            }
             Game.currentStatePlayer1.onEnter();
             Game.currentStatePlayer2.onEnter();
         }
@@ -260,9 +270,17 @@ var ScoreState = /** @class */ (function (_super) {
                 Game.currentStatePlayer1 = new LevelTie(1, 480, 'w', 's', 'a', 'd');
             }
             else if (this.currentLevel == Level.Tie) {
+                Game.currentStatePlayer1 = new LevelOffice(1, 480 + 15, 'w', 's', 'a', 'd');
+            }
+            else if (this.currentLevel == Level.Office) {
+                //Game.currentStatePlayer1 = new LevelWhiskey(1, 480 + 15, 'w', 's', 'a', 'd');
+            }
+            else if (this.currentLevel == Level.Whiskey) {
                 Game.currentStatePlayer1 = new LevelHat(1, 480 + 15, 'w', 's', 'a', 'd');
             }
-            //  TODO: more levels...
+            else if (this.currentLevel == Level.Hat) {
+                //  TODO: GAME END
+            }
             Game.currentStatePlayer1.onEnter();
         }
     };
@@ -329,6 +347,7 @@ var ScoreState = /** @class */ (function (_super) {
             this.scoreLevelHat = this.scoreCurrentLevel - this.scoreCounter.getScore();
         }
         else if (this.currentLevel == Level.Office) {
+            //  Maxpoäng är 100 så här är score = procent
             this.scoreLevelOffice = this.scoreCurrentLevel - this.scoreCounter.getScore();
         }
         else if (this.currentLevel == Level.Whiskey) {
@@ -344,7 +363,9 @@ var ScoreState = /** @class */ (function (_super) {
         maxScore += 100; //  Max score on LevelMoustache is 100
         maxScore += 100; //  Max score on LevelTie is 100
         maxScore += 100; //  Max score on LevelHat is 100
-        //  TODO: Add more to maxScore for the other levels
+        maxScore += 100; //  Max score on LevelOffice is 100
+        maxScore += 100; //  Max score on LevelWhiskey is 100
+        //  TODO: Vad är max score på LevelWhiskey?
         this.totalScore = Math.floor(100 * scoreTotal / maxScore);
         this.updateSprites();
     };
@@ -433,7 +454,62 @@ var ScoreState = /** @class */ (function (_super) {
             this.spriteHatHundreds.visible = false;
             this.spriteHatProcent.visible = false;
         }
-        //  TODO: All other scores
+        if (this.scoreLevelOffice > -1) {
+            var hundreds_4 = Math.floor(this.scoreLevelOffice / 100);
+            var tens_4 = Math.floor((this.scoreLevelOffice - hundreds_4 * 100) / 10);
+            var ones_4 = this.scoreLevelOffice - hundreds_4 * 100 - tens_4 * 10;
+            this.spriteOfficeProcent.visible = true;
+            this.spriteOfficeOnes.texture = PIXI.Loader.shared.resources["number-" + ones_4 + "-white"].texture;
+            this.spriteOfficeOnes.visible = true;
+            if (tens_4 > 0) {
+                this.spriteOfficeTens.texture = PIXI.Loader.shared.resources["number-" + tens_4 + "-white"].texture;
+                this.spriteOfficeTens.visible = true;
+            }
+            else {
+                this.spriteOfficeTens.visible = false;
+            }
+            if (hundreds_4 > 0) {
+                this.spriteOfficeHundreds.texture = PIXI.Loader.shared.resources["number-" + hundreds_4 + "-white"].texture;
+                this.spriteOfficeHundreds.visible = true;
+            }
+            else {
+                this.spriteOfficeHundreds.visible = false;
+            }
+        }
+        else {
+            this.spriteOfficeOnes.visible = false;
+            this.spriteOfficeTens.visible = false;
+            this.spriteOfficeHundreds.visible = false;
+            this.spriteOfficeProcent.visible = false;
+        }
+        if (this.scoreLevelWhiskey > -1) {
+            var hundreds_5 = Math.floor(this.scoreLevelWhiskey / 100);
+            var tens_5 = Math.floor((this.scoreLevelWhiskey - hundreds_5 * 100) / 10);
+            var ones_5 = this.scoreLevelWhiskey - hundreds_5 * 100 - tens_5 * 10;
+            this.spriteWhiskeyProcent.visible = true;
+            this.spriteWhiskeyOnes.texture = PIXI.Loader.shared.resources["number-" + ones_5 + "-white"].texture;
+            this.spriteWhiskeyOnes.visible = true;
+            if (tens_5 > 0) {
+                this.spriteWhiskeyTens.texture = PIXI.Loader.shared.resources["number-" + tens_5 + "-white"].texture;
+                this.spriteWhiskeyTens.visible = true;
+            }
+            else {
+                this.spriteWhiskeyTens.visible = false;
+            }
+            if (hundreds_5 > 0) {
+                this.spriteWhiskeyHundreds.texture = PIXI.Loader.shared.resources["number-" + hundreds_5 + "-white"].texture;
+                this.spriteWhiskeyHundreds.visible = true;
+            }
+            else {
+                this.spriteWhiskeyHundreds.visible = false;
+            }
+        }
+        else {
+            this.spriteWhiskeyOnes.visible = false;
+            this.spriteWhiskeyTens.visible = false;
+            this.spriteWhiskeyHundreds.visible = false;
+            this.spriteWhiskeyProcent.visible = false;
+        }
         var hundreds = Math.floor(this.totalScore / 100);
         var tens = Math.floor(this.totalScore / 10);
         var ones = this.totalScore - hundreds * 100 - tens * 10;

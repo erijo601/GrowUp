@@ -299,6 +299,7 @@
     <TypeScriptCompile Include="Scripts\Background\background.ts" />
     <TypeScriptCompile Include="Scripts\Filters\LevelHatFilter.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\gameState.ts" />
+    <TypeScriptCompile Include="Scripts\GameStates\levelWhiskey.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\levelOffice.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\levelHat.ts" />
     <TypeScriptCompile Include="Scripts\GameStates\levelOffice\cutscene.ts" />

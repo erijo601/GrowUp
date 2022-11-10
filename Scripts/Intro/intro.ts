@@ -24,6 +24,9 @@
     private titleOffice: PIXI.Sprite;
     private subtitleOffice: PIXI.Sprite;
 
+    private titleWhiskey: PIXI.Sprite;
+    private subtitleWhiskey: PIXI.Sprite;
+
     private timeMoveInOut: number = 750;
     private timeSlowMotion: number = 3000;
 
@@ -44,6 +47,9 @@
         this.titleOffice = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-office-title"].texture);
         this.subtitleOffice = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-office-subtitle"].texture);
 
+        this.titleWhiskey = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-whiskey-title"].texture);
+        this.subtitleWhiskey = new PIXI.Sprite(PIXI.Loader.shared.resources["intro-whiskey-subtitle"].texture);
+
         this.tieRight.y = 377;
         this.tieLeft.y = 491;
 
@@ -58,6 +64,9 @@
 
         this.titleOffice.y = 442;
         this.subtitleOffice.y = 592;
+
+        this.titleWhiskey.y = 442;
+        this.subtitleWhiskey.y = 592;
 
         this.isPlaying = false;
     }
@@ -87,6 +96,14 @@
     }
 
     public startLevelOffice() {
+
+        this.currentTitle = this.titleOffice;
+        this.currentSubtitle = this.subtitleOffice;
+
+        this.start();
+    }
+
+    public startLevelWhiskey() {
 
         this.currentTitle = this.titleOffice;
         this.currentSubtitle = this.subtitleOffice;

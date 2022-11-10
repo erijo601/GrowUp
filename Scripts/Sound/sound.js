@@ -58,6 +58,12 @@ var SoundPlayer = /** @class */ (function () {
             volume: 0.8,
             loop: false
         });
+        this.musicWhiskey = new Howl({
+            src: ['sound/music-whiskey.mp3'],
+            preload: true,
+            volume: 1.0,
+            loop: false
+        });
         this.scoreWheel = new Howl({
             src: ['sound/score-wheel.mp3'],
             preload: true,

@@ -28,6 +28,14 @@ var Game = /** @class */ (function () {
         window.addEventListener('mouseup', Game.mouseEventHandler, false);
         window.addEventListener('keydown', Game.keyboardEventHandler, false);
         window.addEventListener('keyup', Game.keyboardEventHandler, false);
+        Game.progressText = new PIXI.Text("", {
+            fill: "white",
+            stroke: "#a6a6a6",
+            strokeThickness: 1,
+            align: "center"
+        });
+        Game.progressText.x = 1920 / 2;
+        Game.progressText.y = 980;
         Game.loadLoadingScreenResources();
     };
     Game.loadLoadingScreenResources = function () {
@@ -97,6 +105,8 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('intro-hat-subtitle', 'img/Intro/hat-subtitle.png');
         PIXI.Loader.shared.add('intro-office-title', 'img/Intro/office-title.png');
         PIXI.Loader.shared.add('intro-office-subtitle', 'img/Intro/office-subtitle.png');
+        PIXI.Loader.shared.add('intro-whiskey-title', 'img/Intro/whiskey-title.png');
+        PIXI.Loader.shared.add('intro-whiskey-subtitle', 'img/Intro/whiskey-subtitle.png');
         //  Title
         PIXI.Loader.shared.add('1player-disabled', 'img/Title/1player-disabled.png');
         PIXI.Loader.shared.add('1player0', 'img/Title/1player0.png');
@@ -294,12 +304,16 @@ var Game = /** @class */ (function () {
         Game.lastFrameTime = Date.now();
         //  Game loop
         Game.app.ticker.add(Game.update);
+        Game.app.stage.addChild(Game.progressText);
         Game.loadResources();
+        PIXI.Loader.shared.onProgress.add(Game.showProgress);
         PIXI.Loader.shared.load(Game.resourcesLoaded);
     };
+    Game.showProgress = function (e) {
+        Game.progressText.text = Math.ceil(e.progress).toString() + '%';
+    };
     Game.resourcesLoaded = function (resources) {
-        var fpsCounter = new FpsCounter();
-        Game.app.stage.addChild(fpsCounter);
+        Game.app.stage.removeChild(Game.progressText);
         Game.background = new Background();
         Game.sceneTransition = new SceneTransition();
         Game.intro = new Intro();

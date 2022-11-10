@@ -136,6 +136,7 @@ var ScoreCounter = /** @class */ (function () {
                 this.spriteHundreds.y = this.y + 19;
                 this.spriteHundredsAlt.visible = false;
                 Game.soundPlayer.scoreWheel.stop(this.soundInstanceId);
+                Game.soundPlayer.scoreWheel.stop();
                 return;
             }
         }

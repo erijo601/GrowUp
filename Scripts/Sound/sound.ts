@@ -8,6 +8,7 @@
     public musicTie: Howl;
     public musicHat: Howl;
     public musicOffice: Howl;
+    public musicWhiskey: Howl;
     public scoreWheel: Howl;
 
     constructor() {
@@ -80,6 +81,13 @@
             src: ['sound/music-office.mp3'],
             preload: true,
             volume: 0.8,
+            loop: false
+        });
+
+        this.musicWhiskey = new Howl({
+            src: ['sound/music-whiskey.mp3'],
+            preload: true,
+            volume: 1.0,
             loop: false
         });
 

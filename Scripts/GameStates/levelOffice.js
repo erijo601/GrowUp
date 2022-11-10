@@ -17,7 +17,7 @@ var LevelOffice = /** @class */ (function (_super) {
     __extends(LevelOffice, _super);
     function LevelOffice(player, xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, player, xOffset, upKey, downKey, leftKey, rightKey) || this;
-        _this.gameEndsOnTime = 86450;
+        _this.gameEndsOnTime = 82500;
         _this.stateName = "LevelOffice";
         _this.scoreCounter = new ScoreCounter(xOffset, 4, 16, 0);
         _this.cutscene = new Cutscene(xOffset, 130, player, _this.upKey, _this.downKey, _this.leftKey, _this.rightKey, _this.scoreCounter);
@@ -120,7 +120,6 @@ var LevelOffice = /** @class */ (function (_super) {
         Game.app.stage.removeChild(this.directionLeftSprite);
         Game.app.stage.removeChild(this.directionRightSprite);
         this.scoreCounter.onExit();
-        //Game.soundPlayer.musicOffice.stop();
         if (this.player == 1) {
             Game.app.stage.removeChild(this.pressEnter);
             Game.scoreStatePlayer1.beforeOnEnter(Level.Office, this.scoreCounter.getScore());
@@ -155,55 +154,8 @@ var LevelOffice = /** @class */ (function (_super) {
                 this.onExit();
             }
         }
-        var cutsceneStart = 20800;
-        var cutsceneEnd = 39332;
-        var textDuration = 1500;
-        if (Game.keyboard.current.isPressed("v")) {
-            console.log(this.totalElapsedTime);
-        }
-        if (this.totalElapsedTime > cutsceneStart && this.totalElapsedTime < cutsceneEnd) {
-            //  Cutscene!
-            if (!this.cutscene.isVisible()) {
-                this.cutscene.onEnter();
-            }
-            this.totalElapsedTime += elapsedTime;
-            if (this.totalElapsedTime - cutsceneStart < textDuration) {
-                var partShowStart = (this.totalElapsedTime - cutsceneStart) / textDuration;
-                this.cutscene.showStartText(partShowStart);
-            }
-            else if (this.totalElapsedTime > cutsceneEnd - textDuration) {
-                var partShowEnd = 1 - (cutsceneEnd - this.totalElapsedTime) / textDuration;
-                this.cutscene.showEndText(partShowEnd);
-            }
-            else {
-                this.cutscene.hideTexts();
-            }
-            if (this.totalElapsedTime > cutsceneEnd) {
-                this.cutscene.onExit();
-            }
-            this.cutscene.update(elapsedTime);
-            return;
-        }
-        this.totalElapsedTime += elapsedTime;
-        this.movePlayer(elapsedTime);
-        this.checkCheckpoints(elapsedTime);
-        this.renderWorld();
-        if (this.screenShakeTimeLeft > 0) {
-            this.screenShakeTimeLeft -= elapsedTime;
-            if (this.screenShakeTimeLeft < 0) {
-                this.screenShakeTimeLeft = 0;
-            }
-            var partShake = 1 - this.screenShakeTimeLeft / 1000;
-            var shake = 20 * (1 - EasingCurves.easeOutElastic(partShake));
-            this.world.x = this.xOffset + shake;
-            this.world.y = 65 + shake;
-            this.playerSprite.x = this.world.x + this.world.width / 2;
-            this.playerSprite.y = this.world.y + this.world.height / 2;
-            this.playerLegsSprite.x = this.world.x + this.world.width / 2;
-            this.playerLegsSprite.y = this.world.y + this.world.height / 2;
-            this.scoreCounter.setPos(this.xOffset + 4 + shake, 16 + shake);
-        }
         this.scoreCounter.update(elapsedTime);
+        this.totalElapsedTime += elapsedTime;
         if (this.totalElapsedTime > this.gameEndsOnTime) {
             if (this.player == 1) {
                 this.pressEnter.visible = true;
@@ -221,6 +173,56 @@ var LevelOffice = /** @class */ (function (_super) {
                 Game.sceneTransition.startGrowing();
             }
             return;
+        }
+        var cutsceneStart = 21000;
+        var cutsceneEnd = 39332;
+        var textDuration = 1500;
+        var musicTime;
+        musicTime = Game.soundPlayer.musicOffice.seek();
+        if (musicTime > 36.1 && musicTime < 54.319) {
+            //if (this.totalElapsedTime > cutsceneStart && this.totalElapsedTime < cutsceneEnd) {
+            //  Cutscene!
+            if (!this.cutscene.isVisible()) {
+                this.cutscene.onEnter();
+            }
+            //if (this.totalElapsedTime - cutsceneStart < textDuration) {
+            if (musicTime - 36.1 < 1.5) {
+                //let partShowStart = (this.totalElapsedTime - cutsceneStart) / textDuration;
+                var partShowStart = (musicTime - 36.1) / 1.5;
+                this.cutscene.showStartText(partShowStart);
+            }
+            //else if (this.totalElapsedTime > cutsceneEnd - textDuration) {
+            else if (musicTime > 54.319 - 1.5) {
+                //let partShowEnd = 1 - (cutsceneEnd - this.totalElapsedTime) / textDuration;
+                var partShowEnd = 1 - (54.319 - musicTime) / 1.5;
+                this.cutscene.showEndText(partShowEnd);
+            }
+            else {
+                this.cutscene.hideTexts();
+            }
+            this.cutscene.update(elapsedTime);
+            return;
+        }
+        else if (this.cutscene.isVisible()) {
+            this.cutscene.onExit();
+        }
+        this.movePlayer(elapsedTime);
+        this.checkCheckpoints(elapsedTime);
+        this.renderWorld();
+        if (this.screenShakeTimeLeft > 0) {
+            this.screenShakeTimeLeft -= elapsedTime;
+            if (this.screenShakeTimeLeft < 0) {
+                this.screenShakeTimeLeft = 0;
+            }
+            var partShake = 1 - this.screenShakeTimeLeft / 1000;
+            var shake = 20 * (1 - EasingCurves.easeOutElastic(partShake));
+            this.world.x = this.xOffset + shake;
+            this.world.y = 65 + shake;
+            this.playerSprite.x = this.world.x + this.world.width / 2;
+            this.playerSprite.y = this.world.y + this.world.height / 2;
+            this.playerLegsSprite.x = this.world.x + this.world.width / 2;
+            this.playerLegsSprite.y = this.world.y + this.world.height / 2;
+            this.scoreCounter.setPos(this.xOffset + 4 + shake, 16 + shake);
         }
     };
     LevelOffice.prototype.createCubicles = function () {
@@ -313,8 +315,8 @@ var LevelOffice = /** @class */ (function (_super) {
         this.checkpoints.push(new Checkpoint(2 * w, 8 * h, 1 * w, 2 * h, Direction.Down));
         this.checkpoints.push(new Checkpoint(2 * w, 10 * h, 2 * w, 2 * h, Direction.Right));
         this.checkpoints.push(new Checkpoint(4 * w, 10 * h, 2 * w, 2 * h, Direction.Right));
-        this.checkpoints.push(new Checkpoint(6 * w, 10 * h, 3 * w, 2 * h, Direction.Right));
-        this.checkpoints.push(new Checkpoint(9 * w, 10 * h, 2 * w, 2 * h, Direction.Up));
+        this.checkpoints.push(new Checkpoint(6 * w, 10 * h, 2 * w, 2 * h, Direction.Right));
+        this.checkpoints.push(new Checkpoint(8 * w, 10 * h, 3 * w, 2 * h, Direction.Up));
         this.checkpoints.push(new Checkpoint(9 * w, 7 * h, 2 * w, 3 * h, Direction.Left));
         this.checkpoints.push(new Checkpoint(7 * w, 7 * h, 2 * w, 2 * h, Direction.Left));
         this.checkpoints.push(new Checkpoint(4 * w, 7 * h, 3 * w, 2 * h, Direction.Up));
@@ -349,9 +351,9 @@ var LevelOffice = /** @class */ (function (_super) {
     };
     LevelOffice.prototype.movePlayer = function (elapsedTime) {
         var turnSpeed = 360; //  Degrees per second
-        var accSpeed = 1400;
+        var accSpeed = 1500;
         var naturalBreakAcc = -1000;
-        var playerBreakAcc = -3000;
+        var playerBreakAcc = -2500;
         var maxSpeed = 1200;
         var currentLegsTexture = "";
         if (Game.keyboard.current.isPressed(this.leftKey) && !Game.keyboard.current.isPressed(this.rightKey)) {

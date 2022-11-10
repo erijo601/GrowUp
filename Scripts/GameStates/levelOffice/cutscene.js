@@ -74,6 +74,8 @@ var Cutscene = /** @class */ (function () {
         this.instructions.zIndex = 1003;
         this.instructions.x = this.x + 256;
         this.instructions.y = this.y + 411;
+        this.instructions.scale.x = 1.5;
+        this.instructions.scale.y = 1.5;
     }
     Cutscene.prototype.isVisible = function () {
         return this.visible;
@@ -122,7 +124,6 @@ var Cutscene = /** @class */ (function () {
         this.textEnd.visible = false;
     };
     Cutscene.prototype.update = function (elapsedTime) {
-        this.scoreCounter.update(elapsedTime);
         if (this.isTransition) {
             this.instructions.visible = false;
         }

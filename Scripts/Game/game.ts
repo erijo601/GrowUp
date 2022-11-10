@@ -29,6 +29,8 @@ class Game {
 
     static twoPlayerGame: boolean;
 
+    static progressText: PIXI.Text;
+
     constructor() {
 
         console.log('PRESS PLAY ON TAPE');
@@ -69,6 +71,16 @@ class Game {
         window.addEventListener('mouseup', Game.mouseEventHandler, false);
         window.addEventListener('keydown', Game.keyboardEventHandler, false);
         window.addEventListener('keyup', Game.keyboardEventHandler, false);
+
+        Game.progressText = new PIXI.Text("", {
+            fill: "white",
+            stroke: "#a6a6a6",
+            strokeThickness: 2,
+            align: "center"
+        });
+
+        Game.progressText.x = 1920 / 2;
+        Game.progressText.y = 980;
 
         Game.loadLoadingScreenResources();
     }
@@ -149,6 +161,8 @@ class Game {
         PIXI.Loader.shared.add('intro-hat-subtitle', 'img/Intro/hat-subtitle.png');
         PIXI.Loader.shared.add('intro-office-title', 'img/Intro/office-title.png');
         PIXI.Loader.shared.add('intro-office-subtitle', 'img/Intro/office-subtitle.png');
+        PIXI.Loader.shared.add('intro-whiskey-title', 'img/Intro/whiskey-title.png');
+        PIXI.Loader.shared.add('intro-whiskey-subtitle', 'img/Intro/whiskey-subtitle.png');
 
         //  Title
         PIXI.Loader.shared.add('1player-disabled', 'img/Title/1player-disabled.png');
@@ -358,20 +372,28 @@ class Game {
         //  Game loop
         Game.app.ticker.add(Game.update);
 
+        Game.app.stage.addChild(Game.progressText);
+
         Game.loadResources();
+
+        PIXI.Loader.shared.onProgress.add(Game.showProgress);
 
         PIXI.Loader.shared.load(Game.resourcesLoaded);
     }
 
+    static showProgress(e) {
+
+        Game.progressText.text = Math.ceil(e.progress).toString() + '%';
+    }
+
     static resourcesLoaded(resources: any) {
 
-        const fpsCounter = new FpsCounter();
-        Game.app.stage.addChild(fpsCounter);
+        Game.app.stage.removeChild(Game.progressText);
 
         Game.background = new Background();
         Game.sceneTransition = new SceneTransition();
         Game.intro = new Intro();
-            
+        
         Game.doneLoading = true;
     }
 

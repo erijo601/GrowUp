@@ -4,7 +4,7 @@
     private cutscene: Cutscene;
 
     private totalElapsedTime: number;
-    private gameEndsOnTime: number = 81450;
+    private gameEndsOnTime: number = 82500;
 
     private playerSprite: PIXI.Sprite;
     private playerLegsSprite: PIXI.Sprite;
@@ -147,7 +147,6 @@
         Game.app.stage.addChild(this.directionLeftSprite);
         Game.app.stage.addChild(this.directionRightSprite);
 
-
         this.scoreCounter.onEnter();
 
         this.totalElapsedTime = 0;
@@ -177,8 +176,6 @@
         Game.app.stage.removeChild(this.directionRightSprite);
 
         this.scoreCounter.onExit();
-
-        //Game.soundPlayer.musicOffice.stop();
 
         if (this.player == 1) {
 
@@ -235,17 +232,47 @@
             }
         }
 
-        let cutsceneStart = 20800;
+        this.scoreCounter.update(elapsedTime);
+
+        this.totalElapsedTime += elapsedTime;
+
+        if (this.totalElapsedTime > this.gameEndsOnTime) {
+
+            if (this.player == 1) {
+
+                this.pressEnter.visible = true;
+
+                if (this.totalElapsedTime > this.gameEndsOnTime && this.totalElapsedTime < this.gameEndsOnTime + 300) {
+
+                    this.pressEnter.alpha = (this.totalElapsedTime - this.gameEndsOnTime) / 300;
+                }
+                else if (this.totalElapsedTime > this.gameEndsOnTime + 300) {
+
+                    this.pressEnter.alpha = 1;
+                }
+
+                this.pressEnter.scale.x = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
+                this.pressEnter.scale.y = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
+            }
+
+            if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter') &&
+                !Game.sceneTransition.isGrowing) {
+
+                Game.sceneTransition.startGrowing();
+            }
+
+            return;
+        }
+
+        let cutsceneStart = 21000;
         let cutsceneEnd = 39332;
         let textDuration = 1500;
 
-        if (Game.keyboard.current.isPressed("v")) {
+        let musicTime: any;
+        musicTime = Game.soundPlayer.musicOffice.seek();
 
-            console.log(this.totalElapsedTime);
-        }
-
-
-        if (this.totalElapsedTime > cutsceneStart && this.totalElapsedTime < cutsceneEnd) {
+        if (musicTime > 36.1 && musicTime < 54.319) {
+        //if (this.totalElapsedTime > cutsceneStart && this.totalElapsedTime < cutsceneEnd) {
 
             //  Cutscene!
 
@@ -254,17 +281,19 @@
                 this.cutscene.onEnter();
             }
 
-            this.totalElapsedTime += elapsedTime;
+            //if (this.totalElapsedTime - cutsceneStart < textDuration) {
+            if (musicTime - 36.1 < 1.5) {
 
-            if (this.totalElapsedTime - cutsceneStart < textDuration) {
+                //let partShowStart = (this.totalElapsedTime - cutsceneStart) / textDuration;
+                let partShowStart = (musicTime - 36.1) / 1.5;
 
-                let partShowStart = (this.totalElapsedTime - cutsceneStart) / textDuration;
-                
                 this.cutscene.showStartText(partShowStart);
             }
-            else if (this.totalElapsedTime > cutsceneEnd - textDuration) {
+            //else if (this.totalElapsedTime > cutsceneEnd - textDuration) {
+            else if (musicTime > 54.319 - 1.5) {
 
-                let partShowEnd = 1 - (cutsceneEnd - this.totalElapsedTime) / textDuration;
+                //let partShowEnd = 1 - (cutsceneEnd - this.totalElapsedTime) / textDuration;
+                let partShowEnd = 1 - (54.319 - musicTime) / 1.5;
 
                 this.cutscene.showEndText(partShowEnd);
             }
@@ -273,17 +302,14 @@
                 this.cutscene.hideTexts();
             }
 
-            if (this.totalElapsedTime > cutsceneEnd) {
-
-                this.cutscene.onExit();
-            }
-
             this.cutscene.update(elapsedTime);
 
             return;
         }
+        else if (this.cutscene.isVisible()) {
 
-        this.totalElapsedTime += elapsedTime;
+            this.cutscene.onExit();
+        }
 
         this.movePlayer(elapsedTime);
 
@@ -314,36 +340,6 @@
             this.playerLegsSprite.y = this.world.y + this.world.height / 2;
 
             this.scoreCounter.setPos(this.xOffset + 4 + shake, 16 + shake);
-        }
-
-        this.scoreCounter.update(elapsedTime);
-
-        if (this.totalElapsedTime > this.gameEndsOnTime) {
-
-            if (this.player == 1) {
-
-                this.pressEnter.visible = true;
-
-                if (this.totalElapsedTime > this.gameEndsOnTime && this.totalElapsedTime < this.gameEndsOnTime + 300) {
-
-                    this.pressEnter.alpha = (this.totalElapsedTime - this.gameEndsOnTime) / 300;
-                }
-                else if (this.totalElapsedTime > this.gameEndsOnTime + 300) {
-
-                    this.pressEnter.alpha = 1;
-                }
-
-                this.pressEnter.scale.x = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
-                this.pressEnter.scale.y = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
-            }
-
-            if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter') &&
-                !Game.sceneTransition.isGrowing) {
-
-                Game.sceneTransition.startGrowing();
-            }
-
-            return;
         }
     }
 
@@ -456,8 +452,8 @@
         this.checkpoints.push(new Checkpoint(2 * w, 8 * h, 1 * w, 2 * h, Direction.Down));
         this.checkpoints.push(new Checkpoint(2 * w, 10 * h, 2 * w, 2 * h, Direction.Right));
         this.checkpoints.push(new Checkpoint(4 * w, 10 * h, 2 * w, 2 * h, Direction.Right));
-        this.checkpoints.push(new Checkpoint(6 * w, 10 * h, 3 * w, 2 * h, Direction.Right));
-        this.checkpoints.push(new Checkpoint(9 * w, 10 * h, 2 * w, 2 * h, Direction.Up));
+        this.checkpoints.push(new Checkpoint(6 * w, 10 * h, 2 * w, 2 * h, Direction.Right));
+        this.checkpoints.push(new Checkpoint(8 * w, 10 * h, 3 * w, 2 * h, Direction.Up));
         this.checkpoints.push(new Checkpoint(9 * w, 7 * h, 2 * w, 3 * h, Direction.Left));
         this.checkpoints.push(new Checkpoint(7 * w, 7 * h, 2 * w, 2 * h, Direction.Left));
         this.checkpoints.push(new Checkpoint(4 * w, 7 * h, 3 * w, 2 * h, Direction.Up));
@@ -504,7 +500,7 @@
     private movePlayer(elapsedTime: number) {
 
         let turnSpeed = 360;    //  Degrees per second
-        let accSpeed = 1400;
+        let accSpeed = 1500;
         let naturalBreakAcc = -1000;
         let playerBreakAcc = -2500;
         let maxSpeed = 1200;
