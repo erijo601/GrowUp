@@ -549,7 +549,7 @@
             this.spriteMoustacheOnes.texture = PIXI.Loader.shared.resources["number-" + ones + "-white"].texture;
             this.spriteMoustacheOnes.visible = true;
 
-            if (tens > 0) {
+            if (tens > 0 || hundreds > 0) {
 
                 this.spriteMoustacheTens.texture = PIXI.Loader.shared.resources["number-" + tens + "-white"].texture;
                 this.spriteMoustacheTens.visible = true;
@@ -588,7 +588,7 @@
             this.spriteTieOnes.texture = PIXI.Loader.shared.resources["number-" + ones + "-white"].texture;
             this.spriteTieOnes.visible = true;
 
-            if (tens > 0) {
+            if (tens > 0 || hundreds > 0) {
 
                 this.spriteTieTens.texture = PIXI.Loader.shared.resources["number-" + tens + "-white"].texture;
                 this.spriteTieTens.visible = true;
@@ -627,7 +627,7 @@
             this.spriteHatOnes.texture = PIXI.Loader.shared.resources["number-" + ones + "-white"].texture;
             this.spriteHatOnes.visible = true;
 
-            if (tens > 0) {
+            if (tens > 0 || hundreds > 0) {
 
                 this.spriteHatTens.texture = PIXI.Loader.shared.resources["number-" + tens + "-white"].texture;
                 this.spriteHatTens.visible = true;
@@ -666,7 +666,7 @@
             this.spriteOfficeOnes.texture = PIXI.Loader.shared.resources["number-" + ones + "-white"].texture;
             this.spriteOfficeOnes.visible = true;
 
-            if (tens > 0) {
+            if (tens > 0 || hundreds > 0) {
 
                 this.spriteOfficeTens.texture = PIXI.Loader.shared.resources["number-" + tens + "-white"].texture;
                 this.spriteOfficeTens.visible = true;
@@ -705,7 +705,7 @@
             this.spriteWhiskeyOnes.texture = PIXI.Loader.shared.resources["number-" + ones + "-white"].texture;
             this.spriteWhiskeyOnes.visible = true;
 
-            if (tens > 0) {
+            if (tens > 0 || hundreds > 0) {
 
                 this.spriteWhiskeyTens.texture = PIXI.Loader.shared.resources["number-" + tens + "-white"].texture;
                 this.spriteWhiskeyTens.visible = true;
@@ -742,7 +742,7 @@
         this.spriteTotalOnes.texture = PIXI.Loader.shared.resources["number-" + ones + "-white"].texture;
         this.spriteTotalOnes.visible = true;
 
-        if (tens > 0) {
+        if (tens > 0 || hundreds > 0) {
 
             this.spriteTotalTens.texture = PIXI.Loader.shared.resources["number-" + tens + "-white"].texture;
             this.spriteTotalTens.visible = true;

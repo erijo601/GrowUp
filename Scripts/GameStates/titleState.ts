@@ -167,19 +167,12 @@
             Game.scoreStatePlayer1 = new ScoreState(1, 0, 'w', 's', 'a', 'd');
             Game.scoreStatePlayer2 = new ScoreState(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
             
-            Game.currentStatePlayer1 = new LevelMoustache(1, 0, 'w', 's', 'a', 'd');
-            Game.currentStatePlayer2 = new LevelMoustache(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+            //Game.currentStatePlayer1 = new LevelMoustache(1, 0, 'w', 's', 'a', 'd');
+            //Game.currentStatePlayer2 = new LevelMoustache(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
 
             //  Test
-            Game.currentStatePlayer1 = new LevelOffice(1, 0, 'w', 's', 'a', 'd');
-            Game.currentStatePlayer2 = new LevelOffice(2, 960 + 30, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
-
-            //Game.currentStatePlayer1 = new LevelHat(1, 15, 'w', 's', 'a', 'd');
-            //Game.currentStatePlayer2 = new LevelHat(2, 960 + 15, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
-
-            //Game.currentStatePlayer1 = new LevelTie(1, 0, 'w', 's', 'a', 'd');
-            //Game.currentStatePlayer2 = new LevelTie(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
-
+            Game.currentStatePlayer1 = new LevelWhiskey(1, 0, 'w', 's', 'a', 'd');
+            Game.currentStatePlayer2 = new LevelWhiskey(2, 960 + 30, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
 
             Game.currentStatePlayer1.onEnter();
             Game.currentStatePlayer2.onEnter();
@@ -191,8 +184,7 @@
             //Game.currentStatePlayer1 = new LevelMoustache(1, 480, 'w', 's', 'a', 'd');
 
             //  Test
-            Game.currentStatePlayer1 = new LevelOffice(1, 480 + 15, 'w', 's', 'a', 'd');
-            //Game.currentStatePlayer1 = new LevelHat(1, 480 + 15, 'w', 's', 'a', 'd');
+            Game.currentStatePlayer1 = new LevelWhiskey(1, 480 + 15, 'w', 's', 'a', 'd');
 
             Game.currentStatePlayer1.onEnter();
         }

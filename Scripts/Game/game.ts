@@ -361,6 +361,29 @@ class Game {
         PIXI.Loader.shared.add('level-office-cubicle-worker2', 'img/LevelOffice/cubicle-worker2.png');
         PIXI.Loader.shared.add('level-office-cubicle0', 'img/LevelOffice/cubicle0.png');
         PIXI.Loader.shared.add('level-office-cubicle1', 'img/LevelOffice/cubicle1.png');
+        PIXI.Loader.shared.add('level-office-driftsmoke', 'img/LevelOffice/driftsmoke.png');
+
+        //  Level Whiskey
+        PIXI.Loader.shared.add('level-whiskey-background', 'img/LevelWhiskey/background.png');
+        PIXI.Loader.shared.add('level-whiskey-fire0', 'img/LevelWhiskey/fire0.png');
+        PIXI.Loader.shared.add('level-whiskey-fire1', 'img/LevelWhiskey/fire1.png');
+        PIXI.Loader.shared.add('level-whiskey-fire2', 'img/LevelWhiskey/fire2.png');
+        PIXI.Loader.shared.add('level-whiskey-fire3', 'img/LevelWhiskey/fire3.png');
+        PIXI.Loader.shared.add('level-whiskey-glas', 'img/LevelWhiskey/glas.png');
+        PIXI.Loader.shared.add('level-whiskey-swirl0', 'img/LevelWhiskey/swirl0.png');
+        PIXI.Loader.shared.add('level-whiskey-swirl1', 'img/LevelWhiskey/swirl1.png');
+        PIXI.Loader.shared.add('level-whiskey-swirl2', 'img/LevelWhiskey/swirl2.png');
+        PIXI.Loader.shared.add('level-whiskey-swirl3', 'img/LevelWhiskey/swirl3.png');
+        PIXI.Loader.shared.add('level-whiskey-swirl4', 'img/LevelWhiskey/swirl4.png');
+        PIXI.Loader.shared.add('level-whiskey-mouth0-p1', 'img/LevelWhiskey/mouth0-p1.png');
+        PIXI.Loader.shared.add('level-whiskey-mouth1-p1', 'img/LevelWhiskey/mouth1-p1.png');
+        PIXI.Loader.shared.add('level-whiskey-mouth2-p1', 'img/LevelWhiskey/mouth2-p1.png');
+        PIXI.Loader.shared.add('level-whiskey-mouth0-p2', 'img/LevelWhiskey/mouth0-p2.png');
+        PIXI.Loader.shared.add('level-whiskey-mouth1-p2', 'img/LevelWhiskey/mouth1-p2.png');
+        PIXI.Loader.shared.add('level-whiskey-mouth2-p2', 'img/LevelWhiskey/mouth2-p2.png');
+        PIXI.Loader.shared.add('level-whiskey-arm-p1', 'img/LevelWhiskey/arm-p1.png');
+        PIXI.Loader.shared.add('level-whiskey-arm-p2', 'img/LevelWhiskey/arm-p2.png');
+        PIXI.Loader.shared.add('level-whiskey-hand0', 'img/LevelWhiskey/hand0.png');
     }
 
     static loadingScreenResourcesLoaded(resources: any) {

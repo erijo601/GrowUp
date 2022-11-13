@@ -105,8 +105,8 @@
 
     public startLevelWhiskey() {
 
-        this.currentTitle = this.titleOffice;
-        this.currentSubtitle = this.subtitleOffice;
+        this.currentTitle = this.titleWhiskey;
+        this.currentSubtitle = this.subtitleWhiskey;
 
         this.start();
     }

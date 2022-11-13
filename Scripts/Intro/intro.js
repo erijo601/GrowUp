@@ -49,8 +49,8 @@ var Intro = /** @class */ (function () {
         this.start();
     };
     Intro.prototype.startLevelWhiskey = function () {
-        this.currentTitle = this.titleOffice;
-        this.currentSubtitle = this.subtitleOffice;
+        this.currentTitle = this.titleWhiskey;
+        this.currentSubtitle = this.subtitleWhiskey;
         this.start();
     };
     Intro.prototype.start = function () {

@@ -111,7 +111,7 @@
 
         this.coffee = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-cutscene-coffee0"].texture);
         this.coffee.x = x + 632;
-        this.coffee.y = y + 650;
+        this.coffee.y = y + 649;
         this.coffee.zIndex = 1001;
         this.coffee.visible = false;
 

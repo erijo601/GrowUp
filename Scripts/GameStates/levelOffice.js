@@ -91,6 +91,8 @@ var LevelOffice = /** @class */ (function (_super) {
         this.playerSpeed = new Position(0, 0);
         this.timeLeftCurrentFrameLegs = 100;
         this.currentFrameLegs = 0;
+        this.timeTilDriftSmoke = 250;
+        this.driftSmokes = [];
         this.otherPlayerWorldPosition = new Position(600, 600);
         this.nextCheckpoint = 1;
         this.elapsedTimeInCurrentCheckpoint = 3000;
@@ -119,6 +121,10 @@ var LevelOffice = /** @class */ (function (_super) {
         Game.app.stage.removeChild(this.directionDownSprite);
         Game.app.stage.removeChild(this.directionLeftSprite);
         Game.app.stage.removeChild(this.directionRightSprite);
+        for (var _i = 0, _a = this.driftSmokes; _i < _a.length; _i++) {
+            var driftSmoke = _a[_i];
+            Game.app.stage.removeChild(driftSmoke.sprite);
+        }
         this.scoreCounter.onExit();
         if (this.player == 1) {
             Game.app.stage.removeChild(this.pressEnter);
@@ -156,13 +162,20 @@ var LevelOffice = /** @class */ (function (_super) {
         }
         this.scoreCounter.update(elapsedTime);
         this.totalElapsedTime += elapsedTime;
-        if (this.totalElapsedTime > this.gameEndsOnTime) {
+        var musicTime;
+        if (Game.soundPlayer.musicOffice.playing() == false) {
+            musicTime = 122;
+        }
+        else {
+            musicTime = Game.soundPlayer.musicOffice.seek();
+        }
+        if (musicTime > 120) {
             if (this.player == 1) {
                 this.pressEnter.visible = true;
-                if (this.totalElapsedTime > this.gameEndsOnTime && this.totalElapsedTime < this.gameEndsOnTime + 300) {
-                    this.pressEnter.alpha = (this.totalElapsedTime - this.gameEndsOnTime) / 300;
+                if (musicTime < 120.3) {
+                    this.pressEnter.alpha = (musicTime - 120.3) / 0.3;
                 }
-                else if (this.totalElapsedTime > this.gameEndsOnTime + 300) {
+                else {
                     this.pressEnter.alpha = 1;
                 }
                 this.pressEnter.scale.x = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
@@ -174,26 +187,16 @@ var LevelOffice = /** @class */ (function (_super) {
             }
             return;
         }
-        var cutsceneStart = 21000;
-        var cutsceneEnd = 39332;
-        var textDuration = 1500;
-        var musicTime;
-        musicTime = Game.soundPlayer.musicOffice.seek();
         if (musicTime > 36.1 && musicTime < 54.319) {
-            //if (this.totalElapsedTime > cutsceneStart && this.totalElapsedTime < cutsceneEnd) {
             //  Cutscene!
             if (!this.cutscene.isVisible()) {
                 this.cutscene.onEnter();
             }
-            //if (this.totalElapsedTime - cutsceneStart < textDuration) {
             if (musicTime - 36.1 < 1.5) {
-                //let partShowStart = (this.totalElapsedTime - cutsceneStart) / textDuration;
                 var partShowStart = (musicTime - 36.1) / 1.5;
                 this.cutscene.showStartText(partShowStart);
             }
-            //else if (this.totalElapsedTime > cutsceneEnd - textDuration) {
             else if (musicTime > 54.319 - 1.5) {
-                //let partShowEnd = 1 - (cutsceneEnd - this.totalElapsedTime) / textDuration;
                 var partShowEnd = 1 - (54.319 - musicTime) / 1.5;
                 this.cutscene.showEndText(partShowEnd);
             }
@@ -207,6 +210,7 @@ var LevelOffice = /** @class */ (function (_super) {
             this.cutscene.onExit();
         }
         this.movePlayer(elapsedTime);
+        this.updateDriftSmokes(elapsedTime);
         this.checkCheckpoints(elapsedTime);
         this.renderWorld();
         if (this.screenShakeTimeLeft > 0) {
@@ -350,23 +354,48 @@ var LevelOffice = /** @class */ (function (_super) {
         }
     };
     LevelOffice.prototype.movePlayer = function (elapsedTime) {
-        var turnSpeed = 360; //  Degrees per second
-        var accSpeed = 1500;
+        var turnSpeed = 1.2 * 360; //  Degrees per second
+        var accSpeed = 800;
         var naturalBreakAcc = -1000;
         var playerBreakAcc = -2500;
         var maxSpeed = 1200;
         var currentLegsTexture = "";
         if (Game.keyboard.current.isPressed(this.leftKey) && !Game.keyboard.current.isPressed(this.rightKey)) {
             this.playerSprite.angle -= turnSpeed * elapsedTime / 1000;
+            if (this.playerSprite.angle < 0) {
+                this.playerSprite.angle += 360;
+            }
             this.playerLegsSprite.angle = this.playerSprite.angle;
         }
         else if (Game.keyboard.current.isPressed(this.rightKey) && !Game.keyboard.current.isPressed(this.leftKey)) {
             this.playerSprite.angle += turnSpeed * elapsedTime / 1000;
+            if (this.playerSprite.angle >= 360) {
+                this.playerSprite.angle -= 360;
+            }
             this.playerLegsSprite.angle = this.playerSprite.angle;
         }
         if (Game.keyboard.current.isPressed(this.upKey) && !Game.keyboard.current.isPressed(this.downKey)) {
-            this.playerSpeed.x -= Math.sin(this.playerSprite.rotation) * accSpeed * elapsedTime / 1000;
-            this.playerSpeed.y += Math.cos(this.playerSprite.rotation) * accSpeed * elapsedTime / 1000;
+            var actualRotation = Math.atan2(this.playerSpeed.y, this.playerSpeed.x) - Math.PI / 2;
+            if (actualRotation < 0) {
+                actualRotation += Math.PI * 2;
+            }
+            var diffRotation = Math.abs(this.playerSprite.rotation - actualRotation);
+            if (diffRotation > Math.PI) {
+                diffRotation = Math.PI * 2 - diffRotation;
+            }
+            console.log(this.playerSprite.angle + " " + Math.ceil(actualRotation * 360 / (Math.PI * 2)));
+            var boostSpeed = 3.0 * accSpeed * diffRotation / (Math.PI * 2);
+            if (diffRotation > Math.PI / 2) {
+                this.timeTilDriftSmoke -= elapsedTime; // * (diffRotation / Math.PI * 2);
+                if (this.timeTilDriftSmoke <= 0) {
+                    this.timeTilDriftSmoke += 50;
+                    var driftSmoke = new DriftSmoke(this.playerSprite.x, this.playerSprite.y, this.playerSprite.rotation - Math.PI / 2, this.playerSprite.rotation - actualRotation);
+                    this.driftSmokes.push(driftSmoke);
+                    Game.app.stage.addChild(driftSmoke.sprite);
+                }
+            }
+            this.playerSpeed.x -= Math.sin(this.playerSprite.rotation) * (accSpeed + boostSpeed) * elapsedTime / 1000;
+            this.playerSpeed.y += Math.cos(this.playerSprite.rotation) * (accSpeed + boostSpeed) * elapsedTime / 1000;
             var partSpeed = Math.sqrt(this.playerSpeed.x * this.playerSpeed.x + this.playerSpeed.y * this.playerSpeed.y) / maxSpeed;
             this.timeLeftCurrentFrameLegs -= elapsedTime * (1 + 3 * partSpeed);
             if (this.timeLeftCurrentFrameLegs <= 0) {
@@ -431,6 +460,15 @@ var LevelOffice = /** @class */ (function (_super) {
             this.otherPlayerSprite.y = otherPlayerRelativeToPlayer.y;
             this.otherPlayerLegsSprite.x = otherPlayerRelativeToPlayer.x;
             this.otherPlayerLegsSprite.y = otherPlayerRelativeToPlayer.y;
+        }
+    };
+    LevelOffice.prototype.updateDriftSmokes = function (elapsedTime) {
+        var i = this.driftSmokes.length;
+        while (i--) {
+            this.driftSmokes[i].update(elapsedTime);
+            if (this.driftSmokes[i].sprite.alpha <= 0) {
+                this.driftSmokes.splice(i, 1);
+            }
         }
     };
     LevelOffice.prototype.CheckCollision = function (oldPlayerWorldPosition, newPlayerWorldPosition) {

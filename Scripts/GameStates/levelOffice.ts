@@ -35,6 +35,9 @@
     private timeLeftCurrentFrameLegs: number;
     private currentFrameLegs: number;
 
+    private timeTilDriftSmoke: number;
+    private driftSmokes: DriftSmoke[];
+
     private screenShakeTimeLeft: number;
 
     constructor(player: number, xOffset: number, upKey: string, downKey: string, leftKey: string, rightKey: string) {
@@ -133,6 +136,9 @@
         this.timeLeftCurrentFrameLegs = 100;
         this.currentFrameLegs = 0;
 
+        this.timeTilDriftSmoke = 250;
+        this.driftSmokes = [];
+
         this.otherPlayerWorldPosition = new Position(600, 600);
 
         this.nextCheckpoint = 1;
@@ -174,6 +180,11 @@
         Game.app.stage.removeChild(this.directionDownSprite);
         Game.app.stage.removeChild(this.directionLeftSprite);
         Game.app.stage.removeChild(this.directionRightSprite);
+
+        for (let driftSmoke of this.driftSmokes) {
+
+            Game.app.stage.removeChild(driftSmoke.sprite);
+        }
 
         this.scoreCounter.onExit();
 
@@ -236,17 +247,28 @@
 
         this.totalElapsedTime += elapsedTime;
 
-        if (this.totalElapsedTime > this.gameEndsOnTime) {
+        let musicTime: any;        
+
+        if (Game.soundPlayer.musicOffice.playing() == false) {
+
+            musicTime = 122;
+        }
+        else {
+
+            musicTime = Game.soundPlayer.musicOffice.seek();
+        }
+
+        if (musicTime > 120 ) { 
 
             if (this.player == 1) {
 
                 this.pressEnter.visible = true;
 
-                if (this.totalElapsedTime > this.gameEndsOnTime && this.totalElapsedTime < this.gameEndsOnTime + 300) {
+                if (musicTime < 120.3) {
 
-                    this.pressEnter.alpha = (this.totalElapsedTime - this.gameEndsOnTime) / 300;
+                    this.pressEnter.alpha = (musicTime - 120.3) / 0.3;
                 }
-                else if (this.totalElapsedTime > this.gameEndsOnTime + 300) {
+                else {
 
                     this.pressEnter.alpha = 1;
                 }
@@ -264,16 +286,7 @@
             return;
         }
 
-        let cutsceneStart = 21000;
-        let cutsceneEnd = 39332;
-        let textDuration = 1500;
-
-        let musicTime: any;
-        musicTime = Game.soundPlayer.musicOffice.seek();
-
         if (musicTime > 36.1 && musicTime < 54.319) {
-        //if (this.totalElapsedTime > cutsceneStart && this.totalElapsedTime < cutsceneEnd) {
-
             //  Cutscene!
 
             if (!this.cutscene.isVisible()) {
@@ -281,18 +294,14 @@
                 this.cutscene.onEnter();
             }
 
-            //if (this.totalElapsedTime - cutsceneStart < textDuration) {
             if (musicTime - 36.1 < 1.5) {
 
-                //let partShowStart = (this.totalElapsedTime - cutsceneStart) / textDuration;
                 let partShowStart = (musicTime - 36.1) / 1.5;
 
                 this.cutscene.showStartText(partShowStart);
             }
-            //else if (this.totalElapsedTime > cutsceneEnd - textDuration) {
             else if (musicTime > 54.319 - 1.5) {
 
-                //let partShowEnd = 1 - (cutsceneEnd - this.totalElapsedTime) / textDuration;
                 let partShowEnd = 1 - (54.319 - musicTime) / 1.5;
 
                 this.cutscene.showEndText(partShowEnd);
@@ -312,6 +321,7 @@
         }
 
         this.movePlayer(elapsedTime);
+        this.updateDriftSmokes(elapsedTime);
 
         this.checkCheckpoints(elapsedTime);
 
@@ -499,8 +509,8 @@
 
     private movePlayer(elapsedTime: number) {
 
-        let turnSpeed = 360;    //  Degrees per second
-        let accSpeed = 1500;
+        let turnSpeed = 1.2 * 360;    //  Degrees per second
+        let accSpeed = 800;
         let naturalBreakAcc = -1000;
         let playerBreakAcc = -2500;
         let maxSpeed = 1200;
@@ -510,18 +520,63 @@
         if (Game.keyboard.current.isPressed(this.leftKey) && !Game.keyboard.current.isPressed(this.rightKey)) {
 
             this.playerSprite.angle -= turnSpeed * elapsedTime / 1000;
+
+            if (this.playerSprite.angle < 0) {
+
+                this.playerSprite.angle += 360;
+            }
+
             this.playerLegsSprite.angle = this.playerSprite.angle;
         }
         else if (Game.keyboard.current.isPressed(this.rightKey) && !Game.keyboard.current.isPressed(this.leftKey)) {
 
             this.playerSprite.angle += turnSpeed * elapsedTime / 1000;
+
+            if (this.playerSprite.angle >= 360) {
+
+                this.playerSprite.angle -= 360;
+            }
+
             this.playerLegsSprite.angle = this.playerSprite.angle;
         }
 
         if (Game.keyboard.current.isPressed(this.upKey) && !Game.keyboard.current.isPressed(this.downKey)) {
 
-            this.playerSpeed.x -= Math.sin(this.playerSprite.rotation) * accSpeed * elapsedTime / 1000;
-            this.playerSpeed.y += Math.cos(this.playerSprite.rotation) * accSpeed * elapsedTime / 1000;
+            let actualRotation = Math.atan2(this.playerSpeed.y, this.playerSpeed.x) - Math.PI / 2;
+
+            if (actualRotation < 0) {
+
+                actualRotation += Math.PI * 2;
+            }
+
+            let diffRotation = Math.abs(this.playerSprite.rotation - actualRotation);
+
+            if (diffRotation > Math.PI) {
+
+                diffRotation = Math.PI * 2 - diffRotation;
+            }
+
+            console.log(this.playerSprite.angle + " " + Math.ceil(actualRotation * 360 / (Math.PI * 2)));
+
+            let boostSpeed = 3.0 * accSpeed * diffRotation / (Math.PI * 2);
+
+            if (diffRotation > Math.PI / 2) {
+
+                this.timeTilDriftSmoke -= elapsedTime;// * (diffRotation / Math.PI * 2);
+
+                if (this.timeTilDriftSmoke <= 0) {
+
+                    this.timeTilDriftSmoke += 50;
+
+                    let driftSmoke = new DriftSmoke(this.playerSprite.x, this.playerSprite.y, this.playerSprite.rotation - Math.PI/2, this.playerSprite.rotation - actualRotation);
+
+                    this.driftSmokes.push(driftSmoke);
+                    Game.app.stage.addChild(driftSmoke.sprite);
+                }
+            }
+
+            this.playerSpeed.x -= Math.sin(this.playerSprite.rotation) * (accSpeed + boostSpeed) * elapsedTime / 1000;
+            this.playerSpeed.y += Math.cos(this.playerSprite.rotation) * (accSpeed + boostSpeed) * elapsedTime / 1000;
 
             let partSpeed = Math.sqrt(this.playerSpeed.x * this.playerSpeed.x + this.playerSpeed.y * this.playerSpeed.y) / maxSpeed;
 
@@ -629,6 +684,21 @@
 
             this.otherPlayerLegsSprite.x = otherPlayerRelativeToPlayer.x;
             this.otherPlayerLegsSprite.y = otherPlayerRelativeToPlayer.y;
+        }
+    }
+
+    private updateDriftSmokes(elapsedTime: number) {
+
+        var i = this.driftSmokes.length;
+
+        while (i--) {
+
+            this.driftSmokes[i].update(elapsedTime);
+
+            if (this.driftSmokes[i].sprite.alpha <= 0) {
+
+                this.driftSmokes.splice(i, 1);
+            }
         }
     }
 

@@ -377,7 +377,7 @@ var ScoreState = /** @class */ (function (_super) {
             this.spriteMoustacheProcent.visible = true;
             this.spriteMoustacheOnes.texture = PIXI.Loader.shared.resources["number-" + ones_1 + "-white"].texture;
             this.spriteMoustacheOnes.visible = true;
-            if (tens_1 > 0) {
+            if (tens_1 > 0 || hundreds_1 > 0) {
                 this.spriteMoustacheTens.texture = PIXI.Loader.shared.resources["number-" + tens_1 + "-white"].texture;
                 this.spriteMoustacheTens.visible = true;
             }
@@ -405,7 +405,7 @@ var ScoreState = /** @class */ (function (_super) {
             this.spriteTieProcent.visible = true;
             this.spriteTieOnes.texture = PIXI.Loader.shared.resources["number-" + ones_2 + "-white"].texture;
             this.spriteTieOnes.visible = true;
-            if (tens_2 > 0) {
+            if (tens_2 > 0 || hundreds_2 > 0) {
                 this.spriteTieTens.texture = PIXI.Loader.shared.resources["number-" + tens_2 + "-white"].texture;
                 this.spriteTieTens.visible = true;
             }
@@ -433,7 +433,7 @@ var ScoreState = /** @class */ (function (_super) {
             this.spriteHatProcent.visible = true;
             this.spriteHatOnes.texture = PIXI.Loader.shared.resources["number-" + ones_3 + "-white"].texture;
             this.spriteHatOnes.visible = true;
-            if (tens_3 > 0) {
+            if (tens_3 > 0 || hundreds_3 > 0) {
                 this.spriteHatTens.texture = PIXI.Loader.shared.resources["number-" + tens_3 + "-white"].texture;
                 this.spriteHatTens.visible = true;
             }
@@ -461,7 +461,7 @@ var ScoreState = /** @class */ (function (_super) {
             this.spriteOfficeProcent.visible = true;
             this.spriteOfficeOnes.texture = PIXI.Loader.shared.resources["number-" + ones_4 + "-white"].texture;
             this.spriteOfficeOnes.visible = true;
-            if (tens_4 > 0) {
+            if (tens_4 > 0 || hundreds_4 > 0) {
                 this.spriteOfficeTens.texture = PIXI.Loader.shared.resources["number-" + tens_4 + "-white"].texture;
                 this.spriteOfficeTens.visible = true;
             }
@@ -489,7 +489,7 @@ var ScoreState = /** @class */ (function (_super) {
             this.spriteWhiskeyProcent.visible = true;
             this.spriteWhiskeyOnes.texture = PIXI.Loader.shared.resources["number-" + ones_5 + "-white"].texture;
             this.spriteWhiskeyOnes.visible = true;
-            if (tens_5 > 0) {
+            if (tens_5 > 0 || hundreds_5 > 0) {
                 this.spriteWhiskeyTens.texture = PIXI.Loader.shared.resources["number-" + tens_5 + "-white"].texture;
                 this.spriteWhiskeyTens.visible = true;
             }
@@ -516,7 +516,7 @@ var ScoreState = /** @class */ (function (_super) {
         this.spriteTotalProcent.visible = true;
         this.spriteTotalOnes.texture = PIXI.Loader.shared.resources["number-" + ones + "-white"].texture;
         this.spriteTotalOnes.visible = true;
-        if (tens > 0) {
+        if (tens > 0 || hundreds > 0) {
             this.spriteTotalTens.texture = PIXI.Loader.shared.resources["number-" + tens + "-white"].texture;
             this.spriteTotalTens.visible = true;
         }
