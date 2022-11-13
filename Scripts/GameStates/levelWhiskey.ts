@@ -89,7 +89,7 @@
 
         this.hand = new PIXI.Sprite(PIXI.Loader.shared.resources["level-whiskey-hand0"].texture);
         this.hand.x = 487
-        this.hand.y = 430;
+        this.hand.y = 400;
 
         this.arm = new PIXI.Sprite(PIXI.Loader.shared.resources["level-whiskey-arm-p" + this.player].texture);
         this.arm.x = this.hand.x + this.hand.width;
