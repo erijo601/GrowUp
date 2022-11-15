@@ -62,7 +62,7 @@ var LevelWhiskey = /** @class */ (function (_super) {
         _this.instructionsDown.visible = false;
         _this.hand = new PIXI.Sprite(PIXI.Loader.shared.resources["level-whiskey-hand0"].texture);
         _this.hand.x = 487;
-        _this.hand.y = 430;
+        _this.hand.y = 400;
         _this.arm = new PIXI.Sprite(PIXI.Loader.shared.resources["level-whiskey-arm-p" + _this.player].texture);
         _this.arm.x = _this.hand.x + _this.hand.width;
         _this.arm.y = _this.hand.y;
@@ -223,7 +223,7 @@ var LevelWhiskey = /** @class */ (function (_super) {
             if (this.swirlScore < this.maxSwirlScore) {
                 this.swirlScore++;
                 var swirlImg = 0;
-                this.glas.x = 80 + 10;
+                this.glas.x = 80 - 10;
                 this.swirl.x = this.glas.x + 123;
                 if (this.swirlScore == this.maxSwirlScore) {
                     //  TODO: Rör det stora ansiktet mot glaset
@@ -246,7 +246,7 @@ var LevelWhiskey = /** @class */ (function (_super) {
             if (this.swirlScore < this.maxSwirlScore) {
                 this.swirlScore++;
                 var swirlImg = 0;
-                this.glas.x = 80 - 10;
+                this.glas.x = 80 + 10;
                 this.swirl.x = this.glas.x + 123;
                 if (this.swirlScore == this.maxSwirlScore) {
                     //  TODO: Rör det stora ansiktet mot glaset

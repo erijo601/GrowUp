@@ -384,6 +384,10 @@ class Game {
         PIXI.Loader.shared.add('level-whiskey-arm-p1', 'img/LevelWhiskey/arm-p1.png');
         PIXI.Loader.shared.add('level-whiskey-arm-p2', 'img/LevelWhiskey/arm-p2.png');
         PIXI.Loader.shared.add('level-whiskey-hand0', 'img/LevelWhiskey/hand0.png');
+        PIXI.Loader.shared.add('level-whiskey-hand1', 'img/LevelWhiskey/hand1.png');
+        PIXI.Loader.shared.add('level-whiskey-hand2', 'img/LevelWhiskey/hand2.png');
+        PIXI.Loader.shared.add('level-whiskey-hand3', 'img/LevelWhiskey/hand3.png');
+        PIXI.Loader.shared.add('level-whiskey-hand4', 'img/LevelWhiskey/hand4.png');
     }
 
     static loadingScreenResourcesLoaded(resources: any) {
