@@ -192,6 +192,10 @@
     <Content Include="img\LevelWhiskey\fire3.png" />
     <Content Include="img\LevelWhiskey\glas.png" />
     <Content Include="img\LevelWhiskey\hand0.png" />
+    <Content Include="img\LevelWhiskey\hand1.png" />
+    <Content Include="img\LevelWhiskey\hand2.png" />
+    <Content Include="img\LevelWhiskey\hand3.png" />
+    <Content Include="img\LevelWhiskey\hand4.png" />
     <Content Include="img\LevelWhiskey\mouth0-p1.png" />
     <Content Include="img\LevelWhiskey\mouth0-p2.png" />
     <Content Include="img\LevelWhiskey\mouth1-p1.png" />
