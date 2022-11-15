@@ -186,6 +186,10 @@
     <Content Include="img\LevelWhiskey\arm-p1.png" />
     <Content Include="img\LevelWhiskey\arm-p2.png" />
     <Content Include="img\LevelWhiskey\background.png" />
+    <Content Include="img\LevelWhiskey\face-p1.png" />
+    <Content Include="img\LevelWhiskey\face-p2.png" />
+    <Content Include="img\LevelWhiskey\face-splash-p1.png" />
+    <Content Include="img\LevelWhiskey\face-splash-p2.png" />
     <Content Include="img\LevelWhiskey\fire0.png" />
     <Content Include="img\LevelWhiskey\fire1.png" />
     <Content Include="img\LevelWhiskey\fire2.png" />
@@ -202,6 +206,10 @@
     <Content Include="img\LevelWhiskey\mouth1-p2.png" />
     <Content Include="img\LevelWhiskey\mouth2-p1.png" />
     <Content Include="img\LevelWhiskey\mouth2-p2.png" />
+    <Content Include="img\LevelWhiskey\splash0.png" />
+    <Content Include="img\LevelWhiskey\splash1.png" />
+    <Content Include="img\LevelWhiskey\splash2.png" />
+    <Content Include="img\LevelWhiskey\splash3.png" />
     <Content Include="img\LevelWhiskey\swirl0.png" />
     <Content Include="img\LevelWhiskey\swirl1.png" />
     <Content Include="img\LevelWhiskey\swirl2.png" />
