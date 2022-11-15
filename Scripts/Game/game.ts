@@ -388,6 +388,14 @@ class Game {
         PIXI.Loader.shared.add('level-whiskey-hand2', 'img/LevelWhiskey/hand2.png');
         PIXI.Loader.shared.add('level-whiskey-hand3', 'img/LevelWhiskey/hand3.png');
         PIXI.Loader.shared.add('level-whiskey-hand4', 'img/LevelWhiskey/hand4.png');
+        PIXI.Loader.shared.add('level-whiskey-face-p1', 'img/LevelWhiskey/face-p1.png');
+        PIXI.Loader.shared.add('level-whiskey-face-p2', 'img/LevelWhiskey/face-p2.png');
+        PIXI.Loader.shared.add('level-whiskey-face-splash-p1', 'img/LevelWhiskey/face-splash-p1.png');
+        PIXI.Loader.shared.add('level-whiskey-face-splash-p2', 'img/LevelWhiskey/face-splash-p2.png');
+        PIXI.Loader.shared.add('level-whiskey-splash0', 'img/LevelWhiskey/splash0.png');
+        PIXI.Loader.shared.add('level-whiskey-splash1', 'img/LevelWhiskey/splash1.png');
+        PIXI.Loader.shared.add('level-whiskey-splash2', 'img/LevelWhiskey/splash2.png');
+        PIXI.Loader.shared.add('level-whiskey-splash3', 'img/LevelWhiskey/splash3.png');
     }
 
     static loadingScreenResourcesLoaded(resources: any) {
