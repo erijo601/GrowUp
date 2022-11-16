@@ -29,8 +29,9 @@ var ScoreCounter = /** @class */ (function () {
         this.spriteHundredsAlt = new PIXI.Sprite(PIXI.Loader.shared.resources["number-0"].texture);
         this.spriteHundredsAlt.zIndex = 1001;
         this.spriteHundredsAlt.visible = false;
+        this.timeLeftDigitChange = 0;
+        this.digitChangeDirection = 1;
         this.setPos(xOffset + x, y);
-        this.changeSprites();
     }
     ScoreCounter.prototype.setPos = function (x, y) {
         this.background.x = x;
@@ -77,16 +78,12 @@ var ScoreCounter = /** @class */ (function () {
         return this.desiredScore;
     };
     ScoreCounter.prototype.getScore = function () {
-        if (this.currentScore < 0) {
+        if (this.currentScore <= 0) {
             return 0;
         }
-        return this.currentScore;
+        return this.currentScore - 1;
     };
     ScoreCounter.prototype.setNewScore = function (score, totalTimeDigitChange) {
-        if (score == 0) {
-            //  Dirty hack. Scoreanimationen stannar på 1 när den egentligen ska räkna ner till 0. Detta hack fixar problemet.
-            score = -1;
-        }
         if (score == this.desiredScore) {
             return;
         }
@@ -101,6 +98,7 @@ var ScoreCounter = /** @class */ (function () {
         }
         if (totalTimeDigitChange == 0) {
             this.currentScore = score;
+            this.lastScore = score;
         }
         this.changeSprites();
         if (totalTimeDigitChange == 0) {
@@ -116,7 +114,7 @@ var ScoreCounter = /** @class */ (function () {
         }
     };
     ScoreCounter.prototype.update = function (elapsedTime) {
-        if (this.isCounting() == false) {
+        if (this.isCounting() == false && this.timeLeftDigitChange == 0) {
             return;
         }
         this.timeLeftDigitChange -= elapsedTime;
@@ -129,6 +127,7 @@ var ScoreCounter = /** @class */ (function () {
             this.currentScore += this.digitChangeDirection;
             this.timeLeftDigitChange -= remainder;
             if (this.isCounting() == false) {
+                this.timeLeftDigitChange = 0;
                 this.spriteOnes.y = this.y + 19;
                 this.spriteOnesAlt.visible = false;
                 this.spriteTens.y = this.y + 19;
@@ -175,7 +174,7 @@ var ScoreCounter = /** @class */ (function () {
         }
     };
     ScoreCounter.prototype.isCounting = function () {
-        if (this.currentScore != this.desiredScore) {
+        if ((this.currentScore - this.digitChangeDirection) != this.desiredScore) {
             return true;
         }
         return false;

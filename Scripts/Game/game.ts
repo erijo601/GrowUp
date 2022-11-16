@@ -396,6 +396,7 @@ class Game {
         PIXI.Loader.shared.add('level-whiskey-splash1', 'img/LevelWhiskey/splash1.png');
         PIXI.Loader.shared.add('level-whiskey-splash2', 'img/LevelWhiskey/splash2.png');
         PIXI.Loader.shared.add('level-whiskey-splash3', 'img/LevelWhiskey/splash3.png');
+        PIXI.Loader.shared.add('level-whiskey-throat', 'img/LevelWhiskey/throat.png');
     }
 
     static loadingScreenResourcesLoaded(resources: any) {

@@ -17,7 +17,8 @@ var LevelWhiskey = /** @class */ (function (_super) {
     __extends(LevelWhiskey, _super);
     function LevelWhiskey(player, xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, player, xOffset, upKey, downKey, leftKey, rightKey) || this;
-        _this.gameEndsOnTime = 86000;
+        _this.totalTimeDrink = 1000;
+        _this.totalTimeSplash = 500;
         _this.stateName = "LevelWhiskey";
         _this.scoreCounter = new ScoreCounter(xOffset, 4, 16, 0);
         _this.background = new PIXI.Sprite(PIXI.Loader.shared.resources["level-whiskey-background"].texture);
@@ -54,18 +55,30 @@ var LevelWhiskey = /** @class */ (function (_super) {
         _this.instructionsRight.y = 65 + 286 + 248 / 2 - _this.instructionsRight.height / 2;
         _this.instructionsRight.zIndex = 1000;
         _this.instructionsRight.visible = false;
-        _this.instructionsDown = new PIXI.Sprite(PIXI.Loader.shared.resources["keydown-p" + player].texture);
-        _this.instructionsDown.pivot.x = _this.instructionsDown.width / 2;
-        _this.instructionsDown.x = xOffset + 80 - 3 + _this.glas.width / 2;
-        _this.instructionsDown.y = 65 + 286 - 92 - _this.instructionsDown.height - 8;
-        _this.instructionsDown.zIndex = 1000;
-        _this.instructionsDown.visible = false;
+        _this.instructionsUp = new PIXI.Sprite(PIXI.Loader.shared.resources["keyup-p" + player].texture);
+        _this.instructionsUp.pivot.x = _this.instructionsUp.width / 2;
+        _this.instructionsUp.x = xOffset + 80 - 3 + _this.glas.width / 2;
+        _this.instructionsUp.y = 65 + 286 - 92 - _this.instructionsUp.height - 8;
+        _this.instructionsUp.zIndex = 1000;
+        _this.instructionsUp.visible = false;
         _this.hand = new PIXI.Sprite(PIXI.Loader.shared.resources["level-whiskey-hand0"].texture);
         _this.hand.x = 487;
         _this.hand.y = 400;
         _this.arm = new PIXI.Sprite(PIXI.Loader.shared.resources["level-whiskey-arm-p" + _this.player].texture);
         _this.arm.x = _this.hand.x + _this.hand.width;
         _this.arm.y = _this.hand.y;
+        _this.face = new PIXI.Sprite(PIXI.Loader.shared.resources["level-whiskey-face-p" + _this.player].texture);
+        _this.face.x = 950;
+        _this.face.y = 54;
+        _this.face.visible = false;
+        _this.splash = new PIXI.Sprite(PIXI.Loader.shared.resources["level-whiskey-splash0"].texture);
+        _this.splash.x = 950;
+        _this.splash.y = 99;
+        _this.splash.visible = false;
+        _this.throat = new PIXI.Sprite(PIXI.Loader.shared.resources["level-whiskey-throat"].texture);
+        _this.throat.x = 950;
+        _this.throat.y = 99;
+        _this.throat.visible = false;
         if (_this.player == 1) {
             _this.pressEnter = new PIXI.Sprite(PIXI.Loader.shared.resources["enter"].texture);
             _this.pressEnter.x = 858 + 80;
@@ -88,10 +101,10 @@ var LevelWhiskey = /** @class */ (function (_super) {
         Game.app.stage.addChild(this.world);
         Game.app.stage.addChild(this.instructionsLeft);
         Game.app.stage.addChild(this.instructionsRight);
-        Game.app.stage.addChild(this.instructionsDown);
+        Game.app.stage.addChild(this.instructionsUp);
         this.instructionsLeft.visible = true;
         this.instructionsRight.visible = true;
-        this.instructionsDown.visible = false;
+        this.instructionsUp.visible = false;
         this.mouth.visible = false;
         this.totalElapsedTime = 0;
         if (this.player == 1) {
@@ -101,16 +114,17 @@ var LevelWhiskey = /** @class */ (function (_super) {
         Game.sceneTransition.startShrinking();
         Game.soundPlayer.musicWhiskey.play();
         this.renderWorld();
-        this.swirlSpeed = 120;
+        this.swirlSpeed = 160;
         this.maxSwirlScore = 5;
         this.swirlScore = 0;
-        this.currentSwirlImg = 0;
-        this.hitSwirl = false;
         this.instructionsLeft.visible = true;
         this.instructionsRight.visible = false;
     };
     LevelWhiskey.prototype.onExit = function () {
-        Game.app.stage.removeChild(this.background);
+        Game.app.stage.removeChild(this.world);
+        Game.app.stage.removeChild(this.instructionsLeft);
+        Game.app.stage.removeChild(this.instructionsRight);
+        Game.app.stage.removeChild(this.instructionsUp);
         this.scoreCounter.onExit();
         Game.soundPlayer.musicWhiskey.stop();
         if (this.player == 1) {
@@ -145,8 +159,6 @@ var LevelWhiskey = /** @class */ (function (_super) {
             }
             this.fire.texture = PIXI.Loader.shared.resources["level-whiskey-fire" + this.currentFireFrame].texture;
         }
-        this.updateGlas(elapsedTime);
-        this.renderWorld();
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
             Game.sceneTransition.update(elapsedTime);
             if (Game.sceneTransition.isDone()) {
@@ -162,13 +174,20 @@ var LevelWhiskey = /** @class */ (function (_super) {
         }
         this.totalElapsedTime += elapsedTime;
         this.scoreCounter.update(elapsedTime);
-        if (this.totalElapsedTime > this.gameEndsOnTime) {
+        var musicTime;
+        if (Game.soundPlayer.musicWhiskey.playing() == false) {
+            musicTime = 79;
+        }
+        else {
+            musicTime = Game.soundPlayer.musicOffice.seek();
+        }
+        if (musicTime > 76) {
             if (this.player == 1) {
                 this.pressEnter.visible = true;
-                if (this.totalElapsedTime > this.gameEndsOnTime && this.totalElapsedTime < this.gameEndsOnTime + 300) {
-                    this.pressEnter.alpha = (this.totalElapsedTime - this.gameEndsOnTime) / 300;
+                if (musicTime < 76.3) {
+                    this.pressEnter.alpha = (musicTime - 76) / 0.3;
                 }
-                else if (this.totalElapsedTime > this.gameEndsOnTime + 300) {
+                else {
                     this.pressEnter.alpha = 1;
                 }
                 this.pressEnter.scale.x = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
@@ -178,31 +197,134 @@ var LevelWhiskey = /** @class */ (function (_super) {
                 !Game.sceneTransition.isGrowing) {
                 Game.sceneTransition.startGrowing();
             }
+            this.renderWorld();
             return;
         }
+        this.updateGlas(elapsedTime);
+        this.renderWorld();
     };
     LevelWhiskey.prototype.updateGlas = function (elapsedTime) {
+        if (this.timeLeftDrinking > 0) {
+            this.timeLeftDrinking -= elapsedTime;
+            if (this.timeLeftDrinking <= 0) {
+                this.scoreCounter.setNewScore(this.scoreCounter.getDesiredScore() + 10, 100);
+                this.swirlScore = 0;
+                this.maxSwirlScore += 2;
+                this.throat.visible = false;
+                this.mouth.visible = false;
+                this.swirl.texture = PIXI.Loader.shared.resources["level-whiskey-swirl0"].texture;
+                if (this.swirl.angle >= 90 && this.swirl.angle < 270) {
+                    this.instructionsRight.texture = PIXI.Loader.shared.resources["keyright-p" + this.player].texture;
+                    this.instructionsRight.visible = true;
+                }
+                else {
+                    this.instructionsLeft.texture = PIXI.Loader.shared.resources["keyleft-p" + this.player].texture;
+                    this.instructionsLeft.visible = true;
+                }
+            }
+            else {
+                var part = this.timeLeftDrinking / this.totalTimeDrink;
+                if (part > 2 / 3) {
+                    part = (part - 2 / 3) * 3;
+                }
+                else if (part > 1 / 3) {
+                    part = (part - 1 / 3) * 3;
+                }
+                else {
+                    part = part * 3;
+                }
+                this.throat.visible = true;
+                this.throat.x = this.face.x + 320 - 50 * part;
+                this.throat.y = this.face.y + 245 + 16 * Math.sin(Math.PI * part);
+            }
+            return;
+        }
+        else if (this.timeLeftSplashing > 0) {
+            this.timeLeftSplashing -= elapsedTime;
+            if (this.timeLeftSplashing <= 0) {
+                this.swirlScore = 0;
+                this.splash.visible = false;
+                this.mouth.visible = false;
+                this.swirl.texture = PIXI.Loader.shared.resources["level-whiskey-swirl0"].texture;
+                if (this.swirl.angle >= 90 && this.swirl.angle < 270) {
+                    this.instructionsRight.texture = PIXI.Loader.shared.resources["keyright-p" + this.player].texture;
+                    this.instructionsRight.visible = true;
+                }
+                else {
+                    this.instructionsLeft.texture = PIXI.Loader.shared.resources["keyleft-p" + this.player].texture;
+                    this.instructionsLeft.visible = true;
+                }
+            }
+            else {
+                this.splash.visible = true;
+                var img = 3 - Math.floor(4 * this.timeLeftSplashing / this.totalTimeSplash);
+                if (img < 0) {
+                    //  Borde aldrig hända, men det vore tråkigt om allt kraschar pga några sjuka javascript-avrundningar
+                    img = 0;
+                }
+                this.splash.texture = PIXI.Loader.shared.resources["level-whiskey-splash" + img].texture;
+            }
+            return;
+        }
         var lastAngle = this.swirl.angle;
         this.swirl.angle += this.swirlSpeed * elapsedTime / 1000;
         if (this.swirl.angle >= 360) {
             this.swirl.angle -= 360;
         }
-        if (Math.abs(this.swirl.angle - 180) <= 15) {
+        var angle = Math.abs(this.swirl.angle - 180);
+        if (angle <= 15) {
             this.mouth.texture = PIXI.Loader.shared.resources["level-whiskey-mouth2-p" + this.player].texture;
         }
-        else if (Math.abs(this.swirl.angle - 180) <= 30) {
+        else if (angle <= 30) {
             this.mouth.texture = PIXI.Loader.shared.resources["level-whiskey-mouth1-p" + this.player].texture;
         }
         else {
             this.mouth.texture = PIXI.Loader.shared.resources["level-whiskey-mouth0-p" + this.player].texture;
         }
+        var hand = 4 - Math.floor(angle / (180 / 5));
+        this.hand.texture = PIXI.Loader.shared.resources["level-whiskey-hand" + hand].texture;
         if (this.swirlScore == this.maxSwirlScore) {
-            //  TODO: Check down key for score or miss
-            //  När man trycker s, flytta glas/swirl upp 10 pixlar, stanna upp glaset/swirl-animationen en stund och animera stora huvudet
+            if (Game.keyboard.current.isPressed(this.upKey) && !Game.keyboard.last.isPressed(this.upKey) &&
+                this.instructionsUp.visible) {
+                this.instructionsUp.visible = false;
+                this.face.y = 88;
+                this.swirlSpeed = 120;
+                if (angle <= 15) {
+                    this.timeLeftDrinking = this.totalTimeDrink;
+                }
+                else {
+                    this.timeLeftSplashing = this.totalTimeSplash;
+                    this.face.texture = PIXI.Loader.shared.resources["level-whiskey-face-splash-p" + this.player].texture;
+                    this.splash.x = 413 - 20;
+                    this.splash.y = 30;
+                }
+                return;
+            }
+            if (this.face.x > 520) {
+                this.face.x -= elapsedTime * 800 / 1000;
+                if (this.face.x <= 520) {
+                    this.face.x = 520;
+                    this.faceAimTimeElapsed = 0;
+                    this.instructionsUp.visible = true;
+                }
+            }
+            else {
+                this.faceAimTimeElapsed += elapsedTime;
+                if (this.faceAimTimeElapsed > 1000) {
+                    this.faceAimTimeElapsed -= 1000;
+                }
+                this.face.y = 59 - (5 * Math.cos(2 * Math.PI * this.faceAimTimeElapsed / 1000));
+            }
         }
         else {
+            if (this.face.visible) {
+                this.face.x += elapsedTime * 800 / 1000;
+                if (this.face.x >= 950) {
+                    this.face.x = 950;
+                    this.face.visible = false;
+                }
+            }
             if (lastAngle < 90 && this.swirl.angle >= 90) {
-                this.hitSwirl = false;
                 this.instructionsLeft.visible = false;
                 this.instructionsRight.texture = PIXI.Loader.shared.resources["keyright-p" + this.player].texture;
                 this.instructionsRight.visible = true;
@@ -210,7 +332,6 @@ var LevelWhiskey = /** @class */ (function (_super) {
                 this.swirl.x = this.glas.x + 123;
             }
             else if (lastAngle < 270 && this.swirl.angle >= 270) {
-                this.hitSwirl = false;
                 this.instructionsRight.visible = false;
                 this.instructionsLeft.texture = PIXI.Loader.shared.resources["keyleft-p" + this.player].texture;
                 this.instructionsLeft.visible = true;
@@ -223,18 +344,23 @@ var LevelWhiskey = /** @class */ (function (_super) {
             if (this.swirlScore < this.maxSwirlScore) {
                 this.swirlScore++;
                 var swirlImg = 0;
-                this.glas.x = 80 - 10;
+                this.glas.x = 80 - 20;
                 this.swirl.x = this.glas.x + 123;
                 if (this.swirlScore == this.maxSwirlScore) {
-                    //  TODO: Rör det stora ansiktet mot glaset
                     this.instructionsLeft.visible = false;
                     this.instructionsRight.visible = false;
-                    this.instructionsDown.visible = true;
+                    this.face.texture = PIXI.Loader.shared.resources["level-whiskey-face-p" + this.player].texture;
+                    this.face.visible = true;
+                    this.face.x = 950;
+                    this.face.y = 54;
                     this.mouth.visible = true;
                     swirlImg = 4;
                 }
                 else {
-                    this.swirlSpeed += 60;
+                    this.swirlSpeed += 50;
+                    if (this.swirlSpeed > 700) {
+                        this.swirlSpeed = 700;
+                    }
                     swirlImg = Math.ceil(this.swirlScore / this.maxSwirlScore * 3);
                 }
                 this.swirl.texture = PIXI.Loader.shared.resources["level-whiskey-swirl" + swirlImg].texture;
@@ -246,13 +372,15 @@ var LevelWhiskey = /** @class */ (function (_super) {
             if (this.swirlScore < this.maxSwirlScore) {
                 this.swirlScore++;
                 var swirlImg = 0;
-                this.glas.x = 80 + 10;
+                this.glas.x = 80 + 20;
                 this.swirl.x = this.glas.x + 123;
                 if (this.swirlScore == this.maxSwirlScore) {
-                    //  TODO: Rör det stora ansiktet mot glaset
                     this.instructionsLeft.visible = false;
                     this.instructionsRight.visible = false;
-                    this.instructionsDown.visible = true;
+                    this.face.texture = PIXI.Loader.shared.resources["level-whiskey-face-p" + this.player].texture;
+                    this.face.visible = true;
+                    this.face.x = 950;
+                    this.face.y = 54;
                     this.mouth.visible = true;
                     swirlImg = 4;
                 }
@@ -285,6 +413,9 @@ var LevelWhiskey = /** @class */ (function (_super) {
         Game.app.renderer.render(this.hand, this.renderTexture, false);
         Game.app.renderer.render(this.arm, this.renderTexture, false);
         Game.app.renderer.render(this.mouth, this.renderTexture, false);
+        Game.app.renderer.render(this.throat, this.renderTexture, false);
+        Game.app.renderer.render(this.face, this.renderTexture, false);
+        Game.app.renderer.render(this.splash, this.renderTexture, false);
         Game.app.renderer.render(this.glas, this.renderTexture, false);
         Game.app.renderer.render(this.swirl, this.renderTexture, false);
     };

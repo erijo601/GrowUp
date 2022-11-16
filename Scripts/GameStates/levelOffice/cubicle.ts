@@ -102,9 +102,6 @@
 
             this.items.push(new CubicleItem(worker, position));
         }
-
-
-        //  TODO: Lite sumpmässigt innehåll och placering i cuben
     }
 
     public onEnter(): void {

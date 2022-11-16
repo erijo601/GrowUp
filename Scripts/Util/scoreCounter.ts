@@ -62,8 +62,10 @@
         this.spriteHundredsAlt.zIndex = 1001;
         this.spriteHundredsAlt.visible = false;
 
+        this.timeLeftDigitChange = 0;
+        this.digitChangeDirection = 1;
+
         this.setPos(xOffset + x, y);
-        this.changeSprites();
     }
 
     public setPos(x: number, y: number) {
@@ -129,21 +131,15 @@
 
     public getScore(): number {
 
-        if (this.currentScore < 0) {
+        if (this.currentScore <= 0) {
 
             return 0;
         }
 
-        return this.currentScore;
+        return this.currentScore-1;
     }
 
     public setNewScore(score: number, totalTimeDigitChange: number) {
-
-        if (score == 0) {
-
-            //  Dirty hack. Scoreanimationen stannar på 1 när den egentligen ska räkna ner till 0. Detta hack fixar problemet.
-            score = -1;
-        }
 
         if (score == this.desiredScore) {
 
@@ -166,6 +162,7 @@
         if (totalTimeDigitChange == 0) {
 
             this.currentScore = score;
+            this.lastScore = score;
         }
 
         this.changeSprites();
@@ -189,7 +186,7 @@
 
     public update(elapsedTime: number) {
 
-        if (this.isCounting() == false) {
+        if (this.isCounting() == false && this.timeLeftDigitChange == 0) {
 
             return;
         }
@@ -212,6 +209,8 @@
             this.timeLeftDigitChange -= remainder;
 
             if (this.isCounting() == false) {
+
+                this.timeLeftDigitChange = 0;
 
                 this.spriteOnes.y = this.y + 19;
                 this.spriteOnesAlt.visible = false;
@@ -278,7 +277,7 @@
 
     public isCounting(): boolean {
 
-        if (this.currentScore != this.desiredScore) {
+        if ((this.currentScore - this.digitChangeDirection) != this.desiredScore) {
 
             return true;
         }

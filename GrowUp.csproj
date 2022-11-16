@@ -215,6 +215,7 @@
     <Content Include="img\LevelWhiskey\swirl2.png" />
     <Content Include="img\LevelWhiskey\swirl3.png" />
     <Content Include="img\LevelWhiskey\swirl4.png" />
+    <Content Include="img\LevelWhiskey\throat.png" />
     <Content Include="img\Loading\cloud-alt.png" />
     <Content Include="img\Loading\cloud.png" />
     <Content Include="img\Loading\letter-a-alt.png" />
@@ -359,7 +360,6 @@
     <TypeScriptCompile Include="Scripts\Util\mathHelper.ts" />
     <TypeScriptCompile Include="Scripts\Util\keyboardState.ts" />
     <TypeScriptCompile Include="Scripts\Util\mouseState.ts" />
-    <TypeScriptCompile Include="Scripts\Util\fpsCounter.ts" />
     <TypeScriptCompile Include="Scripts\Game\game.ts" />
     <TypeScriptCompile Include="Scripts\typings\pixi.js.d.ts" />
   </ItemGroup>

@@ -252,8 +252,8 @@ var ScoreState = /** @class */ (function (_super) {
                 Game.currentStatePlayer2 = new LevelOffice(2, 960 + 30, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
             }
             else if (this.currentLevel == Level.Office) {
-                //Game.currentStatePlayer1 = new LevelWhiskey(1, 15, 'w', 's', 'a', 'd');
-                //Game.currentStatePlayer2 = new LevelWhiskey(2, 960 + 15, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+                Game.currentStatePlayer1 = new LevelWhiskey(1, 15, 'w', 's', 'a', 'd');
+                Game.currentStatePlayer2 = new LevelWhiskey(2, 960 + 15, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
             }
             else if (this.currentLevel == Level.Whiskey) {
                 Game.currentStatePlayer1 = new LevelHat(1, 15, 'w', 's', 'a', 'd');
@@ -273,7 +273,7 @@ var ScoreState = /** @class */ (function (_super) {
                 Game.currentStatePlayer1 = new LevelOffice(1, 480 + 15, 'w', 's', 'a', 'd');
             }
             else if (this.currentLevel == Level.Office) {
-                //Game.currentStatePlayer1 = new LevelWhiskey(1, 480 + 15, 'w', 's', 'a', 'd');
+                Game.currentStatePlayer1 = new LevelWhiskey(1, 480 + 15, 'w', 's', 'a', 'd');
             }
             else if (this.currentLevel == Level.Whiskey) {
                 Game.currentStatePlayer1 = new LevelHat(1, 480 + 15, 'w', 's', 'a', 'd');
@@ -333,21 +333,17 @@ var ScoreState = /** @class */ (function (_super) {
             return;
         }
         this.scoreCounter.update(elapsedTime);
-        //  TODO: Gör score till PROCENT, inte absoluta poäng
         if (this.currentLevel == Level.Moustache) {
-            //  Maxpoäng är 100 så här är score = procent
+            //  +1 är ett smutsigt hack för att kompensera för ett annat smutsigt hack
             this.scoreLevelMoustache = this.scoreCurrentLevel - this.scoreCounter.getScore();
         }
         else if (this.currentLevel == Level.Tie) {
-            //  Maxpoäng är 100 så här är score = procent
             this.scoreLevelTie = this.scoreCurrentLevel - this.scoreCounter.getScore();
         }
         else if (this.currentLevel == Level.Hat) {
-            //  Maxpoäng är 100 så här är score = procent
             this.scoreLevelHat = this.scoreCurrentLevel - this.scoreCounter.getScore();
         }
         else if (this.currentLevel == Level.Office) {
-            //  Maxpoäng är 100 så här är score = procent
             this.scoreLevelOffice = this.scoreCurrentLevel - this.scoreCounter.getScore();
         }
         else if (this.currentLevel == Level.Whiskey) {
@@ -365,7 +361,6 @@ var ScoreState = /** @class */ (function (_super) {
         maxScore += 100; //  Max score on LevelHat is 100
         maxScore += 100; //  Max score on LevelOffice is 100
         maxScore += 100; //  Max score on LevelWhiskey is 100
-        //  TODO: Vad är max score på LevelWhiskey?
         this.totalScore = Math.floor(100 * scoreTotal / maxScore);
         this.updateSprites();
     };
