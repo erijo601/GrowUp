@@ -423,7 +423,10 @@
 
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
 
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+
+                Game.sceneTransition.update(elapsedTime);
+            }
 
             if (Game.sceneTransition.isDone()) {
 
@@ -436,7 +439,10 @@
 
         if (Game.sceneTransition.isGrowing) {
 
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+
+                Game.sceneTransition.update(elapsedTime);
+            }
 
             if (Game.sceneTransition.isDone()) {
 

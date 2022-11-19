@@ -2,7 +2,7 @@
 
     private backgroundItems: BackgroundItem[];
 
-    private timeTilImageChange: number;
+    public timeTilImageChange: number;
     private fadeOutLeft: number;
     private fadeInLeft: number;
     private fadeTotal: number;

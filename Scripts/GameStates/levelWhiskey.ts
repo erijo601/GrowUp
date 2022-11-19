@@ -237,7 +237,10 @@
 
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
 
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+
+                Game.sceneTransition.update(elapsedTime);
+            }
 
             if (Game.sceneTransition.isDone()) {
 
@@ -249,7 +252,10 @@
 
         if (Game.sceneTransition.isGrowing) {
 
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+
+                Game.sceneTransition.update(elapsedTime);
+            }
 
             if (Game.sceneTransition.isDone()) {
 
@@ -348,8 +354,7 @@
                 else {
 
                     part = part * 3;
-                }
-                
+                }                
 
                 this.throat.visible = true;
                 this.throat.x = this.face.x + 320 - 50 * part;
@@ -435,7 +440,7 @@
                 this.face.y = 88;
                 this.swirlSpeed = 120;
 
-                if (angle <= 15) {
+                if (angle <= 17) {
 
                     this.timeLeftDrinking = this.totalTimeDrink;
                 }

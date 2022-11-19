@@ -64,6 +64,12 @@ var SoundPlayer = /** @class */ (function () {
             volume: 1.0,
             loop: false
         });
+        this.musicEnd = new Howl({
+            src: ['sound/music-end.mp3'],
+            preload: true,
+            volume: 1.0,
+            loop: true
+        });
         this.scoreWheel = new Howl({
             src: ['sound/score-wheel.mp3'],
             preload: true,
@@ -71,9 +77,10 @@ var SoundPlayer = /** @class */ (function () {
             loop: true,
         });
         this.scoreWheel.on("fade", function () {
-            if (that.scoreWheel.volume() == 0) {
-                that.scoreWheel.stop();
-            }
+            that.scoreWheel.stop();
+        });
+        this.titleLoop.on("fade", function () {
+            that.titleLoop.stop();
         });
     };
     return SoundPlayer;

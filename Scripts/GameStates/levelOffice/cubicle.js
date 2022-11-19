@@ -62,7 +62,6 @@ var Cubicle = /** @class */ (function () {
             }
             this.items.push(new CubicleItem(worker, position));
         }
-        //  TODO: Lite sumpmässigt innehåll och placering i cuben
     }
     Cubicle.prototype.onEnter = function () {
     };

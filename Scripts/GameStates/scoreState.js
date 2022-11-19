@@ -149,6 +149,35 @@ var ScoreState = /** @class */ (function (_super) {
         _this.spriteTotalProcent.y = 440;
         _this.spriteTotalProcent.zIndex = 1001;
         _this.spriteTotalProcent.visible = false;
+        var facex = xOffset + 400;
+        var facey = 500;
+        _this.spriteFaceBackground = new PIXI.Sprite(PIXI.Loader.shared.resources["face-background-p" + _this.player].texture);
+        _this.spriteFaceBackground.x = facex;
+        _this.spriteFaceBackground.y = facey;
+        _this.spriteFaceBackground.zIndex = 1000;
+        _this.spriteFaceNeck = new PIXI.Sprite(PIXI.Loader.shared.resources["face-neck1"].texture);
+        _this.spriteFaceNeck.x = facex;
+        _this.spriteFaceNeck.y = facey;
+        _this.spriteFaceNeck.visible = false;
+        _this.spriteFaceNeck.zIndex = 1001;
+        _this.spriteFaceJaw = new PIXI.Sprite(PIXI.Loader.shared.resources["face-jaw0"].texture);
+        _this.spriteFaceJaw.x = facex;
+        _this.spriteFaceJaw.y = facey;
+        _this.spriteFaceJaw.zIndex = 1002;
+        _this.spriteFaceEyes = new PIXI.Sprite(PIXI.Loader.shared.resources["face-eyes0"].texture);
+        _this.spriteFaceEyes.x = facex;
+        _this.spriteFaceEyes.y = facey;
+        _this.spriteFaceEyes.zIndex = 1003;
+        _this.spriteFaceMoustace = new PIXI.Sprite(PIXI.Loader.shared.resources["face-moustache1-p" + _this.player].texture);
+        _this.spriteFaceMoustace.x = facex;
+        _this.spriteFaceMoustace.y = facey;
+        _this.spriteFaceMoustace.visible = false;
+        _this.spriteFaceMoustace.zIndex = 1004;
+        _this.spriteFaceNose = new PIXI.Sprite(PIXI.Loader.shared.resources["face-nose0"].texture);
+        _this.spriteFaceNose.x = facex;
+        _this.spriteFaceNose.y = facey;
+        _this.spriteFaceNose.visible = true;
+        _this.spriteFaceNose.zIndex = 1005;
         _this.pressEnter = new PIXI.Sprite(PIXI.Loader.shared.resources["enter"].texture);
         _this.pressEnter.x = 858 + 80;
         _this.pressEnter.y = 842 + 100;
@@ -207,6 +236,12 @@ var ScoreState = /** @class */ (function (_super) {
         Game.app.stage.addChild(this.spriteTotalTens);
         Game.app.stage.addChild(this.spriteTotalHundreds);
         Game.app.stage.addChild(this.spriteTotalProcent);
+        Game.app.stage.addChild(this.spriteFaceBackground);
+        Game.app.stage.addChild(this.spriteFaceNeck);
+        Game.app.stage.addChild(this.spriteFaceJaw);
+        Game.app.stage.addChild(this.spriteFaceEyes);
+        Game.app.stage.addChild(this.spriteFaceMoustace);
+        Game.app.stage.addChild(this.spriteFaceNose);
         this.pressEnter.visible = false;
         Game.app.stage.addChild(this.pressEnter);
         this.scoreCounter.onEnter();
@@ -240,30 +275,57 @@ var ScoreState = /** @class */ (function (_super) {
         Game.app.stage.removeChild(this.spriteTotalTens);
         Game.app.stage.removeChild(this.spriteTotalHundreds);
         Game.app.stage.removeChild(this.spriteTotalProcent);
+        Game.app.stage.removeChild(this.spriteFaceBackground);
+        Game.app.stage.removeChild(this.spriteFaceNeck);
+        Game.app.stage.removeChild(this.spriteFaceJaw);
+        Game.app.stage.removeChild(this.spriteFaceEyes);
+        Game.app.stage.removeChild(this.spriteFaceMoustace);
+        Game.app.stage.removeChild(this.spriteFaceNose);
         Game.app.stage.removeChild(this.pressEnter);
         this.scoreCounter.onExit();
         if (Game.twoPlayerGame) {
-            if (this.currentLevel == Level.Moustache) {
-                Game.currentStatePlayer1 = new LevelTie(1, 0, 'w', 's', 'a', 'd');
-                Game.currentStatePlayer2 = new LevelTie(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+            if (this.player == 1) {
+                if (this.currentLevel == Level.Moustache) {
+                    Game.currentStatePlayer1 = new LevelTie(1, 0, 'w', 's', 'a', 'd');
+                }
+                else if (this.currentLevel == Level.Tie) {
+                    Game.currentStatePlayer1 = new LevelOffice(1, 0, 'w', 's', 'a', 'd');
+                }
+                else if (this.currentLevel == Level.Office) {
+                    Game.currentStatePlayer1 = new LevelWhiskey(1, 15, 'w', 's', 'a', 'd');
+                }
+                else if (this.currentLevel == Level.Whiskey) {
+                    Game.currentStatePlayer1 = new LevelHat(1, 15, 'w', 's', 'a', 'd');
+                }
+                else if (this.currentLevel == Level.Hat) {
+                    //  TODO
+                    //Game.currentStatePlayer1 = new TitleEnd(0, 'w', 's', 'a', 'd');
+                }
+                if (Game.currentStatePlayer2 != null && Game.currentStatePlayer2.stateName == this.stateName) {
+                    Game.currentStatePlayer2.onExit();
+                }
+                Game.currentStatePlayer1.onEnter();
+                if (Game.currentStatePlayer2 != null) {
+                    Game.currentStatePlayer2.onEnter();
+                }
             }
-            else if (this.currentLevel == Level.Tie) {
-                Game.currentStatePlayer1 = new LevelOffice(1, 0, 'w', 's', 'a', 'd');
-                Game.currentStatePlayer2 = new LevelOffice(2, 960 + 30, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+            else {
+                if (this.currentLevel == Level.Moustache) {
+                    Game.currentStatePlayer2 = new LevelTie(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+                }
+                else if (this.currentLevel == Level.Tie) {
+                    Game.currentStatePlayer2 = new LevelOffice(2, 960 + 30, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+                }
+                else if (this.currentLevel == Level.Office) {
+                    Game.currentStatePlayer2 = new LevelWhiskey(2, 960 + 15, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+                }
+                else if (this.currentLevel == Level.Whiskey) {
+                    Game.currentStatePlayer2 = new LevelHat(2, 960 + 15, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+                }
+                else if (this.currentLevel == Level.Hat) {
+                    Game.currentStatePlayer2 = null;
+                }
             }
-            else if (this.currentLevel == Level.Office) {
-                Game.currentStatePlayer1 = new LevelWhiskey(1, 15, 'w', 's', 'a', 'd');
-                Game.currentStatePlayer2 = new LevelWhiskey(2, 960 + 15, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
-            }
-            else if (this.currentLevel == Level.Whiskey) {
-                Game.currentStatePlayer1 = new LevelHat(1, 15, 'w', 's', 'a', 'd');
-                Game.currentStatePlayer2 = new LevelHat(2, 960 + 15, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
-            }
-            else if (this.currentLevel == Level.Hat) {
-                //  TODO: END GAME
-            }
-            Game.currentStatePlayer1.onEnter();
-            Game.currentStatePlayer2.onEnter();
         }
         else {
             if (this.currentLevel == Level.Moustache) {
@@ -279,7 +341,8 @@ var ScoreState = /** @class */ (function (_super) {
                 Game.currentStatePlayer1 = new LevelHat(1, 480 + 15, 'w', 's', 'a', 'd');
             }
             else if (this.currentLevel == Level.Hat) {
-                //  TODO: GAME END
+                Game.currentStatePlayer1 = new TitleState(0, 'w', 's', 'a', 'd');
+                Game.currentStatePlayer1.onEnter();
             }
             Game.currentStatePlayer1.onEnter();
         }
@@ -287,14 +350,20 @@ var ScoreState = /** @class */ (function (_super) {
     ScoreState.prototype.update = function (elapsedTime) {
         // elapsedTime in ms
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+                Game.sceneTransition.update(elapsedTime);
+            }
             if (Game.sceneTransition.isDone()) {
-                Game.soundPlayer.musicScoreScreen.play();
+                if (this.player == 1) {
+                    Game.soundPlayer.musicScoreScreen.play();
+                }
             }
             return;
         }
-        if (Game.sceneTransition.isGrowing) {
-            Game.sceneTransition.update(elapsedTime);
+        if (Game.sceneTransition.isGrowing && this.player == 1) {
+            if (this.player == 1) {
+                Game.sceneTransition.update(elapsedTime);
+            }
             if (Game.sceneTransition.isDone()) {
                 this.onExit();
                 return;
@@ -322,6 +391,9 @@ var ScoreState = /** @class */ (function (_super) {
             this.pressEnter.scale.x = 1 - 0.03 * Math.cos(2 * Math.PI * this.elapsedTimePressEnter / 2000);
             this.pressEnter.scale.y = 1 - 0.03 * Math.cos(2 * Math.PI * this.elapsedTimePressEnter / 2000);
             if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
+                if (this.currentLevel == Level.Hat) {
+                    this.onExit();
+                }
                 if (!Game.sceneTransition.isGrowing) {
                     Game.sceneTransition.startGrowing();
                     if (Game.soundPlayer.musicScoreScreen.playing) {
@@ -334,20 +406,47 @@ var ScoreState = /** @class */ (function (_super) {
         }
         this.scoreCounter.update(elapsedTime);
         if (this.currentLevel == Level.Moustache) {
-            //  +1 är ett smutsigt hack för att kompensera för ett annat smutsigt hack
             this.scoreLevelMoustache = this.scoreCurrentLevel - this.scoreCounter.getScore();
+            var img = this.getMoustacheImg();
+            if (img != null) {
+                this.spriteFaceMoustace.texture = PIXI.Loader.shared.resources[img].texture;
+                this.spriteFaceMoustace.visible = true;
+            }
+            else {
+                this.spriteFaceMoustace.visible = false;
+            }
         }
         else if (this.currentLevel == Level.Tie) {
             this.scoreLevelTie = this.scoreCurrentLevel - this.scoreCounter.getScore();
+            var img = this.getNeckImg();
+            if (img != null) {
+                this.spriteFaceNeck.texture = PIXI.Loader.shared.resources[img].texture;
+                this.spriteFaceNeck.visible = true;
+            }
+            else {
+                this.spriteFaceNeck.visible = false;
+            }
         }
         else if (this.currentLevel == Level.Hat) {
             this.scoreLevelHat = this.scoreCurrentLevel - this.scoreCounter.getScore();
+            var img = this.getEyesImg();
+            this.spriteFaceEyes.texture = PIXI.Loader.shared.resources[img].texture;
         }
         else if (this.currentLevel == Level.Office) {
             this.scoreLevelOffice = this.scoreCurrentLevel - this.scoreCounter.getScore();
+            var img = this.getJawImg();
+            this.spriteFaceJaw.texture = PIXI.Loader.shared.resources[img].texture;
         }
         else if (this.currentLevel == Level.Whiskey) {
             this.scoreLevelWhiskey = this.scoreCurrentLevel - this.scoreCounter.getScore();
+            var img = this.getNoseImg();
+            if (img != null) {
+                this.spriteFaceNose.texture = PIXI.Loader.shared.resources[img].texture;
+                this.spriteFaceNose.visible = true;
+            }
+            else {
+                this.spriteFaceNose.visible = false;
+            }
         }
         var scoreTotal = 0;
         scoreTotal += this.scoreLevelMoustache > -1 ? this.scoreLevelMoustache : 0;
@@ -524,6 +623,94 @@ var ScoreState = /** @class */ (function (_super) {
         }
         else {
             this.spriteTotalHundreds.visible = false;
+        }
+    };
+    ScoreState.prototype.getMoustacheImg = function () {
+        if (this.scoreLevelMoustache < 50) {
+            return null;
+        }
+        else if (this.scoreLevelMoustache < 60) {
+            return "face-moustache1-p" + this.player;
+        }
+        else if (this.scoreLevelMoustache < 70) {
+            return "face-moustache2-p" + this.player;
+        }
+        else if (this.scoreLevelMoustache < 80) {
+            return "face-moustache3-p" + this.player;
+        }
+        else if (this.scoreLevelMoustache < 90) {
+            return "face-moustache4-p" + this.player;
+        }
+        else {
+            return "face-moustache5-p" + this.player;
+        }
+    };
+    ScoreState.prototype.getEyesImg = function () {
+        if (this.scoreLevelHat < 50) {
+            return "face-eyes0";
+        }
+        else if (this.scoreLevelHat < 60) {
+            return "face-eyes1";
+        }
+        else if (this.scoreLevelHat < 70) {
+            return "face-eyes2";
+        }
+        else if (this.scoreLevelHat < 80) {
+            return "face-eyes3";
+        }
+        else {
+            return "face-eyes4";
+        }
+    };
+    ScoreState.prototype.getJawImg = function () {
+        if (this.scoreLevelOffice < 50) {
+            return "face-jaw0";
+        }
+        else if (this.scoreLevelOffice < 60) {
+            return "face-jaw1";
+        }
+        else if (this.scoreLevelOffice < 70) {
+            return "face-jaw2";
+        }
+        else if (this.scoreLevelOffice < 80) {
+            return "face-jaw3";
+        }
+        else {
+            return "face-jaw4";
+        }
+    };
+    ScoreState.prototype.getNeckImg = function () {
+        if (this.scoreLevelTie < 50) {
+            return null;
+        }
+        else if (this.scoreLevelTie < 60) {
+            return "face-neck1";
+        }
+        else if (this.scoreLevelTie < 70) {
+            return "face-neck2";
+        }
+        else if (this.scoreLevelTie < 80) {
+            return "face-neck3";
+        }
+        else {
+            return "face-neck4";
+        }
+    };
+    ScoreState.prototype.getNoseImg = function () {
+        if (this.scoreLevelWhiskey < 20) {
+            return "face-nose0";
+        }
+        else if (this.scoreLevelWhiskey < 40) {
+            return "face-nose1";
+        }
+        else if (this.scoreLevelWhiskey < 60) {
+            return "face-nose2";
+        }
+        else if (this.scoreLevelWhiskey < 80) {
+            return "face-nose3";
+        }
+        else {
+            return "face-nose4";
         }
     };
     return ScoreState;

@@ -180,7 +180,9 @@ var LevelHat = /** @class */ (function (_super) {
     LevelHat.prototype.update = function (elapsedTime) {
         // elapsedTime in ms
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+                Game.sceneTransition.update(elapsedTime);
+            }
             if (Game.sceneTransition.isDone()) {
                 Game.intro.startLevelHat();
                 Game.soundPlayer.musicHat.play();
@@ -188,7 +190,9 @@ var LevelHat = /** @class */ (function (_super) {
             return;
         }
         if (Game.sceneTransition.isGrowing) {
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+                Game.sceneTransition.update(elapsedTime);
+            }
             if (Game.sceneTransition.isDone()) {
                 this.onExit();
             }

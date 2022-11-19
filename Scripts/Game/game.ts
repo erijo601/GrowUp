@@ -397,6 +397,43 @@ class Game {
         PIXI.Loader.shared.add('level-whiskey-splash2', 'img/LevelWhiskey/splash2.png');
         PIXI.Loader.shared.add('level-whiskey-splash3', 'img/LevelWhiskey/splash3.png');
         PIXI.Loader.shared.add('level-whiskey-throat', 'img/LevelWhiskey/throat.png');
+
+        //  Level End
+        PIXI.Loader.shared.add('level-end-gameover', 'img/LevelEnd/gameover.png');
+        PIXI.Loader.shared.add('level-end-whataman', 'img/LevelEnd/whataman.png');
+
+        //  Face
+        PIXI.Loader.shared.add('face-background-p1', 'img/Face/background-p1.png');
+        PIXI.Loader.shared.add('face-background-p2', 'img/Face/background-p2.png');
+        PIXI.Loader.shared.add('face-eyes0', 'img/Face/eyes0.png');
+        PIXI.Loader.shared.add('face-eyes1', 'img/Face/eyes1.png');
+        PIXI.Loader.shared.add('face-eyes2', 'img/Face/eyes2.png');
+        PIXI.Loader.shared.add('face-eyes3', 'img/Face/eyes3.png');
+        PIXI.Loader.shared.add('face-eyes4', 'img/Face/eyes4.png');
+        PIXI.Loader.shared.add('face-jaw0', 'img/Face/jaw0.png');
+        PIXI.Loader.shared.add('face-jaw1', 'img/Face/jaw1.png');
+        PIXI.Loader.shared.add('face-jaw2', 'img/Face/jaw2.png');
+        PIXI.Loader.shared.add('face-jaw3', 'img/Face/jaw3.png');
+        PIXI.Loader.shared.add('face-jaw4', 'img/Face/jaw4.png');
+        PIXI.Loader.shared.add('face-moustache1-p1', 'img/Face/moustache1-p1.png');
+        PIXI.Loader.shared.add('face-moustache1-p2', 'img/Face/moustache1-p2.png');
+        PIXI.Loader.shared.add('face-moustache2-p1', 'img/Face/moustache2-p1.png');
+        PIXI.Loader.shared.add('face-moustache2-p2', 'img/Face/moustache2-p2.png');
+        PIXI.Loader.shared.add('face-moustache3-p1', 'img/Face/moustache3-p1.png');
+        PIXI.Loader.shared.add('face-moustache3-p2', 'img/Face/moustache3-p2.png');
+        PIXI.Loader.shared.add('face-moustache4-p1', 'img/Face/moustache4-p1.png');
+        PIXI.Loader.shared.add('face-moustache4-p2', 'img/Face/moustache4-p2.png');
+        PIXI.Loader.shared.add('face-moustache5-p1', 'img/Face/moustache5-p1.png');
+        PIXI.Loader.shared.add('face-moustache5-p2', 'img/Face/moustache5-p2.png');
+        PIXI.Loader.shared.add('face-neck1', 'img/Face/neck1.png');
+        PIXI.Loader.shared.add('face-neck2', 'img/Face/neck2.png');
+        PIXI.Loader.shared.add('face-neck3', 'img/Face/neck3.png');
+        PIXI.Loader.shared.add('face-neck4', 'img/Face/neck4.png');
+        PIXI.Loader.shared.add('face-nose0', 'img/Face/nose0.png');
+        PIXI.Loader.shared.add('face-nose1', 'img/Face/nose1.png');
+        PIXI.Loader.shared.add('face-nose2', 'img/Face/nose2.png');
+        PIXI.Loader.shared.add('face-nose3', 'img/Face/nose3.png');
+        PIXI.Loader.shared.add('face-nose4', 'img/Face/nose4.png');
     }
 
     static loadingScreenResourcesLoaded(resources: any) {

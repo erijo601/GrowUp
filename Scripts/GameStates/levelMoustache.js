@@ -283,7 +283,9 @@ var LevelMoustache = /** @class */ (function (_super) {
     LevelMoustache.prototype.update = function (elapsedTime) {
         // elapsedTime in ms
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+                Game.sceneTransition.update(elapsedTime);
+            }
             if (Game.sceneTransition.isDone()) {
                 Game.soundPlayer.musicMoustache.play();
                 Game.intro.startLevelMoustache();
@@ -291,7 +293,9 @@ var LevelMoustache = /** @class */ (function (_super) {
             return;
         }
         if (Game.sceneTransition.isGrowing) {
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+                Game.sceneTransition.update(elapsedTime);
+            }
             if (Game.sceneTransition.isDone()) {
                 this.onExit();
             }

@@ -147,7 +147,9 @@ var LevelOffice = /** @class */ (function (_super) {
     LevelOffice.prototype.update = function (elapsedTime) {
         // elapsedTime in ms
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+                Game.sceneTransition.update(elapsedTime);
+            }
             if (Game.sceneTransition.isDone()) {
                 Game.intro.startLevelOffice();
                 Game.soundPlayer.musicOffice.play();
@@ -155,7 +157,9 @@ var LevelOffice = /** @class */ (function (_super) {
             return;
         }
         if (Game.sceneTransition.isGrowing) {
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+                Game.sceneTransition.update(elapsedTime);
+            }
             if (Game.sceneTransition.isDone()) {
                 this.onExit();
             }

@@ -35,12 +35,19 @@
     private spriteTotalHundreds: PIXI.Sprite;
     private spriteTotalProcent: PIXI.Sprite;
 
-    private scoreLevelMoustache: number;
-    private scoreLevelTie: number;
-    private scoreLevelHat: number;
-    private scoreLevelOffice: number;
-    private scoreLevelWhiskey: number;
-    private totalScore: number;
+    private spriteFaceBackground: PIXI.Sprite;
+    private spriteFaceNose: PIXI.Sprite;
+    private spriteFaceNeck: PIXI.Sprite;
+    private spriteFaceEyes: PIXI.Sprite;
+    private spriteFaceMoustace: PIXI.Sprite;
+    private spriteFaceJaw: PIXI.Sprite;
+
+    public scoreLevelMoustache: number;
+    public scoreLevelTie: number;
+    public scoreLevelHat: number;
+    public scoreLevelOffice: number;
+    public scoreLevelWhiskey: number;
+    public totalScore: number;
 
     private scoreCurrentLevel: number;
     private currentLevel: Level;
@@ -71,8 +78,6 @@
         this.background = new PIXI.Sprite(PIXI.Loader.shared.resources["score-bg"].texture);
         this.background.x = boardx;
         this.background.y = 0;
-
-
 
         this.spriteMoustacheOnes = new PIXI.Sprite(PIXI.Loader.shared.resources["number-0-white"].texture);
         this.spriteMoustacheOnes.x = boardx + 409;
@@ -223,6 +228,42 @@
         this.spriteTotalProcent.zIndex = 1001;
         this.spriteTotalProcent.visible = false;
 
+        let facex = xOffset + 400;
+        let facey = 500;
+
+        this.spriteFaceBackground = new PIXI.Sprite(PIXI.Loader.shared.resources["face-background-p" + this.player].texture);
+        this.spriteFaceBackground.x = facex;
+        this.spriteFaceBackground.y = facey;
+        this.spriteFaceBackground.zIndex = 1000;
+
+        this.spriteFaceNeck = new PIXI.Sprite(PIXI.Loader.shared.resources["face-neck1"].texture);
+        this.spriteFaceNeck.x = facex;
+        this.spriteFaceNeck.y = facey;
+        this.spriteFaceNeck.visible = false;
+        this.spriteFaceNeck.zIndex = 1001;
+
+        this.spriteFaceJaw = new PIXI.Sprite(PIXI.Loader.shared.resources["face-jaw0"].texture);
+        this.spriteFaceJaw.x = facex;
+        this.spriteFaceJaw.y = facey;
+        this.spriteFaceJaw.zIndex = 1002;
+
+        this.spriteFaceEyes = new PIXI.Sprite(PIXI.Loader.shared.resources["face-eyes0"].texture);
+        this.spriteFaceEyes.x = facex;
+        this.spriteFaceEyes.y = facey;
+        this.spriteFaceEyes.zIndex = 1003;
+
+        this.spriteFaceMoustace = new PIXI.Sprite(PIXI.Loader.shared.resources["face-moustache1-p" + this.player].texture);
+        this.spriteFaceMoustace.x = facex;
+        this.spriteFaceMoustace.y = facey;
+        this.spriteFaceMoustace.visible = false;
+        this.spriteFaceMoustace.zIndex = 1004;
+
+        this.spriteFaceNose = new PIXI.Sprite(PIXI.Loader.shared.resources["face-nose0"].texture);
+        this.spriteFaceNose.x = facex;
+        this.spriteFaceNose.y = facey;
+        this.spriteFaceNose.visible = true;
+        this.spriteFaceNose.zIndex = 1005;
+
 
         this.pressEnter = new PIXI.Sprite(PIXI.Loader.shared.resources["enter"].texture);
         this.pressEnter.x = 858 + 80;
@@ -301,6 +342,13 @@
         Game.app.stage.addChild(this.spriteTotalHundreds);
         Game.app.stage.addChild(this.spriteTotalProcent);
 
+        Game.app.stage.addChild(this.spriteFaceBackground);
+        Game.app.stage.addChild(this.spriteFaceNeck);
+        Game.app.stage.addChild(this.spriteFaceJaw);
+        Game.app.stage.addChild(this.spriteFaceEyes);
+        Game.app.stage.addChild(this.spriteFaceMoustace);
+        Game.app.stage.addChild(this.spriteFaceNose);
+
         this.pressEnter.visible = false;
         Game.app.stage.addChild(this.pressEnter);
 
@@ -346,39 +394,77 @@
         Game.app.stage.removeChild(this.spriteTotalHundreds);
         Game.app.stage.removeChild(this.spriteTotalProcent);
 
+        Game.app.stage.removeChild(this.spriteFaceBackground);
+        Game.app.stage.removeChild(this.spriteFaceNeck);
+        Game.app.stage.removeChild(this.spriteFaceJaw);
+        Game.app.stage.removeChild(this.spriteFaceEyes);
+        Game.app.stage.removeChild(this.spriteFaceMoustace);
+        Game.app.stage.removeChild(this.spriteFaceNose);
+
         Game.app.stage.removeChild(this.pressEnter);
 
         this.scoreCounter.onExit();
 
         if (Game.twoPlayerGame) {
 
-            if (this.currentLevel == Level.Moustache) {
+            if (this.player == 1) {
 
-                Game.currentStatePlayer1 = new LevelTie(1, 0, 'w', 's', 'a', 'd');
-                Game.currentStatePlayer2 = new LevelTie(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+                if (this.currentLevel == Level.Moustache) {
+
+                    Game.currentStatePlayer1 = new LevelTie(1, 0, 'w', 's', 'a', 'd');
+                }
+                else if (this.currentLevel == Level.Tie) {
+
+                    Game.currentStatePlayer1 = new LevelOffice(1, 0, 'w', 's', 'a', 'd');
+                }
+                else if (this.currentLevel == Level.Office) {
+
+                    Game.currentStatePlayer1 = new LevelWhiskey(1, 15, 'w', 's', 'a', 'd');
+                }
+                else if (this.currentLevel == Level.Whiskey) {
+
+                    Game.currentStatePlayer1 = new LevelHat(1, 15, 'w', 's', 'a', 'd');
+                }
+                else if (this.currentLevel == Level.Hat) {
+
+                    Game.currentStatePlayer1 = new LevelEnd(0, 'w', 's', 'a', 'd');
+                }
+
+                if (Game.currentStatePlayer2 != null && Game.currentStatePlayer2.stateName == this.stateName) {
+
+                    Game.currentStatePlayer2.onExit();
+                }
+
+                Game.currentStatePlayer1.onEnter();
+
+                if (Game.currentStatePlayer2 != null) {
+
+                    Game.currentStatePlayer2.onEnter();
+                }
             }
-            else if (this.currentLevel == Level.Tie) {
+            else {
 
-                Game.currentStatePlayer1 = new LevelOffice(1, 0, 'w', 's', 'a', 'd');
-                Game.currentStatePlayer2 = new LevelOffice(2, 960 + 30, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+                if (this.currentLevel == Level.Moustache) {
+
+                    Game.currentStatePlayer2 = new LevelTie(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+                }
+                else if (this.currentLevel == Level.Tie) {
+
+                    Game.currentStatePlayer2 = new LevelOffice(2, 960 + 30, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+                }
+                else if (this.currentLevel == Level.Office) {
+
+                    Game.currentStatePlayer2 = new LevelWhiskey(2, 960 + 15, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+                }
+                else if (this.currentLevel == Level.Whiskey) {
+
+                    Game.currentStatePlayer2 = new LevelHat(2, 960 + 15, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+                }
+                else if (this.currentLevel == Level.Hat) {
+
+                    Game.currentStatePlayer2 = null;
+                }
             }
-            else if (this.currentLevel == Level.Office) {
-
-                Game.currentStatePlayer1 = new LevelWhiskey(1, 15, 'w', 's', 'a', 'd');
-                Game.currentStatePlayer2 = new LevelWhiskey(2, 960 + 15, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
-            }
-            else if (this.currentLevel == Level.Whiskey) {
-
-                Game.currentStatePlayer1 = new LevelHat(1, 15, 'w', 's', 'a', 'd');
-                Game.currentStatePlayer2 = new LevelHat(2, 960 + 15, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
-            }
-            else if (this.currentLevel == Level.Hat) {
-
-                //  TODO: END GAME
-            }
-
-            Game.currentStatePlayer1.onEnter();
-            Game.currentStatePlayer2.onEnter();
         }
         else {
 
@@ -400,8 +486,7 @@
             }
             else if (this.currentLevel == Level.Hat) {
 
-                Game.currentStatePlayer1 = new TitleState(0, 'w', 's', 'a', 'd');
-                Game.currentStatePlayer1.onEnter();
+                Game.currentStatePlayer1 = new LevelEnd(0, 'w', 's', 'a', 'd');
             }
 
             Game.currentStatePlayer1.onEnter();
@@ -414,19 +499,28 @@
 
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
 
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+
+                Game.sceneTransition.update(elapsedTime);
+            }
 
             if (Game.sceneTransition.isDone()) {
 
-                Game.soundPlayer.musicScoreScreen.play();
+                if (this.player == 1) {
+
+                    Game.soundPlayer.musicScoreScreen.play();
+                }
             }
 
             return;
         }
 
-        if (Game.sceneTransition.isGrowing) {
+        if (Game.sceneTransition.isGrowing && this.player == 1) {
 
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+
+                Game.sceneTransition.update(elapsedTime);
+            }
 
             if (Game.sceneTransition.isDone()) {
 
@@ -472,6 +566,11 @@
 
             if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
 
+                if (this.currentLevel == Level.Hat) {
+
+                    this.onExit();
+                }
+
                 if (!Game.sceneTransition.isGrowing) {
 
                     Game.sceneTransition.startGrowing();
@@ -491,24 +590,65 @@
 
         if (this.currentLevel == Level.Moustache) {
 
-            //  +1 är ett smutsigt hack för att kompensera för ett annat smutsigt hack
             this.scoreLevelMoustache = this.scoreCurrentLevel - this.scoreCounter.getScore();
+
+            let img = this.getMoustacheImg();
+
+            if (img != null) {
+
+                this.spriteFaceMoustace.texture = PIXI.Loader.shared.resources[img].texture;
+                this.spriteFaceMoustace.visible = true;
+            }
+            else {
+
+                this.spriteFaceMoustace.visible = false;
+            }
         }
         else if (this.currentLevel == Level.Tie) {
 
             this.scoreLevelTie = this.scoreCurrentLevel - this.scoreCounter.getScore();
+
+            let img = this.getNeckImg();
+
+            if (img != null) {
+
+                this.spriteFaceNeck.texture = PIXI.Loader.shared.resources[img].texture;
+                this.spriteFaceNeck.visible = true;
+            }
+            else {
+
+                this.spriteFaceNeck.visible = false;
+            }
         }
         else if (this.currentLevel == Level.Hat) {
 
             this.scoreLevelHat = this.scoreCurrentLevel - this.scoreCounter.getScore();
+
+            let img = this.getEyesImg();
+            this.spriteFaceEyes.texture = PIXI.Loader.shared.resources[img].texture;
         }
         else if (this.currentLevel == Level.Office) {
 
             this.scoreLevelOffice = this.scoreCurrentLevel - this.scoreCounter.getScore();
+
+            let img = this.getJawImg();
+            this.spriteFaceJaw.texture = PIXI.Loader.shared.resources[img].texture;
         }
         else if (this.currentLevel == Level.Whiskey) {
 
             this.scoreLevelWhiskey = this.scoreCurrentLevel - this.scoreCounter.getScore();
+
+            let img = this.getNoseImg();
+
+            if (img != null) {
+
+                this.spriteFaceNose.texture = PIXI.Loader.shared.resources[img].texture;
+                this.spriteFaceNose.visible = true;
+            }
+            else {
+
+                this.spriteFaceNose.visible = false;
+            }
         }
 
         let scoreTotal = 0;
@@ -755,6 +895,130 @@
         else {
 
             this.spriteTotalHundreds.visible = false;
+        }
+    }
+
+    public getMoustacheImg() : string {
+
+        if (this.scoreLevelMoustache < 50) {
+
+            return null;
+        }
+        else if (this.scoreLevelMoustache < 60) {
+
+            return "face-moustache1-p" + this.player;
+        }
+        else if (this.scoreLevelMoustache < 70) {
+
+            return "face-moustache2-p" + this.player;
+        }
+        else if (this.scoreLevelMoustache < 80) {
+
+            return "face-moustache3-p" + this.player;
+        }
+        else if (this.scoreLevelMoustache < 90) {
+
+            return "face-moustache4-p" + this.player;
+        }
+        else {
+
+            return "face-moustache5-p" + this.player;
+        }
+    }
+
+    public getEyesImg(): string {
+
+        if (this.scoreLevelHat < 50) {
+
+            return "face-eyes0";
+        }
+        else if (this.scoreLevelHat < 60) {
+
+            return "face-eyes1";
+        }
+        else if (this.scoreLevelHat < 70) {
+
+            return "face-eyes2";
+        }
+        else if (this.scoreLevelHat < 80) {
+
+            return "face-eyes3";
+        }
+        else {
+
+            return "face-eyes4";
+        }
+    }
+
+    public getJawImg(): string {
+
+        if (this.scoreLevelOffice < 50) {
+
+            return "face-jaw0";
+        }
+        else if (this.scoreLevelOffice < 60) {
+
+            return "face-jaw1";
+        }
+        else if (this.scoreLevelOffice < 70) {
+
+            return "face-jaw2";
+        }
+        else if (this.scoreLevelOffice < 80) {
+
+            return "face-jaw3";
+        }
+        else {
+
+            return "face-jaw4";
+        }
+    }
+
+    public getNeckImg(): string {
+
+        if (this.scoreLevelTie < 50) {
+
+            return null;
+        }
+        else if (this.scoreLevelTie < 60) {
+
+            return "face-neck1";
+        }
+        else if (this.scoreLevelTie < 70) {
+
+            return "face-neck2";
+        }
+        else if (this.scoreLevelTie < 80) {
+
+            return "face-neck3";
+        }
+        else {
+
+            return "face-neck4";
+        }
+    }
+
+    public getNoseImg(): string {
+
+        if (this.scoreLevelWhiskey < 20) {
+
+            return "face-nose0";
+        }
+        else if (this.scoreLevelWhiskey < 40) {
+
+            return "face-nose1";
+        }
+        else if (this.scoreLevelWhiskey < 60) {
+
+            return "face-nose2";
+        }
+        else if (this.scoreLevelWhiskey < 80) {
+
+            return "face-nose3";
+        }
+        else {
+
+            return "face-nose4";
         }
     }
 }

@@ -167,12 +167,23 @@
             Game.scoreStatePlayer1 = new ScoreState(1, 0, 'w', 's', 'a', 'd');
             Game.scoreStatePlayer2 = new ScoreState(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
             
-            //Game.currentStatePlayer1 = new LevelMoustache(1, 0, 'w', 's', 'a', 'd');
-            //Game.currentStatePlayer2 = new LevelMoustache(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+            Game.currentStatePlayer1 = new LevelMoustache(1, 0, 'w', 's', 'a', 'd');
+            Game.currentStatePlayer2 = new LevelMoustache(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
 
             //  Test
-            Game.currentStatePlayer1 = new LevelWhiskey(1, 0, 'w', 's', 'a', 'd');
-            Game.currentStatePlayer2 = new LevelWhiskey(2, 960 + 30, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+            //Game.scoreStatePlayer1.scoreLevelMoustache = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelHat = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelOffice = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelTie = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelWhiskey = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer2.scoreLevelMoustache = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer2.scoreLevelHat = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer2.scoreLevelOffice = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer2.scoreLevelTie = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer2.scoreLevelWhiskey = MathHelper.randomInt(50, 100);
+            //Game.currentStatePlayer1 = new LevelEnd(0, 'w', 's', 'a', 'd');
+            //Game.currentStatePlayer2 = null;
+            //Game.currentStatePlayer1.onEnter();
 
             Game.currentStatePlayer1.onEnter();
             Game.currentStatePlayer2.onEnter();
@@ -181,10 +192,15 @@
 
             Game.scoreStatePlayer1 = new ScoreState(1, 480, 'w', 's', 'a', 'd');
 
-            //Game.currentStatePlayer1 = new LevelMoustache(1, 480, 'w', 's', 'a', 'd');
+            Game.currentStatePlayer1 = new LevelMoustache(1, 480, 'w', 's', 'a', 'd');
 
             //  Test
-            Game.currentStatePlayer1 = new LevelWhiskey(1, 480 + 15, 'w', 's', 'a', 'd');
+            //Game.scoreStatePlayer1.scoreLevelMoustache = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelHat = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelOffice = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelTie = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelWhiskey = MathHelper.randomInt(50, 100);
+            //Game.currentStatePlayer1 = new LevelEnd(0, 'w', 's', 'a', 'd');
 
             Game.currentStatePlayer1.onEnter();
         }
@@ -429,29 +445,27 @@
             Game.soundPlayer.titleSwoosh.play();
         }
 
-        //if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
-
-        //    this.onExit();
-        //}
-
         if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
 
             if (!Game.sceneTransition.isGrowing) {
 
                 Game.sceneTransition.startGrowing();
 
-                Game.soundPlayer.titleIntro.stop();
+                if (Game.soundPlayer.titleIntro.playing) {
 
-                if (Game.soundPlayer.titleLoop.playing) {
-
-                    Game.soundPlayer.titleLoop.fade(1, 0, 2500);
+                    Game.soundPlayer.titleIntro.stop();
                 }
+
+                Game.soundPlayer.titleLoop.fade(1, 0, 2500);
             }
         }
 
         if (Game.sceneTransition.isGrowing) {
 
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+
+                Game.sceneTransition.update(elapsedTime);
+            }
 
             if (Game.sceneTransition.isDone()) {
 

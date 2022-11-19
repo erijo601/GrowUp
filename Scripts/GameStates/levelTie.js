@@ -158,14 +158,18 @@ var LevelTie = /** @class */ (function (_super) {
     LevelTie.prototype.update = function (elapsedTime) {
         // elapsedTime in ms
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+                Game.sceneTransition.update(elapsedTime);
+            }
             if (Game.sceneTransition.isDone()) {
                 Game.intro.startLevelTie();
             }
             return;
         }
         if (Game.sceneTransition.isGrowing) {
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+                Game.sceneTransition.update(elapsedTime);
+            }
             if (Game.sceneTransition.isDone()) {
                 this.onExit();
             }

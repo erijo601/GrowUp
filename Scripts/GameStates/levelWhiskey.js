@@ -160,14 +160,18 @@ var LevelWhiskey = /** @class */ (function (_super) {
             this.fire.texture = PIXI.Loader.shared.resources["level-whiskey-fire" + this.currentFireFrame].texture;
         }
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+                Game.sceneTransition.update(elapsedTime);
+            }
             if (Game.sceneTransition.isDone()) {
                 Game.intro.startLevelWhiskey();
             }
             return;
         }
         if (Game.sceneTransition.isGrowing) {
-            Game.sceneTransition.update(elapsedTime);
+            if (this.player == 1) {
+                Game.sceneTransition.update(elapsedTime);
+            }
             if (Game.sceneTransition.isDone()) {
                 this.onExit();
             }
@@ -289,7 +293,7 @@ var LevelWhiskey = /** @class */ (function (_super) {
                 this.instructionsUp.visible = false;
                 this.face.y = 88;
                 this.swirlSpeed = 120;
-                if (angle <= 15) {
+                if (angle <= 17) {
                     this.timeLeftDrinking = this.totalTimeDrink;
                 }
                 else {
