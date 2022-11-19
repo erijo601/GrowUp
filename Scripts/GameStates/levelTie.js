@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var LevelTie = /** @class */ (function (_super) {
+var LevelTie = (function (_super) {
     __extends(LevelTie, _super);
     function LevelTie(player, xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, player, xOffset, upKey, downKey, leftKey, rightKey) || this;
@@ -74,7 +74,7 @@ var LevelTie = /** @class */ (function (_super) {
         _this.mini.x = _this.xOffset + 130;
         _this.mini.y = 170;
         if (_this.player == 2) {
-            _this.arm.scale.x = -1; //  Mirror
+            _this.arm.scale.x = -1;
             _this.hand.scale.x = -1;
             _this.mini.x = 1920 - 549 + 150;
         }
@@ -112,7 +112,6 @@ var LevelTie = /** @class */ (function (_super) {
         this.betweenFrameDirection = -1;
         this.ropeTargetX = MathHelper.randomInt(0, 960);
         this.setRopeSpeed();
-        //  Undvik synk mellan p1 och p2
         if (this.player == 2) {
             this.timeLeftHandFrame = 50;
             this.timeLeftMiniFrame = 75;
@@ -156,7 +155,6 @@ var LevelTie = /** @class */ (function (_super) {
         }
     };
     LevelTie.prototype.update = function (elapsedTime) {
-        // elapsedTime in ms
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
             if (this.player == 1) {
                 Game.sceneTransition.update(elapsedTime);
@@ -216,7 +214,6 @@ var LevelTie = /** @class */ (function (_super) {
     };
     LevelTie.prototype.updateRope = function (elapsedTime) {
         var ropeInertia = 100;
-        //  Control the rope by changing it last link
         if (this.points[this.points.length - 1].x < this.ropeTargetX) {
             this.points[this.points.length - 1].x += this.ropeSpeed * elapsedTime / 1000;
             if (this.points[this.points.length - 1].x >= this.ropeTargetX) {
@@ -229,7 +226,6 @@ var LevelTie = /** @class */ (function (_super) {
                 this.setRopeSpeed();
             }
         }
-        //  The first link is static (knot), the last link is controlling the movement. All other links follows the last
         for (var n = 1; n < this.points.length - 1; n++) {
             var currentPoint = this.points[n];
             var nextPoint = this.points[n + 1];
@@ -252,7 +248,6 @@ var LevelTie = /** @class */ (function (_super) {
         var tieX = this.baseX + this.points[9].x;
         var ropeWidth = 60;
         if (tieX - ropeWidth < this.tieLoop.x - this.loopWidth / 2) {
-            //  Collision left!
             this.tieLoop.x = tieX - ropeWidth + this.loopWidth / 2 - 1;
             this.tieLoopBack.x = this.tieLoop.x;
             this.stranglePart += elapsedTime / 3000;
@@ -270,7 +265,6 @@ var LevelTie = /** @class */ (function (_super) {
             this.isStrangle = true;
         }
         else if (tieX + ropeWidth > this.tieLoop.x + this.loopWidth / 2) {
-            //  Collision right!
             this.tieLoop.x = tieX + ropeWidth - this.loopWidth / 2 + 1;
             this.tieLoopBack.x = this.tieLoop.x;
             this.stranglePart += elapsedTime / 3000;
@@ -288,7 +282,6 @@ var LevelTie = /** @class */ (function (_super) {
             this.isStrangle = true;
         }
         else {
-            //  No collision
             this.totalTimeScore += elapsedTime;
             var newScore = Math.floor(100 * this.totalTimeScore / this.gameEndsOnTime);
             if (newScore > this.scoreCounter.getDesiredScore()) {
@@ -410,4 +403,3 @@ var LevelTie = /** @class */ (function (_super) {
     };
     return LevelTie;
 }(GameState));
-//# sourceMappingURL=levelTie.js.map

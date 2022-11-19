@@ -1,6 +1,4 @@
-/// <reference path="../typings/pixi.js.d.ts"/>
-/// <reference path="../typings/howler.d.ts" />
-var Game = /** @class */ (function () {
+var Game = (function () {
     function Game() {
         console.log('PRESS PLAY ON TAPE');
         Game.init();
@@ -11,8 +9,6 @@ var Game = /** @class */ (function () {
             resolution: devicePixelRatio,
             backgroundColor: 0x000000
         });
-        //  The renderer is always drawing to a buffer of size 1920*1080, no matter what the actual window size is.
-        //  This way I can pretend the screen is always 1920*1080 in game logic and stuff. The renderer then scales everything down to canvas size.
         Game.app.renderer.resize(1920, 1080);
         Game.app.stage.sortableChildren = true;
         document.body.appendChild(Game.app.view);
@@ -39,7 +35,6 @@ var Game = /** @class */ (function () {
         Game.loadLoadingScreenResources();
     };
     Game.loadLoadingScreenResources = function () {
-        //  Loading screen
         Game.loadingScreenLoader.add('pipe0', 'img/Loading/pipe0.png');
         Game.loadingScreenLoader.add('pipe1', 'img/Loading/pipe1.png');
         Game.loadingScreenLoader.add('pipe2', 'img/Loading/pipe2.png');
@@ -74,14 +69,12 @@ var Game = /** @class */ (function () {
         Game.loadingScreenLoader.load(Game.loadingScreenResourcesLoaded);
     };
     Game.loadResources = function () {
-        //  Background
         PIXI.Loader.shared.add('background0', 'img/Background/0.png');
         PIXI.Loader.shared.add('background1', 'img/Background/1.png');
         PIXI.Loader.shared.add('background2', 'img/Background/2.png');
         PIXI.Loader.shared.add('background3', 'img/Background/3.png');
         PIXI.Loader.shared.add('background4', 'img/Background/4.png');
         PIXI.Loader.shared.add('background5', 'img/Background/5.png');
-        //  Score
         PIXI.Loader.shared.add('score-background', 'img/Score/background.png');
         PIXI.Loader.shared.add('score-foreground', 'img/Score/foreground.png');
         PIXI.Loader.shared.add('number-0', 'img/Score/0.png');
@@ -94,7 +87,6 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('number-7', 'img/Score/7.png');
         PIXI.Loader.shared.add('number-8', 'img/Score/8.png');
         PIXI.Loader.shared.add('number-9', 'img/Score/9.png');
-        //  Intro
         PIXI.Loader.shared.add('intro-tie-left', 'img/Intro/tie-left.png');
         PIXI.Loader.shared.add('intro-tie-right', 'img/Intro/tie-right.png');
         PIXI.Loader.shared.add('intro-moustache-title', 'img/Intro/moustache-title.png');
@@ -107,7 +99,6 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('intro-office-subtitle', 'img/Intro/office-subtitle.png');
         PIXI.Loader.shared.add('intro-whiskey-title', 'img/Intro/whiskey-title.png');
         PIXI.Loader.shared.add('intro-whiskey-subtitle', 'img/Intro/whiskey-subtitle.png');
-        //  Title
         PIXI.Loader.shared.add('1player-disabled', 'img/Title/1player-disabled.png');
         PIXI.Loader.shared.add('1player0', 'img/Title/1player0.png');
         PIXI.Loader.shared.add('1player1', 'img/Title/1player1.png');
@@ -138,11 +129,9 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('keyright-pressed-p1', 'img/Title/keyright-pressed-p1.png');
         PIXI.Loader.shared.add('keyright-p2', 'img/Title/keyright-p2.png');
         PIXI.Loader.shared.add('keyright-pressed-p2', 'img/Title/keyright-pressed-p2.png');
-        //  Screen Transition
         PIXI.Loader.shared.add('screen-transition-boxer', 'img/ScreenTransition/screen-transition-boxer.png');
         PIXI.Loader.shared.add('screen-transition-moustache', 'img/ScreenTransition/screen-transition-moustache.png');
         PIXI.Loader.shared.add('screen-transition-tie', 'img/ScreenTransition/screen-transition-tie.png');
-        //  Score Screen
         PIXI.Loader.shared.add('score-bg', 'img/ScoreState/score-bg.png');
         PIXI.Loader.shared.add('number-0-white', 'img/ScoreState/0.png');
         PIXI.Loader.shared.add('number-1-white', 'img/ScoreState/1.png');
@@ -155,7 +144,6 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('number-8-white', 'img/ScoreState/8.png');
         PIXI.Loader.shared.add('number-9-white', 'img/ScoreState/9.png');
         PIXI.Loader.shared.add('procent-white', 'img/ScoreState/procent.png');
-        //  Level Moustache
         PIXI.Loader.shared.add('box-p1-0', 'img/LevelMoustache/box-p1-0.png');
         PIXI.Loader.shared.add('box-p1-1', 'img/LevelMoustache/box-p1-1.png');
         PIXI.Loader.shared.add('box-p1-2', 'img/LevelMoustache/box-p1-2.png');
@@ -190,7 +178,6 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('nose-2', 'img/LevelMoustache/nose-2.png');
         PIXI.Loader.shared.add('nose-2-front', 'img/LevelMoustache/nose-2-front.png');
         PIXI.Loader.shared.add('nose-front-base', 'img/LevelMoustache/nose-front-base.png');
-        //  Level Tie
         PIXI.Loader.shared.add('tie-arm', 'img/LevelTie/arm.png');
         PIXI.Loader.shared.add('tie-hand0', 'img/LevelTie/hand0.png');
         PIXI.Loader.shared.add('tie-hand1', 'img/LevelTie/hand1.png');
@@ -217,7 +204,6 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('p1-mini-between1', 'img/LevelTie/p1-mini-between1.png');
         PIXI.Loader.shared.add('p2-mini-between0', 'img/LevelTie/p2-mini-between0.png');
         PIXI.Loader.shared.add('p2-mini-between1', 'img/LevelTie/p2-mini-between1.png');
-        //  Level Hat
         PIXI.Loader.shared.add('level-hat-background', 'img/LevelHat/level-hat-background.png');
         PIXI.Loader.shared.add('level-hat-clap0', 'img/LevelHat/clap0.png');
         PIXI.Loader.shared.add('level-hat-clap1', 'img/LevelHat/clap1.png');
@@ -246,7 +232,6 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('level-hat-hockey4', 'img/LevelHat/hockey4.png');
         PIXI.Loader.shared.add('level-hat-hockey5', 'img/LevelHat/hockey5.png');
         PIXI.Loader.shared.add('level-hat-hockey6', 'img/LevelHat/hockey6.png');
-        //  Level Office
         PIXI.Loader.shared.add('level-office-player-background-p1', 'img/LevelOffice/player-background-p1.png');
         PIXI.Loader.shared.add('level-office-player-background-p2', 'img/LevelOffice/player-background-p2.png');
         PIXI.Loader.shared.add('level-office-player-idle-p1', 'img/LevelOffice/player-idle-p1.png');
@@ -299,7 +284,6 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('level-office-cubicle0', 'img/LevelOffice/cubicle0.png');
         PIXI.Loader.shared.add('level-office-cubicle1', 'img/LevelOffice/cubicle1.png');
         PIXI.Loader.shared.add('level-office-driftsmoke', 'img/LevelOffice/driftsmoke.png');
-        //  Level Whiskey
         PIXI.Loader.shared.add('level-whiskey-background', 'img/LevelWhiskey/background.png');
         PIXI.Loader.shared.add('level-whiskey-fire0', 'img/LevelWhiskey/fire0.png');
         PIXI.Loader.shared.add('level-whiskey-fire1', 'img/LevelWhiskey/fire1.png');
@@ -333,10 +317,8 @@ var Game = /** @class */ (function () {
         PIXI.Loader.shared.add('level-whiskey-splash2', 'img/LevelWhiskey/splash2.png');
         PIXI.Loader.shared.add('level-whiskey-splash3', 'img/LevelWhiskey/splash3.png');
         PIXI.Loader.shared.add('level-whiskey-throat', 'img/LevelWhiskey/throat.png');
-        //  Level End
         PIXI.Loader.shared.add('level-end-gameover', 'img/LevelEnd/gameover.png');
         PIXI.Loader.shared.add('level-end-whataman', 'img/LevelEnd/whataman.png');
-        //  Face
         PIXI.Loader.shared.add('face-background-p1', 'img/Face/background-p1.png');
         PIXI.Loader.shared.add('face-background-p2', 'img/Face/background-p2.png');
         PIXI.Loader.shared.add('face-eyes0', 'img/Face/eyes0.png');
@@ -372,7 +354,6 @@ var Game = /** @class */ (function () {
     Game.loadingScreenResourcesLoaded = function (resources) {
         Game.currentStatePlayer1 = new LoadingState();
         Game.lastFrameTime = Date.now();
-        //  Game loop
         Game.app.ticker.add(Game.update);
         Game.app.stage.addChild(Game.progressText);
         Game.loadResources();
@@ -404,7 +385,6 @@ var Game = /** @class */ (function () {
         Game.app.view.style.height = "".concat(height, "px");
     };
     Game.update = function (delta) {
-        // delta is 1 if running at 100% performance. Creates frame-independent transformation
         var elapsedTime = Date.now() - Game.lastFrameTime;
         if (Game.background != undefined && Game.background.visible) {
             Game.background.update(elapsedTime);
@@ -444,4 +424,3 @@ var Game = /** @class */ (function () {
     };
     return Game;
 }());
-//# sourceMappingURL=game.js.map

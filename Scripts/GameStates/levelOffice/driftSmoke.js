@@ -1,4 +1,4 @@
-var DriftSmoke = /** @class */ (function () {
+var DriftSmoke = (function () {
     function DriftSmoke(playerx, playery, moveDirection, spinSpeed) {
         this.sprite = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-driftsmoke"].texture);
         this.sprite.pivot.x = this.sprite.width / 2;
@@ -27,4 +27,3 @@ var DriftSmoke = /** @class */ (function () {
     };
     return DriftSmoke;
 }());
-//# sourceMappingURL=driftSmoke.js.map

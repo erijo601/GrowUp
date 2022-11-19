@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var LoadingState = /** @class */ (function (_super) {
+var LoadingState = (function (_super) {
     __extends(LoadingState, _super);
     function LoadingState() {
         var _this = _super.call(this, 1, 0, null, null, null, null) || this;
@@ -56,11 +56,9 @@ var LoadingState = /** @class */ (function (_super) {
         Game.currentStatePlayer1.onEnter();
     };
     LoadingState.prototype.update = function (elapsedTime) {
-        // elapsedTime in ms
         if (Game.doneLoading && !Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
             this.onExit();
         }
-        //  Alternate between letter and letter-alt
         this.timeLeftCurrentFrame -= elapsedTime;
         if (this.timeLeftCurrentFrame <= 0) {
             for (var n_1 = 0; n_1 < this.activeLetters.length; n_1++) {
@@ -68,7 +66,6 @@ var LoadingState = /** @class */ (function (_super) {
             }
             this.timeLeftCurrentFrame += 400;
         }
-        //  Spawn new loading letters
         if (this.timeTilNextLoadingLetter > 0 && !this.noMoreLetters) {
             this.timeTilNextLoadingLetter -= elapsedTime;
             if (this.timeTilNextLoadingLetter <= 0) {
@@ -88,7 +85,6 @@ var LoadingState = /** @class */ (function (_super) {
                     var that_1 = this;
                     this.pipe.onFrameChange = function (currentFrame) {
                         if (that_1.noMoreLetters) {
-                            //  Långsammare windup-animation för den sista puffen
                             if (currentFrame == 1) {
                                 that_1.pipe.animationSpeed = 0.2;
                             }
@@ -118,7 +114,6 @@ var LoadingState = /** @class */ (function (_super) {
                 }
             }
         }
-        //  Update all active letters
         var n = this.activeLetters.length;
         while (n--) {
             this.activeLetters[n].update(elapsedTime);
@@ -170,4 +165,3 @@ var LoadingState = /** @class */ (function (_super) {
     };
     return LoadingState;
 }(GameState));
-//# sourceMappingURL=loadingState.js.map

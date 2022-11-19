@@ -9,7 +9,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var KeyboardState = /** @class */ (function () {
+var KeyboardState = (function () {
     function KeyboardState() {
         this.pressed = {};
     }
@@ -22,14 +22,13 @@ var KeyboardState = /** @class */ (function () {
     };
     return KeyboardState;
 }());
-var Keyboard = /** @class */ (function () {
+var Keyboard = (function () {
     function Keyboard() {
         this.current = new KeyboardState();
         this.last = new KeyboardState();
         this.isDirty = false;
     }
     Keyboard.prototype.update = function () {
-        //  Copy all of current to last, to reset the delta
         if (this.isDirty == true) {
             this.last.pressed = __assign({}, this.current.pressed);
             this.isDirty = false;
@@ -37,4 +36,3 @@ var Keyboard = /** @class */ (function () {
     };
     return Keyboard;
 }());
-//# sourceMappingURL=keyboardState.js.map

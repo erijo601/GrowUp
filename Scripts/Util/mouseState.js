@@ -1,4 +1,4 @@
-var MouseState = /** @class */ (function () {
+var MouseState = (function () {
     function MouseState() {
         this.x = 0;
         this.y = 0;
@@ -7,11 +7,10 @@ var MouseState = /** @class */ (function () {
     }
     return MouseState;
 }());
-var Mouse = /** @class */ (function () {
+var Mouse = (function () {
     function Mouse() {
         this.current = new MouseState();
         this.last = new MouseState();
     }
     return Mouse;
 }());
-//# sourceMappingURL=mouseState.js.map

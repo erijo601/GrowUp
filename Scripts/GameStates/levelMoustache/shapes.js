@@ -13,11 +13,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var Shape = /** @class */ (function () {
+var Shape = (function () {
     function Shape(faceBgx, faceBgy) {
-        this.boxW = 24; //  Box-bildens storlek i pixlar
+        this.boxW = 24;
         this.boxH = 19;
-        this.rotation = 0; // what rotation 0,1,2,3
+        this.rotation = 0;
         this.faceBgx = faceBgx;
         this.faceBgy = faceBgy;
         this.sprites = [];
@@ -49,20 +49,15 @@ var Shape = /** @class */ (function () {
         this.points = newPoints;
         this.updateSprites(player, partTimeLeftCurrentRow);
     };
-    // return a set of points showing where this shape would be if we dropped it one
     Shape.prototype.drop = function () {
         return this.move(0, 1);
     };
-    // return a set of points showing where this shape would be if we moved left one
     Shape.prototype.moveLeft = function () {
         return this.move(-1, 0);
     };
-    // return a set of points showing where this shape would be if we moved right one
     Shape.prototype.moveRight = function () {
         return this.move(1, 0);
     };
-    // override these
-    // return a set of points showing where this shape would be if we rotate it
     Shape.prototype.rotate = function (clockwise) {
         throw new Error("This method is abstract");
     };
@@ -81,7 +76,6 @@ var Shape = /** @class */ (function () {
                 deltay = -19 * partTimeLeftCurrentRow;
             }
             else if (row == 20) {
-                //  Detta är när raden åker ur näsan
                 deltax = ((Grid.rowInfos[row - 1].x + point.x * Grid.rowInfos[row - 1].w) -
                     (Grid.rowInfos[row].x + point.x * Grid.rowInfos[row].w)) * EasingCurves.easeInExpo(partTimeLeftCurrentRow);
                 deltay = (Grid.rowInfos[row - 1].y - Grid.rowInfos[row].y) * EasingCurves.easeInExpo(partTimeLeftCurrentRow);
@@ -93,7 +87,7 @@ var Shape = /** @class */ (function () {
             }
             sprite.x = this.faceBgx + Grid.rowInfos[row].x + point.x * Grid.rowInfos[row].w + deltax;
             sprite.y = this.faceBgy + Grid.rowInfos[row].y + deltay;
-            sprite.scale.x = 0.5 * Grid.rowInfos[row].w / 33.9; //  Nedersta raden (i gameMatrix - inte moustache) ger scale = 0.5
+            sprite.scale.x = 0.5 * Grid.rowInfos[row].w / 33.9;
             sprite.scale.y = 0.5;
             if (partTimeLeftCurrentRow == 1) {
                 if (row == 20 && point.x == 0) {
@@ -113,7 +107,7 @@ var Shape = /** @class */ (function () {
     };
     return Shape;
 }());
-var SquareShape = /** @class */ (function (_super) {
+var SquareShape = (function (_super) {
     __extends(SquareShape, _super);
     function SquareShape(faceBgx, faceBgy, cols) {
         var _this = _super.call(this, faceBgx, faceBgy) || this;
@@ -127,12 +121,11 @@ var SquareShape = /** @class */ (function (_super) {
         return _this;
     }
     SquareShape.prototype.rotate = function (clockwise) {
-        // this shape does not rotate
         return this.points;
     };
     return SquareShape;
 }(Shape));
-var LShape = /** @class */ (function (_super) {
+var LShape = (function (_super) {
     __extends(LShape, _super);
     function LShape(faceBgx, faceBgy, leftHanded, cols) {
         var _this = _super.call(this, faceBgx, faceBgy) || this;
@@ -141,7 +134,7 @@ var LShape = /** @class */ (function (_super) {
         var y = -2;
         _this.points = [];
         _this.points.push(new Point(x, y - 1));
-        _this.points.push(new Point(x, y)); // 1 is our base point
+        _this.points.push(new Point(x, y));
         _this.points.push(new Point(x, y + 1));
         _this.points.push(new Point(x + (leftHanded ? -1 : 1), y + 1));
         return _this;
@@ -179,7 +172,7 @@ var LShape = /** @class */ (function (_super) {
     };
     return LShape;
 }(Shape));
-var StepShape = /** @class */ (function (_super) {
+var StepShape = (function (_super) {
     __extends(StepShape, _super);
     function StepShape(faceBgx, faceBgy, leftHanded, cols) {
         var _this = _super.call(this, faceBgx, faceBgy) || this;
@@ -188,7 +181,7 @@ var StepShape = /** @class */ (function (_super) {
         var y = -1;
         _this.points = [];
         _this.points.push(new Point(x + (leftHanded ? 1 : -1), y));
-        _this.points.push(new Point(x, y)); // point 1 is our base point
+        _this.points.push(new Point(x, y));
         _this.points.push(new Point(x, y - 1));
         _this.points.push(new Point(x + (leftHanded ? -1 : 1), y - 1));
         return _this;
@@ -214,7 +207,7 @@ var StepShape = /** @class */ (function (_super) {
     };
     return StepShape;
 }(Shape));
-var StraightShape = /** @class */ (function (_super) {
+var StraightShape = (function (_super) {
     __extends(StraightShape, _super);
     function StraightShape(faceBgx, faceBgy, cols) {
         var _this = _super.call(this, faceBgx, faceBgy) || this;
@@ -223,7 +216,7 @@ var StraightShape = /** @class */ (function (_super) {
         _this.points = [];
         _this.points.push(new Point(x, y - 2));
         _this.points.push(new Point(x, y - 1));
-        _this.points.push(new Point(x, y)); // point 2 is our base point
+        _this.points.push(new Point(x, y));
         _this.points.push(new Point(x, y + 1));
         return _this;
     }
@@ -248,7 +241,7 @@ var StraightShape = /** @class */ (function (_super) {
     };
     return StraightShape;
 }(Shape));
-var TShape = /** @class */ (function (_super) {
+var TShape = (function (_super) {
     __extends(TShape, _super);
     function TShape(faceBgx, faceBgy, cols) {
         var _this = _super.call(this, faceBgx, faceBgy) || this;
@@ -256,7 +249,7 @@ var TShape = /** @class */ (function (_super) {
         var x = cols / 2;
         var y = -2;
         _this.points.push(new Point(x - 1, y));
-        _this.points.push(new Point(x, y)); // point 1 is our base point
+        _this.points.push(new Point(x, y));
         _this.points.push(new Point(x + 1, y));
         _this.points.push(new Point(x, y + 1));
         return _this;
@@ -294,9 +287,8 @@ var TShape = /** @class */ (function (_super) {
     };
     return TShape;
 }(Shape));
-var DotShape = /** @class */ (function (_super) {
+var DotShape = (function (_super) {
     __extends(DotShape, _super);
-    //  Används bara för att spawna lite startblock
     function DotShape(faceBgx, faceBgy, x, y) {
         var _this = _super.call(this, faceBgx, faceBgy) || this;
         _this.points = [];
@@ -308,4 +300,3 @@ var DotShape = /** @class */ (function (_super) {
     };
     return DotShape;
 }(Shape));
-//# sourceMappingURL=shapes.js.map

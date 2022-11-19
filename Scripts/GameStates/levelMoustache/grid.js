@@ -1,4 +1,4 @@
-var Grid = /** @class */ (function () {
+var Grid = (function () {
     function Grid() {
         this.cols = 10;
         this.rows = 20;
@@ -94,7 +94,6 @@ var Grid = /** @class */ (function () {
         this.shapes.push(shape);
         for (var i = 0; i < shape.points.length; i++) {
             if (shape.points[i].y < 0) {
-                //  a block has landed and it isn't even fully on the grid yet
                 return false;
             }
             this.gameMatrix[shape.points[i].y][shape.points[i].x] = true;
@@ -131,7 +130,7 @@ var Grid = /** @class */ (function () {
     };
     return Grid;
 }());
-var RowInfo = /** @class */ (function () {
+var RowInfo = (function () {
     function RowInfo(x, y, w) {
         this.x = x;
         this.y = y;
@@ -139,4 +138,3 @@ var RowInfo = /** @class */ (function () {
     }
     return RowInfo;
 }());
-//# sourceMappingURL=grid.js.map

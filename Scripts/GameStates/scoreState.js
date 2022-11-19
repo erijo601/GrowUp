@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var ScoreState = /** @class */ (function (_super) {
+var ScoreState = (function (_super) {
     __extends(ScoreState, _super);
     function ScoreState(player, xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, player, xOffset, upKey, downKey, leftKey, rightKey) || this;
@@ -193,7 +193,6 @@ var ScoreState = /** @class */ (function (_super) {
         this.scoreCurrentLevel = scoreCurrentLevel;
         this.scoreCounter.setNewScore(scoreCurrentLevel, 0);
         if (this.currentLevel == Level.Moustache) {
-            //  Värdet 0 gör räknaren synlig
             this.scoreLevelMoustache = 0;
         }
         else if (this.currentLevel == Level.Tie) {
@@ -346,7 +345,6 @@ var ScoreState = /** @class */ (function (_super) {
         }
     };
     ScoreState.prototype.update = function (elapsedTime) {
-        // elapsedTime in ms
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
             if (this.player == 1) {
                 Game.sceneTransition.update(elapsedTime);
@@ -392,14 +390,13 @@ var ScoreState = /** @class */ (function (_super) {
                 if (this.currentLevel == Level.Hat) {
                     this.onExit();
                 }
-                if (!Game.sceneTransition.isGrowing) {
+                else if (!Game.sceneTransition.isGrowing) {
                     Game.sceneTransition.startGrowing();
                     if (Game.soundPlayer.musicScoreScreen.playing) {
                         Game.soundPlayer.musicScoreScreen.fade(1, 0, 2500);
                     }
                 }
             }
-            //  Waiting for the player to press enter
             return;
         }
         this.scoreCounter.update(elapsedTime);
@@ -453,11 +450,11 @@ var ScoreState = /** @class */ (function (_super) {
         scoreTotal += this.scoreLevelOffice > -1 ? this.scoreLevelOffice : 0;
         scoreTotal += this.scoreLevelWhiskey > -1 ? this.scoreLevelWhiskey : 0;
         var maxScore = 0;
-        maxScore += 100; //  Max score on LevelMoustache is 100
-        maxScore += 100; //  Max score on LevelTie is 100
-        maxScore += 100; //  Max score on LevelHat is 100
-        maxScore += 100; //  Max score on LevelOffice is 100
-        maxScore += 100; //  Max score on LevelWhiskey is 100
+        maxScore += 100;
+        maxScore += 100;
+        maxScore += 100;
+        maxScore += 100;
+        maxScore += 100;
         this.totalScore = Math.floor(100 * scoreTotal / maxScore);
         this.updateSprites();
     };
@@ -721,4 +718,3 @@ var Level;
     Level[Level["Office"] = 3] = "Office";
     Level[Level["Whiskey"] = 4] = "Whiskey";
 })(Level || (Level = {}));
-//# sourceMappingURL=scoreState.js.map

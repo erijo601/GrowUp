@@ -1,4 +1,4 @@
-var SceneTransition = /** @class */ (function () {
+var SceneTransition = (function () {
     function SceneTransition() {
         this.boxerSpriteGap = 200;
         this.spriteMoustance = new PIXI.Sprite(PIXI.Loader.shared.resources["screen-transition-moustache"].texture);
@@ -189,4 +189,3 @@ var TransitionType;
     TransitionType[TransitionType["Boxer"] = 1] = "Boxer";
     TransitionType[TransitionType["Tie"] = 2] = "Tie";
 })(TransitionType || (TransitionType = {}));
-//# sourceMappingURL=sceneTransition.js.map

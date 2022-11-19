@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var LevelOffice = /** @class */ (function (_super) {
+var LevelOffice = (function (_super) {
     __extends(LevelOffice, _super);
     function LevelOffice(player, xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, player, xOffset, upKey, downKey, leftKey, rightKey) || this;
@@ -144,7 +144,6 @@ var LevelOffice = /** @class */ (function (_super) {
         }
     };
     LevelOffice.prototype.update = function (elapsedTime) {
-        // elapsedTime in ms
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
             if (this.player == 1) {
                 Game.sceneTransition.update(elapsedTime);
@@ -191,7 +190,6 @@ var LevelOffice = /** @class */ (function (_super) {
             return;
         }
         if (musicTime > 36.1 && musicTime < 54.319) {
-            //  Cutscene!
             if (!this.cutscene.isVisible()) {
                 this.cutscene.onEnter();
             }
@@ -234,7 +232,7 @@ var LevelOffice = /** @class */ (function (_super) {
     };
     LevelOffice.prototype.createCubicles = function () {
         this.cubicles = [];
-        var w = 300; //  Samma som cubicle.png
+        var w = 300;
         var h = 300;
         this.cubicles.push(new Cubicle(0 * w, 0 * h));
         this.cubicles.push(new Cubicle(1 * w, 0 * h));
@@ -314,7 +312,7 @@ var LevelOffice = /** @class */ (function (_super) {
         this.cubicles.push(new Cubicle(11 * w, 12 * h));
     };
     LevelOffice.prototype.createCheckpoints = function () {
-        var w = 300; //  Samma som cubicle.png
+        var w = 300;
         var h = 300;
         this.checkpoints = [];
         this.checkpoints.push(new Checkpoint(1 * w, 3 * h, 2 * w, 2 * h, Direction.Down));
@@ -357,7 +355,7 @@ var LevelOffice = /** @class */ (function (_super) {
         }
     };
     LevelOffice.prototype.movePlayer = function (elapsedTime) {
-        var turnSpeed = 1.2 * 360; //  Degrees per second
+        var turnSpeed = 1.2 * 360;
         var accSpeed = 800;
         var naturalBreakAcc = -1000;
         var playerBreakAcc = -2500;
@@ -386,10 +384,9 @@ var LevelOffice = /** @class */ (function (_super) {
             if (diffRotation > Math.PI) {
                 diffRotation = Math.PI * 2 - diffRotation;
             }
-            console.log(this.playerSprite.angle + " " + Math.ceil(actualRotation * 360 / (Math.PI * 2)));
             var boostSpeed = 3.0 * accSpeed * diffRotation / (Math.PI * 2);
             if (diffRotation > Math.PI / 2) {
-                this.timeTilDriftSmoke -= elapsedTime; // * (diffRotation / Math.PI * 2);
+                this.timeTilDriftSmoke -= elapsedTime;
                 if (this.timeTilDriftSmoke <= 0) {
                     this.timeTilDriftSmoke += 50;
                     var driftSmoke = new DriftSmoke(this.playerSprite.x, this.playerSprite.y, this.playerSprite.rotation - Math.PI / 2, this.playerSprite.rotation - actualRotation);
@@ -440,7 +437,6 @@ var LevelOffice = /** @class */ (function (_super) {
             this.playerLegsSprite.texture = PIXI.Loader.shared.resources[currentLegsTexture].texture;
         }
         if (Math.sqrt(this.playerSpeed.x * this.playerSpeed.x + this.playerSpeed.y * this.playerSpeed.y) > maxSpeed) {
-            //  Normalize
             var a = Math.atan2(-this.playerSpeed.y, this.playerSpeed.x);
             this.playerSpeed.x = Math.cos(a) * maxSpeed;
             this.playerSpeed.y = -Math.sin(a) * maxSpeed;
@@ -479,13 +475,10 @@ var LevelOffice = /** @class */ (function (_super) {
         var noOfCollide = 0;
         for (; i < this.cubicles.length; i++) {
             if (noOfCollide > 2) {
-                //  Jag BORDE aldrig få mer än max två kollisioner på en update, men det får jag för jag kodar som en röv.
-                //  Skitsamma, sätt tillbaka positionen så att jag aldrig ska fastna i evighetsloopar.
                 return oldPlayerWorldPosition;
             }
             var cubicle = this.cubicles[i];
             if (cubicle.isInside(newPlayerWorldPosition)) {
-                //  Kolla kollisioner för x och y separat så att man kan glida längs väggarna
                 var dx = newPlayerWorldPosition.x - oldPlayerWorldPosition.x;
                 var dy = newPlayerWorldPosition.y - oldPlayerWorldPosition.y;
                 var insideX = void 0;
@@ -508,7 +501,6 @@ var LevelOffice = /** @class */ (function (_super) {
                     this.screenShakeTimeLeft = 1000 * partMaxSpeed;
                 }
                 if (Math.abs(insideX) < 2 && Math.abs(insideY) < 2) {
-                    //  Hit corner
                     newPlayerWorldPosition.x = oldPlayerWorldPosition.x;
                     newPlayerWorldPosition.y = oldPlayerWorldPosition.y;
                     this.playerSpeed.x = this.playerSpeed.x / -5;
@@ -516,7 +508,6 @@ var LevelOffice = /** @class */ (function (_super) {
                 }
                 else if (Math.abs(insideX) < Math.abs(insideY)) {
                     newPlayerWorldPosition.x -= insideX * 2;
-                    //  Bounce back with a 5th of the speed
                     this.playerSpeed.x = this.playerSpeed.x / -5;
                     if (this.playerSpeed.y > 300) {
                         this.playerSpeed.y = 300;
@@ -535,7 +526,7 @@ var LevelOffice = /** @class */ (function (_super) {
                         this.playerSpeed.x = -300;
                     }
                 }
-                i = 0; //  Start over
+                i = 0;
                 noOfCollide++;
             }
         }
@@ -581,4 +572,3 @@ var LevelOffice = /** @class */ (function (_super) {
     };
     return LevelOffice;
 }(GameState));
-//# sourceMappingURL=levelOffice.js.map

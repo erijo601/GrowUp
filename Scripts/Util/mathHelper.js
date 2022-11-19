@@ -1,8 +1,7 @@
-var MathHelper = /** @class */ (function () {
+var MathHelper = (function () {
     function MathHelper() {
     }
     MathHelper.randomInt = function (min, max) {
-        //  min and max included
         return Math.floor(Math.random() * (max - min + 1) + min);
     };
     MathHelper.clamp = function (value, min, max) {
@@ -10,7 +9,7 @@ var MathHelper = /** @class */ (function () {
     };
     return MathHelper;
 }());
-var Interval = /** @class */ (function () {
+var Interval = (function () {
     function Interval(min, max) {
         this.min = min;
         this.max = max;
@@ -20,4 +19,3 @@ var Interval = /** @class */ (function () {
     };
     return Interval;
 }());
-//# sourceMappingURL=mathHelper.js.map

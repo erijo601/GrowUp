@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var LevelEnd = /** @class */ (function (_super) {
+var LevelEnd = (function (_super) {
     __extends(LevelEnd, _super);
     function LevelEnd(xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, 1, xOffset, upKey, downKey, leftKey, rightKey) || this;
@@ -54,7 +54,6 @@ var LevelEnd = /** @class */ (function (_super) {
         if (Game.twoPlayerGame) {
             facex = 27;
         }
-        //  Player 1
         _this.spriteFaceBackgroundP1 = new PIXI.Sprite(PIXI.Loader.shared.resources["face-background-p1"].texture);
         _this.spriteFaceBackgroundP1.x = facex;
         _this.spriteFaceBackgroundP1.y = facey;
@@ -108,7 +107,6 @@ var LevelEnd = /** @class */ (function (_super) {
         }
         if (Game.twoPlayerGame) {
             facex = 897 + 30;
-            //  Player 2
             _this.spriteFaceBackgroundP2 = new PIXI.Sprite(PIXI.Loader.shared.resources["face-background-p2"].texture);
             _this.spriteFaceBackgroundP2.x = facex;
             _this.spriteFaceBackgroundP2.y = facey;
@@ -226,7 +224,6 @@ var LevelEnd = /** @class */ (function (_super) {
         Game.currentStatePlayer1.onEnter();
     };
     LevelEnd.prototype.update = function (elapsedTime) {
-        // elapsedTime in ms
         this.totalElapsedTime += elapsedTime;
         this.spriteWhataman.scale.x = 1 + 0.03 * Math.sin(2 * Math.PI * (this.totalElapsedTime / 600));
         this.spriteWhataman.scale.y = 1 + 0.03 * Math.cos(2 * Math.PI * (this.totalElapsedTime / 600));
@@ -246,8 +243,7 @@ var LevelEnd = /** @class */ (function (_super) {
             }
             this.pressEnter.scale.x = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
             this.pressEnter.scale.y = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
-            if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter') &&
-                !Game.sceneTransition.isGrowing) {
+            if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
                 this.onExit();
             }
             return;
@@ -255,4 +251,3 @@ var LevelEnd = /** @class */ (function (_super) {
     };
     return LevelEnd;
 }(GameState));
-//# sourceMappingURL=levelEnd.js.map

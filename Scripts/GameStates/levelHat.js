@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var LevelHat = /** @class */ (function (_super) {
+var LevelHat = (function (_super) {
     __extends(LevelHat, _super);
     function LevelHat(player, xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, player, xOffset, upKey, downKey, leftKey, rightKey) || this;
@@ -178,7 +178,6 @@ var LevelHat = /** @class */ (function (_super) {
         }
     };
     LevelHat.prototype.update = function (elapsedTime) {
-        // elapsedTime in ms
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
             if (this.player == 1) {
                 Game.sceneTransition.update(elapsedTime);
@@ -313,7 +312,7 @@ var LevelHat = /** @class */ (function (_super) {
     };
     LevelHat.prototype.movePlayer = function (elapsedTime) {
         var max = 300;
-        var accTime = 1500; //  Tid det tar från 0 till max acc
+        var accTime = 1500;
         var acc = max * 1000 / accTime;
         if (Game.keyboard.current.isPressed(this.leftKey) && !Game.keyboard.current.isPressed(this.rightKey)) {
             this.xSpeed -= acc * elapsedTime / 1000;
@@ -529,4 +528,3 @@ var LevelHat = /** @class */ (function (_super) {
     };
     return LevelHat;
 }(GameState));
-//# sourceMappingURL=levelHat.js.map

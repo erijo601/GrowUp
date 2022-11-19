@@ -1,4 +1,4 @@
-var ScoreCounter = /** @class */ (function () {
+var ScoreCounter = (function () {
     function ScoreCounter(xOffset, x, y, score) {
         this.x = x;
         this.y = y;
@@ -135,7 +135,6 @@ var ScoreCounter = /** @class */ (function () {
                 this.spriteHundreds.y = this.y + 19;
                 this.spriteHundredsAlt.visible = false;
                 Game.soundPlayer.scoreWheel.stop(this.soundInstanceId);
-                //Game.soundPlayer.scoreWheel.stop();
                 return;
             }
         }
@@ -209,4 +208,3 @@ var ScoreCounter = /** @class */ (function () {
     };
     return ScoreCounter;
 }());
-//# sourceMappingURL=scoreCounter.js.map

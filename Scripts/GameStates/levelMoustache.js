@@ -13,12 +13,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var LevelMoustache = /** @class */ (function (_super) {
+var LevelMoustache = (function (_super) {
     __extends(LevelMoustache, _super);
-    //  Musikintro (4.5s) - slipsar
-    //  Musikoutro (3.0s) - gubben ler
-    //  Återstående musik = ingame = 1m35s - 7.5s = 1m27.5s
-    //  10 rader = 87.5s / 10 = 8.75s mellan varje raddrop
     function LevelMoustache(player, xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, player, xOffset, upKey, downKey, leftKey, rightKey) || this;
         _this.stateName = "LevelMoustache";
@@ -178,7 +174,6 @@ var LevelMoustache = /** @class */ (function (_super) {
         this.grid = new Grid();
         this.scoreCounter.onEnter();
         Game.app.stage.addChild(this.faceBg);
-        //   Lägg till alla ansiktsframes FÖRE shape
         for (var _i = 0, _a = this.leftEye; _i < _a.length; _i++) {
             var sprite = _a[_i];
             sprite.visible = false;
@@ -211,9 +206,8 @@ var LevelMoustache = /** @class */ (function (_super) {
         }
         this.addStartPieces();
         this.currentShape = this.spawnShape();
-        //Game.soundPlayer.musicMoustache.play();
         this.totalElapsedTime = 0;
-        this.totalTimeDropGrid = 8750 * 2; //  Dubbla tiden innan första droppen
+        this.totalTimeDropGrid = 8750 * 2;
         this.timeLeftDropGrid = this.totalTimeDropGrid;
         this.timeLeftDropCurrentShape = this.totalTimeDropCurrentShape;
         this.timeTilAnimLeftEye = MathHelper.randomInt(2000, 6000);
@@ -233,7 +227,6 @@ var LevelMoustache = /** @class */ (function (_super) {
         this.noseAnimDirection = 1;
         this.currentNoseFrame = 0;
         this.lastSmile = false;
-        //Game.intro.startLevelMoustache();
         Game.sceneTransition.startShrinking();
     };
     LevelMoustache.prototype.onExit = function () {
@@ -281,7 +274,6 @@ var LevelMoustache = /** @class */ (function (_super) {
         }
     };
     LevelMoustache.prototype.update = function (elapsedTime) {
-        // elapsedTime in ms
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
             if (this.player == 1) {
                 Game.sceneTransition.update(elapsedTime);
@@ -331,19 +323,16 @@ var LevelMoustache = /** @class */ (function (_super) {
                 this.currentLeftEyeFrame += this.leftEyeAnimDirection;
                 if (this.currentLeftEyeFrame == 3) {
                     if (this.lastSmile) {
-                        //  Frys
                         this.currentLeftEyeFrame = 2;
                         this.leftEye[this.currentLeftEyeFrame].visible = true;
                     }
                     else {
-                        //  Börja animera baklänges
                         this.currentLeftEyeFrame = 1;
                         this.leftEyeAnimDirection = -1;
                         this.leftEye[this.currentLeftEyeFrame].visible = true;
                     }
                 }
                 else if (this.currentLeftEyeFrame == -1) {
-                    //  Animationen slut
                     this.currentLeftEyeFrame = 0;
                     this.leftEyeAnimDirection = 1;
                     this.timeTilAnimLeftEye = MathHelper.randomInt(2000, 6000);
@@ -370,19 +359,16 @@ var LevelMoustache = /** @class */ (function (_super) {
                 this.currentRightEyeFrame += this.rightEyeAnimDirection;
                 if (this.currentRightEyeFrame == 3) {
                     if (this.lastSmile) {
-                        //  Frys
                         this.currentRightEyeFrame = 2;
                         this.rightEye[this.currentRightEyeFrame].visible = true;
                     }
                     else {
-                        //  Börja animera baklänges
                         this.currentRightEyeFrame = 1;
                         this.rightEyeAnimDirection = -1;
                         this.rightEye[this.currentRightEyeFrame].visible = true;
                     }
                 }
                 else if (this.currentRightEyeFrame == -1) {
-                    //  Animationen slut
                     this.currentRightEyeFrame = 0;
                     this.rightEyeAnimDirection = 1;
                     this.timeTilAnimRightEye = MathHelper.randomInt(2000, 6000);
@@ -412,13 +398,11 @@ var LevelMoustache = /** @class */ (function (_super) {
                     this.timeLeftCurrentMouthFrame = 90;
                 }
                 if (this.currentMouthFrame == 3) {
-                    //  Börja animera baklänges
                     this.currentMouthFrame = 1;
                     this.mouthAnimDirection = -1;
                     this.mouth[this.currentMouthFrame].visible = true;
                 }
                 else if (this.currentMouthFrame == -1) {
-                    //  Animationen slut
                     this.currentMouthFrame = 0;
                     this.mouthAnimDirection = 1;
                     this.animateMouth = false;
@@ -454,14 +438,12 @@ var LevelMoustache = /** @class */ (function (_super) {
                     this.timeLeftCurrentNoseFrame = 100;
                 }
                 if (this.currentNoseFrame == 3) {
-                    //  Börja animera baklänges
                     this.currentNoseFrame = 1;
                     this.noseAnimDirection = -1;
                     this.nose[this.currentNoseFrame].visible = true;
                     this.noseFront[this.currentNoseFrame].visible = true;
                 }
                 else if (this.currentNoseFrame == -1) {
-                    //  Animationen slut
                     this.currentNoseFrame = 0;
                     this.noseAnimDirection = 1;
                     this.animateNose = false;
@@ -521,7 +503,7 @@ var LevelMoustache = /** @class */ (function (_super) {
         }
         this.timeLeftDropGrid -= elapsedTime;
         if (this.timeLeftDropGrid <= 0) {
-            this.totalTimeDropGrid = (8750 * 0.9); //  * 0.9 för att kompensera den dubbla tiden första droppen
+            this.totalTimeDropGrid = (8750 * 0.9);
             this.timeLeftDropGrid += this.totalTimeDropGrid;
             this.animateNose = true;
             this.score += this.grid.dropRows(this.player);
@@ -595,4 +577,3 @@ var LevelMoustache = /** @class */ (function (_super) {
     };
     return LevelMoustache;
 }(GameState));
-//# sourceMappingURL=levelMoustache.js.map
