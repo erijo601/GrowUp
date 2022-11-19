@@ -222,7 +222,6 @@
                 this.spriteHundredsAlt.visible = false;
 
                 Game.soundPlayer.scoreWheel.stop(this.soundInstanceId);
-                Game.soundPlayer.scoreWheel.stop();
 
                 return;
             }

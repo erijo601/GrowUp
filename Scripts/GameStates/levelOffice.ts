@@ -4,7 +4,6 @@
     private cutscene: Cutscene;
 
     private totalElapsedTime: number;
-    private gameEndsOnTime: number = 82500;
 
     private playerSprite: PIXI.Sprite;
     private playerLegsSprite: PIXI.Sprite;
@@ -562,13 +561,11 @@
                 diffRotation = Math.PI * 2 - diffRotation;
             }
 
-            console.log(this.playerSprite.angle + " " + Math.ceil(actualRotation * 360 / (Math.PI * 2)));
-
             let boostSpeed = 3.0 * accSpeed * diffRotation / (Math.PI * 2);
 
             if (diffRotation > Math.PI / 2) {
 
-                this.timeTilDriftSmoke -= elapsedTime;// * (diffRotation / Math.PI * 2);
+                this.timeTilDriftSmoke -= elapsedTime;
 
                 if (this.timeTilDriftSmoke <= 0) {
 
@@ -829,7 +826,7 @@
                 this.nextCheckpoint = 0;
             }
 
-            this.scoreCounter.setNewScore(this.scoreCounter.getDesiredScore() + 1, 200);
+            this.scoreCounter.setNewScore(this.scoreCounter.getDesiredScore() + 1, 100);
         }
         else if (this.elapsedTimeInCurrentCheckpoint > 1000) {
 

@@ -453,7 +453,7 @@
 
             if (newScore > this.scoreCounter.getDesiredScore()) {
 
-                this.scoreCounter.setNewScore(newScore, 200);
+                this.scoreCounter.setNewScore(newScore, 100);
             }
 
             this.stranglePart -= elapsedTime / 3000;

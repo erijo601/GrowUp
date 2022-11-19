@@ -201,6 +201,11 @@
 
             this.instructions.visible = true;
 
+            if (this.textEnd.visible) {
+
+                this.instructions.visible = false;
+            }            
+
             this.timeLeftCurrentFrameInstructions -= elapsedTime;
 
             if (this.timeLeftCurrentFrameInstructions <= 0) {
@@ -286,7 +291,7 @@
 
                     this.cupsHad++;
 
-                    this.scoreCounter.setNewScore(this.scoreCounter.getDesiredScore() + 1, 200);
+                    this.scoreCounter.setNewScore(this.scoreCounter.getDesiredScore() + 1, 100);
                 }
 
                 if (this.currentState == 0) {

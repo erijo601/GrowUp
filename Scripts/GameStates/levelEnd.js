@@ -193,6 +193,7 @@ var LevelEnd = /** @class */ (function (_super) {
         }
         Game.sceneTransition.startShrinking();
         Game.soundPlayer.musicEnd.play();
+        Game.soundPlayer.musicEnd.fade(0, 1, 1000);
     };
     LevelEnd.prototype.onExit = function () {
         Game.soundPlayer.musicEnd.stop();

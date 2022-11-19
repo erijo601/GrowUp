@@ -525,7 +525,7 @@ var LevelMoustache = /** @class */ (function (_super) {
             this.timeLeftDropGrid += this.totalTimeDropGrid;
             this.animateNose = true;
             this.score += this.grid.dropRows(this.player);
-            this.scoreCounter.setNewScore(this.score, 200);
+            this.scoreCounter.setNewScore(this.score, 100);
         }
         if (this.currentShape != undefined) {
             this.timeLeftDropCurrentShape -= elapsedTime;

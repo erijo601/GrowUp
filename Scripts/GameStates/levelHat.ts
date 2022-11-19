@@ -389,7 +389,7 @@
 
             if (currentScore > this.scoreCounter.getDesiredScore()) {
 
-                this.scoreCounter.setNewScore(currentScore, 300);
+                this.scoreCounter.setNewScore(currentScore, 100);
             }
 
             this.keydown.x = this.playerTorso.x - 23;

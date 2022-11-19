@@ -766,7 +766,7 @@
 
             this.score += this.grid.dropRows(this.player);
 
-            this.scoreCounter.setNewScore(this.score, 200);
+            this.scoreCounter.setNewScore(this.score, 100);
         }
 
         if (this.currentShape != undefined) {

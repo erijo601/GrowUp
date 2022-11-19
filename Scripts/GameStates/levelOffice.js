@@ -17,7 +17,6 @@ var LevelOffice = /** @class */ (function (_super) {
     __extends(LevelOffice, _super);
     function LevelOffice(player, xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, player, xOffset, upKey, downKey, leftKey, rightKey) || this;
-        _this.gameEndsOnTime = 82500;
         _this.stateName = "LevelOffice";
         _this.scoreCounter = new ScoreCounter(xOffset, 4, 16, 0);
         _this.cutscene = new Cutscene(xOffset, 130, player, _this.upKey, _this.downKey, _this.leftKey, _this.rightKey, _this.scoreCounter);
@@ -554,7 +553,7 @@ var LevelOffice = /** @class */ (function (_super) {
             if (this.nextCheckpoint >= this.checkpoints.length) {
                 this.nextCheckpoint = 0;
             }
-            this.scoreCounter.setNewScore(this.scoreCounter.getDesiredScore() + 1, 200);
+            this.scoreCounter.setNewScore(this.scoreCounter.getDesiredScore() + 1, 100);
         }
         else if (this.elapsedTimeInCurrentCheckpoint > 1000) {
             for (var i = 0; i < this.checkpoints.length; i++) {

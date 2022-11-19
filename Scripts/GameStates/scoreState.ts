@@ -270,7 +270,7 @@
         this.pressEnter.y = 842 + 100;
         this.pressEnter.pivot.x = this.pressEnter.width / 2;
         this.pressEnter.pivot.y = this.pressEnter.height / 2;
-        this.pressEnter.zIndex = 1000;
+        this.pressEnter.zIndex = 2000;
         this.pressEnter.visible = false;
     }
 
@@ -570,8 +570,7 @@
 
                     this.onExit();
                 }
-
-                if (!Game.sceneTransition.isGrowing) {
+                else if (!Game.sceneTransition.isGrowing) {
 
                     Game.sceneTransition.startGrowing();
 
@@ -904,19 +903,19 @@
 
             return null;
         }
-        else if (this.scoreLevelMoustache < 60) {
+        else if (this.scoreLevelMoustache < 58) {
 
             return "face-moustache1-p" + this.player;
         }
-        else if (this.scoreLevelMoustache < 70) {
+        else if (this.scoreLevelMoustache < 66) {
 
             return "face-moustache2-p" + this.player;
         }
-        else if (this.scoreLevelMoustache < 80) {
+        else if (this.scoreLevelMoustache < 74) {
 
             return "face-moustache3-p" + this.player;
         }
-        else if (this.scoreLevelMoustache < 90) {
+        else if (this.scoreLevelMoustache < 85) {
 
             return "face-moustache4-p" + this.player;
         }

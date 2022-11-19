@@ -246,6 +246,7 @@
         Game.sceneTransition.startShrinking();
 
         Game.soundPlayer.musicEnd.play();
+        Game.soundPlayer.musicEnd.fade(0, 1, 1000);
     }
 
     public onExit(): void {
@@ -330,8 +331,7 @@
             this.pressEnter.scale.x = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
             this.pressEnter.scale.y = 1 - 0.03 * Math.cos(2 * Math.PI * this.totalElapsedTime / 2000);
 
-            if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter') &&
-                !Game.sceneTransition.isGrowing) {
+            if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
 
                 this.onExit();
             }

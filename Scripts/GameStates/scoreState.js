@@ -183,7 +183,7 @@ var ScoreState = /** @class */ (function (_super) {
         _this.pressEnter.y = 842 + 100;
         _this.pressEnter.pivot.x = _this.pressEnter.width / 2;
         _this.pressEnter.pivot.y = _this.pressEnter.height / 2;
-        _this.pressEnter.zIndex = 1000;
+        _this.pressEnter.zIndex = 2000;
         _this.pressEnter.visible = false;
         return _this;
     }
@@ -298,8 +298,7 @@ var ScoreState = /** @class */ (function (_super) {
                     Game.currentStatePlayer1 = new LevelHat(1, 15, 'w', 's', 'a', 'd');
                 }
                 else if (this.currentLevel == Level.Hat) {
-                    //  TODO
-                    //Game.currentStatePlayer1 = new TitleEnd(0, 'w', 's', 'a', 'd');
+                    Game.currentStatePlayer1 = new LevelEnd(0, 'w', 's', 'a', 'd');
                 }
                 if (Game.currentStatePlayer2 != null && Game.currentStatePlayer2.stateName == this.stateName) {
                     Game.currentStatePlayer2.onExit();
@@ -341,8 +340,7 @@ var ScoreState = /** @class */ (function (_super) {
                 Game.currentStatePlayer1 = new LevelHat(1, 480 + 15, 'w', 's', 'a', 'd');
             }
             else if (this.currentLevel == Level.Hat) {
-                Game.currentStatePlayer1 = new TitleState(0, 'w', 's', 'a', 'd');
-                Game.currentStatePlayer1.onEnter();
+                Game.currentStatePlayer1 = new LevelEnd(0, 'w', 's', 'a', 'd');
             }
             Game.currentStatePlayer1.onEnter();
         }
@@ -629,16 +627,16 @@ var ScoreState = /** @class */ (function (_super) {
         if (this.scoreLevelMoustache < 50) {
             return null;
         }
-        else if (this.scoreLevelMoustache < 60) {
+        else if (this.scoreLevelMoustache < 58) {
             return "face-moustache1-p" + this.player;
         }
-        else if (this.scoreLevelMoustache < 70) {
+        else if (this.scoreLevelMoustache < 66) {
             return "face-moustache2-p" + this.player;
         }
-        else if (this.scoreLevelMoustache < 80) {
+        else if (this.scoreLevelMoustache < 74) {
             return "face-moustache3-p" + this.player;
         }
-        else if (this.scoreLevelMoustache < 90) {
+        else if (this.scoreLevelMoustache < 85) {
             return "face-moustache4-p" + this.player;
         }
         else {

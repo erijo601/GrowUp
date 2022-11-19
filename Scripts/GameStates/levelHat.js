@@ -246,7 +246,7 @@ var LevelHat = /** @class */ (function (_super) {
             this.timeHoldingHat += elapsedTime;
             var currentScore = Math.floor(this.timeHoldingHat / 500);
             if (currentScore > this.scoreCounter.getDesiredScore()) {
-                this.scoreCounter.setNewScore(currentScore, 300);
+                this.scoreCounter.setNewScore(currentScore, 100);
             }
             this.keydown.x = this.playerTorso.x - 23;
             this.keydown.y = this.hatFlying.y - 80;

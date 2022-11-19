@@ -30,9 +30,7 @@ var SoundPlayer = /** @class */ (function () {
             loop: true
         });
         this.musicScoreScreen.on("fade", function () {
-            if (that.musicScoreScreen.volume() == 0) {
-                that.musicScoreScreen.stop();
-            }
+            that.musicScoreScreen.stop();
         });
         this.musicMoustache = new Howl({
             src: ['sound/music-moustache.mp3'],

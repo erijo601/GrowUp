@@ -292,7 +292,7 @@ var LevelTie = /** @class */ (function (_super) {
             this.totalTimeScore += elapsedTime;
             var newScore = Math.floor(100 * this.totalTimeScore / this.gameEndsOnTime);
             if (newScore > this.scoreCounter.getDesiredScore()) {
-                this.scoreCounter.setNewScore(newScore, 200);
+                this.scoreCounter.setNewScore(newScore, 100);
             }
             this.stranglePart -= elapsedTime / 3000;
             var speed = 700;

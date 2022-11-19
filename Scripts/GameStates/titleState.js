@@ -137,32 +137,32 @@ var TitleState = /** @class */ (function (_super) {
             Game.currentStatePlayer1 = new LevelMoustache(1, 0, 'w', 's', 'a', 'd');
             Game.currentStatePlayer2 = new LevelMoustache(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
             //  Test
-            Game.scoreStatePlayer1.scoreLevelMoustache = MathHelper.randomInt(50, 100);
-            Game.scoreStatePlayer1.scoreLevelHat = MathHelper.randomInt(50, 100);
-            Game.scoreStatePlayer1.scoreLevelOffice = MathHelper.randomInt(50, 100);
-            Game.scoreStatePlayer1.scoreLevelTie = MathHelper.randomInt(50, 100);
-            Game.scoreStatePlayer1.scoreLevelWhiskey = MathHelper.randomInt(50, 100);
-            Game.scoreStatePlayer2.scoreLevelMoustache = MathHelper.randomInt(50, 100);
-            Game.scoreStatePlayer2.scoreLevelHat = MathHelper.randomInt(50, 100);
-            Game.scoreStatePlayer2.scoreLevelOffice = MathHelper.randomInt(50, 100);
-            Game.scoreStatePlayer2.scoreLevelTie = MathHelper.randomInt(50, 100);
-            Game.scoreStatePlayer2.scoreLevelWhiskey = MathHelper.randomInt(50, 100);
-            Game.currentStatePlayer1 = new LevelEnd(0, 'w', 's', 'a', 'd');
-            Game.currentStatePlayer2 = null;
-            Game.currentStatePlayer1.onEnter();
+            //Game.scoreStatePlayer1.scoreLevelMoustache = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelHat = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelOffice = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelTie = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelWhiskey = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer2.scoreLevelMoustache = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer2.scoreLevelHat = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer2.scoreLevelOffice = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer2.scoreLevelTie = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer2.scoreLevelWhiskey = MathHelper.randomInt(50, 100);
+            //Game.currentStatePlayer1 = new LevelEnd(0, 'w', 's', 'a', 'd');
+            //Game.currentStatePlayer2 = null;
             //Game.currentStatePlayer1.onEnter();
-            //Game.currentStatePlayer2.onEnter();
+            Game.currentStatePlayer1.onEnter();
+            Game.currentStatePlayer2.onEnter();
         }
         else {
             Game.scoreStatePlayer1 = new ScoreState(1, 480, 'w', 's', 'a', 'd');
             Game.currentStatePlayer1 = new LevelMoustache(1, 480, 'w', 's', 'a', 'd');
             //  Test
-            Game.scoreStatePlayer1.scoreLevelMoustache = MathHelper.randomInt(50, 100);
-            Game.scoreStatePlayer1.scoreLevelHat = MathHelper.randomInt(50, 100);
-            Game.scoreStatePlayer1.scoreLevelOffice = MathHelper.randomInt(50, 100);
-            Game.scoreStatePlayer1.scoreLevelTie = MathHelper.randomInt(50, 100);
-            Game.scoreStatePlayer1.scoreLevelWhiskey = MathHelper.randomInt(50, 100);
-            Game.currentStatePlayer1 = new LevelEnd(0, 'w', 's', 'a', 'd');
+            //Game.scoreStatePlayer1.scoreLevelMoustache = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelHat = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelOffice = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelTie = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelWhiskey = MathHelper.randomInt(50, 100);
+            //Game.currentStatePlayer1 = new LevelEnd(0, 'w', 's', 'a', 'd');
             Game.currentStatePlayer1.onEnter();
         }
     };

@@ -52,9 +52,7 @@
         });
 
         this.musicScoreScreen.on("fade", function () {
-            if (that.musicScoreScreen.volume() == 0) {
-                that.musicScoreScreen.stop();
-            }
+            that.musicScoreScreen.stop();
         });
 
         this.musicMoustache = new Howl({
