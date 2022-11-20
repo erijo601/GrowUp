@@ -1,4 +1,4 @@
-var ColorHelper = (function () {
+var ColorHelper = /** @class */ (function () {
     function ColorHelper() {
     }
     ColorHelper.rgbToHex = function (r, g, b) {
@@ -12,3 +12,4 @@ var ColorHelper = (function () {
     };
     return ColorHelper;
 }());
+//# sourceMappingURL=colorHelper.js.map

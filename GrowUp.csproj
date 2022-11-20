@@ -72,6 +72,8 @@
     <Content Include="img\Intro\tie-right.png" />
     <Content Include="img\Intro\tie-subtitle.png" />
     <Content Include="img\Intro\tie-title.png" />
+    <Content Include="img\Intro\whiskey-subtitle.png" />
+    <Content Include="img\Intro\whiskey-title.png" />
     <Content Include="img\LevelEnd\gameover.png" />
     <Content Include="img\LevelEnd\whataman.png" />
     <Content Include="img\LevelHat\clap0.png" />

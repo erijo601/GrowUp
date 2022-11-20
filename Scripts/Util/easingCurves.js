@@ -1,6 +1,7 @@
-var EasingCurves = (function () {
+var EasingCurves = /** @class */ (function () {
     function EasingCurves() {
     }
+    //  Mer fina kurvor här -> https://easings.net/
     EasingCurves.easeInOutQuad = function (x) {
         if (x > 1) {
             x = 1;
@@ -81,3 +82,4 @@ var EasingCurves = (function () {
     };
     return EasingCurves;
 }());
+//# sourceMappingURL=easingCurves.js.map

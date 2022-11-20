@@ -162,7 +162,9 @@
 
         Game.sceneTransition.startShrinking();
 
-        Game.soundPlayer.musicWhiskey.play();
+        if (Game.soundPlayer.musicWhiskey.playing() == false) {
+            Game.soundPlayer.musicWhiskey.play();
+        }
 
         this.renderWorld();
 

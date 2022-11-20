@@ -1,4 +1,4 @@
-var SoundPlayer = (function () {
+var SoundPlayer = /** @class */ (function () {
     function SoundPlayer() {
         this.loadCommonSounds();
     }
@@ -94,3 +94,4 @@ var SoundPlayer = (function () {
     };
     return SoundPlayer;
 }());
+//# sourceMappingURL=sound.js.map

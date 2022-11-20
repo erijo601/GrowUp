@@ -1,4 +1,4 @@
-var Position = (function () {
+var Position = /** @class */ (function () {
     function Position(x, y) {
         if (x === void 0) { x = 0; }
         if (y === void 0) { y = 0; }
@@ -7,3 +7,4 @@ var Position = (function () {
     }
     return Position;
 }());
+//# sourceMappingURL=position.js.map

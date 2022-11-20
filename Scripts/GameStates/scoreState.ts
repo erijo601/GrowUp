@@ -568,15 +568,20 @@
 
                 if (this.currentLevel == Level.Hat) {
 
+                    if (Game.soundPlayer.musicScoreScreen.playing()) {
+
+                        Game.soundPlayer.musicScoreScreen.fade(1, 0, 500);
+                    }
+
                     this.onExit();
                 }
                 else if (!Game.sceneTransition.isGrowing) {
 
                     Game.sceneTransition.startGrowing();
 
-                    if (Game.soundPlayer.musicScoreScreen.playing) {
+                    if (Game.soundPlayer.musicScoreScreen.playing()) {
 
-                        Game.soundPlayer.musicScoreScreen.fade(1, 0, 2500);
+                        Game.soundPlayer.musicScoreScreen.fade(1, 0, 500);
                     }
                 }
             }
@@ -927,19 +932,19 @@
 
     public getEyesImg(): string {
 
-        if (this.scoreLevelHat < 50) {
+        if (this.scoreLevelHat < 15) {
 
             return "face-eyes0";
         }
-        else if (this.scoreLevelHat < 60) {
+        else if (this.scoreLevelHat < 30) {
 
             return "face-eyes1";
         }
-        else if (this.scoreLevelHat < 70) {
+        else if (this.scoreLevelHat < 45) {
 
             return "face-eyes2";
         }
-        else if (this.scoreLevelHat < 80) {
+        else if (this.scoreLevelHat < 60) {
 
             return "face-eyes3";
         }

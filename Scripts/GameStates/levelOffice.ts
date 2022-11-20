@@ -229,7 +229,10 @@
             if (Game.sceneTransition.isDone()) {
 
                 Game.intro.startLevelOffice();
-                Game.soundPlayer.musicOffice.play();
+
+                if (Game.soundPlayer.musicOffice.playing() == false) {
+                    Game.soundPlayer.musicOffice.play();
+                }
             }
 
             return;

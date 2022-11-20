@@ -1,4 +1,4 @@
-var Cutscene = (function () {
+var Cutscene = /** @class */ (function () {
     function Cutscene(x, y, player, upKey, downKey, leftKey, rightKey, scoreCounter) {
         this.visible = false;
         this.x = x;
@@ -19,6 +19,7 @@ var Cutscene = (function () {
         this.head.zIndex = 1001;
         this.head.pivot.x = 150;
         this.head.pivot.y = 200;
+        //  Angle: 0 -> 30
         this.textStart = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-cutscene-text-start"].texture);
         this.textStart.x = 1920 / 2;
         this.textStart.y = 1080 / 2;
@@ -34,19 +35,20 @@ var Cutscene = (function () {
         this.textEnd.zIndex = 201;
         this.textEnd.visible = false;
         this.handPoint = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-cutscene-hand-point-p" + player].texture);
-        this.handPoint.x = -708;
+        this.handPoint.x = -708; //  -708 -> -107
         this.handPoint.y = 408;
         this.handPoint.zIndex = 1003;
         this.handEmpty = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-cutscene-hand-empty-p" + player].texture);
-        this.handEmpty.x = -107;
-        this.handEmpty.y = 392;
+        this.handEmpty.x = -107; //  -107 -> -22
+        this.handEmpty.y = 392; //  392 -> 660
         this.handEmpty.zIndex = 1003;
         this.handCoffee = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-cutscene-hand-coffee-p" + player].texture);
-        this.handCoffee.x = 162;
+        this.handCoffee.x = 162; //  162 -> 83
         this.handCoffee.y = 724;
         this.handCoffee.zIndex = 1003;
         this.handCoffee.pivot.x = 175;
         this.handCoffee.pivot.y = 65;
+        //  Angle 0 -> 60
         this.eye = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-cutscene-eye"].texture);
         this.eye.x = x + 164;
         this.eye.y = y + 236;
@@ -236,20 +238,24 @@ var Cutscene = (function () {
         this.handPoint.visible = false;
         this.head.angle = 0;
         if (state == 0) {
+            //  Push button
             this.handPoint.visible = true;
             this.handPoint.x = -708 + 601 * partElapsed;
         }
         else if (state == 1) {
+            //  Grab cup
             this.cup.visible = true;
             this.handEmpty.visible = true;
             this.handEmpty.x = -87 + 65 * partElapsed;
             this.handEmpty.y = 398 + 262 * partElapsed;
         }
         else if (state == 2) {
+            //  Pull back cup
             this.handCoffee.visible = true;
             this.handCoffee.x = 162 - 129 * partElapsed;
         }
         else if (state == 3) {
+            //  Chug cup
             partElapsed *= 2;
             if (partElapsed > 1) {
                 partElapsed = 1;
@@ -274,3 +280,4 @@ var Cutscene = (function () {
     };
     return Cutscene;
 }());
+//# sourceMappingURL=cutscene.js.map

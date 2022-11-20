@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var LevelWhiskey = (function (_super) {
+var LevelWhiskey = /** @class */ (function (_super) {
     __extends(LevelWhiskey, _super);
     function LevelWhiskey(player, xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, player, xOffset, upKey, downKey, leftKey, rightKey) || this;
@@ -112,7 +112,9 @@ var LevelWhiskey = (function (_super) {
             Game.app.stage.addChild(this.pressEnter);
         }
         Game.sceneTransition.startShrinking();
-        Game.soundPlayer.musicWhiskey.play();
+        if (Game.soundPlayer.musicWhiskey.playing() == false) {
+            Game.soundPlayer.musicWhiskey.play();
+        }
         this.renderWorld();
         this.swirlSpeed = 160;
         this.maxSwirlScore = 5;
@@ -149,6 +151,7 @@ var LevelWhiskey = (function (_super) {
         Game.app.stage.removeChild(this.instructionsRight);
     };
     LevelWhiskey.prototype.update = function (elapsedTime) {
+        // elapsedTime in ms
         this.timeLeftCurrentFireFrame -= elapsedTime;
         if (this.timeLeftCurrentFireFrame <= 0) {
             this.timeLeftCurrentFireFrame = 100;
@@ -262,6 +265,7 @@ var LevelWhiskey = (function (_super) {
                 this.splash.visible = true;
                 var img = 3 - Math.floor(4 * this.timeLeftSplashing / this.totalTimeSplash);
                 if (img < 0) {
+                    //  Borde aldrig hända, men det vore tråkigt om allt kraschar pga några sjuka javascript-avrundningar
                     img = 0;
                 }
                 this.splash.texture = PIXI.Loader.shared.resources["level-whiskey-splash" + img].texture;
@@ -423,3 +427,4 @@ var LevelWhiskey = (function (_super) {
     };
     return LevelWhiskey;
 }(GameState));
+//# sourceMappingURL=levelWhiskey.js.map

@@ -1,4 +1,4 @@
-var Checkpoint = (function () {
+var Checkpoint = /** @class */ (function () {
     function Checkpoint(worldX, worldY, width, height, directionNext) {
         this.worldPosition = new PIXI.Rectangle(worldX, worldY, width, height);
         this.directionNext = directionNext;
@@ -19,3 +19,4 @@ var Direction;
     Direction[Direction["Left"] = 2] = "Left";
     Direction[Direction["Right"] = 3] = "Right";
 })(Direction || (Direction = {}));
+//# sourceMappingURL=checkpoint.js.map

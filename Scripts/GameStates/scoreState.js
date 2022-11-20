@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var ScoreState = (function (_super) {
+var ScoreState = /** @class */ (function (_super) {
     __extends(ScoreState, _super);
     function ScoreState(player, xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, player, xOffset, upKey, downKey, leftKey, rightKey) || this;
@@ -193,6 +193,7 @@ var ScoreState = (function (_super) {
         this.scoreCurrentLevel = scoreCurrentLevel;
         this.scoreCounter.setNewScore(scoreCurrentLevel, 0);
         if (this.currentLevel == Level.Moustache) {
+            //  Värdet 0 gör räknaren synlig
             this.scoreLevelMoustache = 0;
         }
         else if (this.currentLevel == Level.Tie) {
@@ -345,6 +346,7 @@ var ScoreState = (function (_super) {
         }
     };
     ScoreState.prototype.update = function (elapsedTime) {
+        // elapsedTime in ms
         if (Game.sceneTransition.isShrinking && !Game.sceneTransition.isDone()) {
             if (this.player == 1) {
                 Game.sceneTransition.update(elapsedTime);
@@ -388,15 +390,19 @@ var ScoreState = (function (_super) {
             this.pressEnter.scale.y = 1 - 0.03 * Math.cos(2 * Math.PI * this.elapsedTimePressEnter / 2000);
             if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
                 if (this.currentLevel == Level.Hat) {
+                    if (Game.soundPlayer.musicScoreScreen.playing()) {
+                        Game.soundPlayer.musicScoreScreen.fade(1, 0, 500);
+                    }
                     this.onExit();
                 }
                 else if (!Game.sceneTransition.isGrowing) {
                     Game.sceneTransition.startGrowing();
-                    if (Game.soundPlayer.musicScoreScreen.playing) {
-                        Game.soundPlayer.musicScoreScreen.fade(1, 0, 2500);
+                    if (Game.soundPlayer.musicScoreScreen.playing()) {
+                        Game.soundPlayer.musicScoreScreen.fade(1, 0, 500);
                     }
                 }
             }
+            //  Waiting for the player to press enter
             return;
         }
         this.scoreCounter.update(elapsedTime);
@@ -450,11 +456,11 @@ var ScoreState = (function (_super) {
         scoreTotal += this.scoreLevelOffice > -1 ? this.scoreLevelOffice : 0;
         scoreTotal += this.scoreLevelWhiskey > -1 ? this.scoreLevelWhiskey : 0;
         var maxScore = 0;
-        maxScore += 100;
-        maxScore += 100;
-        maxScore += 100;
-        maxScore += 100;
-        maxScore += 100;
+        maxScore += 100; //  Max score on LevelMoustache is 100
+        maxScore += 100; //  Max score on LevelTie is 100
+        maxScore += 100; //  Max score on LevelHat is 100
+        maxScore += 100; //  Max score on LevelOffice is 100
+        maxScore += 100; //  Max score on LevelWhiskey is 100
         this.totalScore = Math.floor(100 * scoreTotal / maxScore);
         this.updateSprites();
     };
@@ -641,16 +647,16 @@ var ScoreState = (function (_super) {
         }
     };
     ScoreState.prototype.getEyesImg = function () {
-        if (this.scoreLevelHat < 50) {
+        if (this.scoreLevelHat < 10) {
             return "face-eyes0";
         }
-        else if (this.scoreLevelHat < 60) {
+        else if (this.scoreLevelHat < 20) {
             return "face-eyes1";
         }
-        else if (this.scoreLevelHat < 70) {
+        else if (this.scoreLevelHat < 30) {
             return "face-eyes2";
         }
-        else if (this.scoreLevelHat < 80) {
+        else if (this.scoreLevelHat < 40) {
             return "face-eyes3";
         }
         else {
@@ -718,3 +724,4 @@ var Level;
     Level[Level["Office"] = 3] = "Office";
     Level[Level["Whiskey"] = 4] = "Whiskey";
 })(Level || (Level = {}));
+//# sourceMappingURL=scoreState.js.map

@@ -184,7 +184,9 @@
 
         Game.sceneTransition.startShrinking();
 
-        Game.soundPlayer.musicTie.play();
+        if (Game.soundPlayer.musicTie.playing() == false) {
+            Game.soundPlayer.musicTie.play();
+        }
     }
 
     public onExit(): void {

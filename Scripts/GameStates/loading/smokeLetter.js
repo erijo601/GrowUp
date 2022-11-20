@@ -1,4 +1,4 @@
-var SmokeLetter = (function () {
+var SmokeLetter = /** @class */ (function () {
     function SmokeLetter(letter, destX, destY) {
         this.showingAlt = false;
         this.cloud = new PIXI.Sprite(Game.loadingScreenLoader.resources["cloud"].texture);
@@ -84,8 +84,9 @@ var SmokeLetter = (function () {
         Game.app.stage.removeChild(this.cloud);
         Game.app.stage.removeChild(this.cloudAlt);
     };
-    SmokeLetter.speed = 750;
+    SmokeLetter.speed = 750; //  Pixels per second
     SmokeLetter.startX = 880;
     SmokeLetter.startY = 730;
     return SmokeLetter;
 }());
+//# sourceMappingURL=smokeLetter.js.map

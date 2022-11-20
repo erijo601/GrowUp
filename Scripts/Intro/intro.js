@@ -1,4 +1,4 @@
-var Intro = (function () {
+var Intro = /** @class */ (function () {
     function Intro() {
         this.timeMoveInOut = 750;
         this.timeSlowMotion = 3000;
@@ -119,3 +119,4 @@ var Intro = (function () {
     };
     return Intro;
 }());
+//# sourceMappingURL=intro.js.map

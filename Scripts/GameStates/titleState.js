@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var TitleState = (function (_super) {
+var TitleState = /** @class */ (function (_super) {
     __extends(TitleState, _super);
     function TitleState(xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, 1, xOffset, upKey, downKey, leftKey, rightKey) || this;
@@ -136,12 +136,33 @@ var TitleState = (function (_super) {
             Game.scoreStatePlayer2 = new ScoreState(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
             Game.currentStatePlayer1 = new LevelMoustache(1, 0, 'w', 's', 'a', 'd');
             Game.currentStatePlayer2 = new LevelMoustache(2, 960, 'arrowup', 'arrowdown', 'arrowleft', 'arrowright');
+            //  Test
+            //Game.scoreStatePlayer1.scoreLevelMoustache = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelHat = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelOffice = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelTie = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelWhiskey = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer2.scoreLevelMoustache = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer2.scoreLevelHat = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer2.scoreLevelOffice = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer2.scoreLevelTie = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer2.scoreLevelWhiskey = MathHelper.randomInt(50, 100);
+            //Game.currentStatePlayer1 = new LevelEnd(0, 'w', 's', 'a', 'd');
+            //Game.currentStatePlayer2 = null;
+            //Game.currentStatePlayer1.onEnter();
             Game.currentStatePlayer1.onEnter();
             Game.currentStatePlayer2.onEnter();
         }
         else {
             Game.scoreStatePlayer1 = new ScoreState(1, 480, 'w', 's', 'a', 'd');
             Game.currentStatePlayer1 = new LevelMoustache(1, 480, 'w', 's', 'a', 'd');
+            //  Test
+            //Game.scoreStatePlayer1.scoreLevelMoustache = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelHat = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelOffice = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelTie = MathHelper.randomInt(50, 100);
+            //Game.scoreStatePlayer1.scoreLevelWhiskey = MathHelper.randomInt(50, 100);
+            //Game.currentStatePlayer1 = new LevelEnd(0, 'w', 's', 'a', 'd');
             Game.currentStatePlayer1.onEnter();
         }
     };
@@ -291,6 +312,7 @@ var TitleState = (function (_super) {
         this.instructions2.scale.y = 1 - 0.02 * Math.sin(2 * Math.PI * this.instructionsScaleTimer / 2000);
         this.pressEnter.scale.x = 1 - 0.03 * Math.cos(2 * Math.PI * this.instructionsScaleTimer / 2000);
         this.pressEnter.scale.y = 1 - 0.03 * Math.cos(2 * Math.PI * this.instructionsScaleTimer / 2000);
+        // elapsedTime in ms
         if (Game.keyboard.current.isPressed('a') && !Game.keyboard.last.isPressed('a') && Game.twoPlayerGame == true) {
             Game.twoPlayerGame = false;
             this.onePlayerDisabled.visible = false;
@@ -335,3 +357,4 @@ var TitleState = (function (_super) {
     };
     return TitleState;
 }(GameState));
+//# sourceMappingURL=titleState.js.map

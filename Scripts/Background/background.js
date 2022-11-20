@@ -1,4 +1,4 @@
-var Background = (function () {
+var Background = /** @class */ (function () {
     function Background() {
         this.speed = 1080 / 40;
         this.gap = 350;
@@ -77,13 +77,14 @@ var Background = (function () {
     };
     return Background;
 }());
-var BackgroundItem = (function () {
+var BackgroundItem = /** @class */ (function () {
     function BackgroundItem(x, y, imageNumber) {
         this.sprite = new PIXI.Sprite(PIXI.Loader.shared.resources["background" + imageNumber].texture);
         this.sprite.x = x;
         this.sprite.y = y;
-        this.sprite.alpha = 0;
+        this.sprite.alpha = 0; //  Starts invisible. Fade in later.
         Game.app.stage.addChild(this.sprite);
     }
     return BackgroundItem;
 }());
+//# sourceMappingURL=background.js.map

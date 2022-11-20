@@ -1,4 +1,4 @@
-var Cubicle = (function () {
+var Cubicle = /** @class */ (function () {
     function Cubicle(worldX, worldY) {
         this.worldPosition = new Position(worldX, worldY);
         var angle = MathHelper.randomInt(0, 3) * 90;
@@ -9,6 +9,7 @@ var Cubicle = (function () {
         this.background.angle = angle;
         this.items = [];
         var position;
+        //  Desk stuff
         for (var i = 0; i < MathHelper.randomInt(0, 8); i++) {
             var stuff = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-cubicle-item" + MathHelper.randomInt(0, 6)].texture);
             stuff.pivot.x = 0;
@@ -17,6 +18,7 @@ var Cubicle = (function () {
             position = new Position(MathHelper.randomInt(50, 250), MathHelper.randomInt(50, 250));
             this.items.push(new CubicleItem(stuff, position));
         }
+        //  Computer
         var computer = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-cubicle-computer"].texture);
         computer.pivot.x = 0;
         computer.pivot.y = computer.height / 2;
@@ -34,6 +36,7 @@ var Cubicle = (function () {
             position = new Position(10, 110);
         }
         this.items.push(new CubicleItem(computer, position));
+        //  Worker
         if (MathHelper.randomInt(0, 5) > 0) {
             var workerImg = MathHelper.randomInt(0, 2);
             var worker = new PIXI.Sprite(PIXI.Loader.shared.resources["level-office-cubicle-worker" + workerImg].texture);
@@ -82,7 +85,7 @@ var Cubicle = (function () {
     };
     return Cubicle;
 }());
-var CubicleItem = (function () {
+var CubicleItem = /** @class */ (function () {
     function CubicleItem(sprite, relativeToCubicle) {
         this.sprite = sprite;
         this.relativeToCubicle = relativeToCubicle;
@@ -93,3 +96,4 @@ var CubicleItem = (function () {
     };
     return CubicleItem;
 }());
+//# sourceMappingURL=cubicle.js.map

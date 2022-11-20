@@ -430,7 +430,10 @@
 
             if (Game.sceneTransition.isDone()) {
 
-                Game.soundPlayer.musicMoustache.play();
+                if (Game.soundPlayer.musicMoustache.playing() == false) {
+                    Game.soundPlayer.musicMoustache.play();
+                }
+
                 Game.intro.startLevelMoustache();
             }
 

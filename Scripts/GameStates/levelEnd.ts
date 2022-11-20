@@ -245,8 +245,10 @@
 
         Game.sceneTransition.startShrinking();
 
-        Game.soundPlayer.musicEnd.play();
-        Game.soundPlayer.musicEnd.fade(0, 1, 1000);
+        if (Game.soundPlayer.musicEnd.playing() == false) {
+            Game.soundPlayer.musicEnd.play();
+            Game.soundPlayer.musicEnd.fade(0, 1, 1000);
+        }
     }
 
     public onExit(): void {

@@ -283,7 +283,10 @@
             if (Game.sceneTransition.isDone()) {
 
                 Game.intro.startLevelHat();
-                Game.soundPlayer.musicHat.play();
+
+                if (Game.soundPlayer.musicHat.playing() == false) {
+                    Game.soundPlayer.musicHat.play();
+                }
             }
 
             return;

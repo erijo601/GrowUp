@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var IntroState = (function (_super) {
+var IntroState = /** @class */ (function (_super) {
     __extends(IntroState, _super);
     function IntroState(xOffset, upKey, downKey, leftKey, rightKey) {
         var _this = _super.call(this, 1, xOffset, upKey, downKey, leftKey, rightKey) || this;
@@ -34,9 +34,11 @@ var IntroState = (function (_super) {
         Game.currentStatePlayer1.onEnter();
     };
     IntroState.prototype.update = function (elapsedTime) {
+        // elapsedTime in ms
         if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
             this.onExit();
         }
     };
     return IntroState;
 }(GameState));
+//# sourceMappingURL=introState.js.map
