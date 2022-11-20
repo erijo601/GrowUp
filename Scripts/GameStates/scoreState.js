@@ -647,16 +647,16 @@ var ScoreState = /** @class */ (function (_super) {
         }
     };
     ScoreState.prototype.getEyesImg = function () {
-        if (this.scoreLevelHat < 10) {
+        if (this.scoreLevelHat < 15) {
             return "face-eyes0";
         }
-        else if (this.scoreLevelHat < 20) {
+        else if (this.scoreLevelHat < 30) {
             return "face-eyes1";
         }
-        else if (this.scoreLevelHat < 30) {
+        else if (this.scoreLevelHat < 45) {
             return "face-eyes2";
         }
-        else if (this.scoreLevelHat < 40) {
+        else if (this.scoreLevelHat < 60) {
             return "face-eyes3";
         }
         else {

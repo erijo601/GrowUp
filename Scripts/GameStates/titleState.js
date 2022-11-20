@@ -340,10 +340,10 @@ var TitleState = /** @class */ (function (_super) {
         if (!Game.keyboard.current.isPressed('enter') && Game.keyboard.last.isPressed('enter')) {
             if (!Game.sceneTransition.isGrowing) {
                 Game.sceneTransition.startGrowing();
-                if (Game.soundPlayer.titleIntro.playing) {
+                if (Game.soundPlayer.titleIntro.playing()) {
                     Game.soundPlayer.titleIntro.stop();
                 }
-                Game.soundPlayer.titleLoop.fade(1, 0, 2500);
+                Game.soundPlayer.titleLoop.fade(1, 0, 500);
             }
         }
         if (Game.sceneTransition.isGrowing) {

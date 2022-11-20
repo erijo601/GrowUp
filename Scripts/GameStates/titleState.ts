@@ -451,12 +451,12 @@
 
                 Game.sceneTransition.startGrowing();
 
-                if (Game.soundPlayer.titleIntro.playing) {
+                if (Game.soundPlayer.titleIntro.playing()) {
 
                     Game.soundPlayer.titleIntro.stop();
                 }
 
-                Game.soundPlayer.titleLoop.fade(1, 0, 2500);
+                Game.soundPlayer.titleLoop.fade(1, 0, 500);
             }
         }
 
